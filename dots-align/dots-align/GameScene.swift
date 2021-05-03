@@ -14,39 +14,51 @@ class Dot {
     let nominalRadiusSceneFactor: CGFloat = 0.02
     let glowWidthFactor: CGFloat = 0.0
     
-    let depthRadiusAmplitude: CGFloat = 0.3
-    let depthColorAmplitude: CGFloat = 0.3
+    let depthRadiusAmplitude: CGFloat = 0.4
+    let depthColorAmplitude: CGFloat = 0.4
     
     var node: SKShapeNode
     var point: Float3d
     let scene: SKScene
     let color: UIColor
+    let sphereDiameterFactor: CGFloat = 0.6
+    let sphereDiameter: CGFloat
+    let sceneSize: CGFloat
 
     init(scene: SKScene, color: UIColor, point3d: Float3d) {
         self.scene = scene
         self.color = color
-        self.point = point3d
+        self.point = simd_normalize(point3d)
         
-        let nominalRadius = self.nominalRadiusSceneFactor * min(self.scene.size.width, self.scene.size.height)
+        self.sceneSize = min(self.scene.size.width, self.scene.size.height)
+        
+        let nominalRadius = self.nominalRadiusSceneFactor * self.sceneSize
         self.node = SKShapeNode.init(circleOfRadius: nominalRadius)
         self.node.glowWidth = nominalRadius * self.glowWidthFactor
         
-        self.updatePosition(point3d: point3d)
+        self.sphereDiameter = self.sphereDiameterFactor * self.sceneSize
+        
+        self.update()
+    }
+    
+    func update() {
+        self.updatePosition()
         self.updateStyle()
     }
     
-    func updatePosition(point3d: Float3d) {
+    func updatePosition() {
         let w = self.scene.size.width
         let h = self.scene.size.height
         
-        let x = 0.5 * w + CGFloat(point3d.x) * w
-        let y = 0.5 * h + CGFloat(point3d.y) * h
-        let z = CGFloat(point3d.z)
+        let sceneCenter = CGPoint(x: 0.5 * w, y: 0.5 * h)
+        let sphereRadius = 0.5 * self.sphereDiameter
+        
+        let x = sceneCenter.x + CGFloat(self.point.x) * sphereRadius
+        let y = sceneCenter.y + CGFloat(self.point.y) * sphereRadius
+        let z = CGFloat(self.point.z)
         
         self.node.position = CGPoint(x:x, y:y)
         self.node.zPosition = z
-        
-        self.point = point3d
     }
     
     func updateStyle() {
@@ -83,8 +95,19 @@ class Dot {
     }
     
     func rotate(vector: Float3d) {
-        self.node.position.x += CGFloat(vector.x)
-        self.node.position.y += CGFloat(vector.y)
+        let norm = simd_length(vector)
+        
+        if norm > 0 {
+            let angle = Float.pi * norm / Float(self.sphereDiameter)
+            
+            let unit = simd_normalize(vector)
+            let axis = simd_normalize(simd_cross(unit, Float3d(0, 0, -1)))
+            
+            let q = simd_quatf(angle: angle, axis: axis)
+            self.point = q.act(self.point)
+            
+            self.update()
+        }
     }
 }
 
@@ -97,8 +120,8 @@ class GameScene: SKScene {
         
         self.backgroundColor = UIColor(white: 0.0, alpha: 1)
         
-        self.dots.append(Dot(scene: self, color: UIColor(white: 0.5, alpha: 1), point3d: Float3d(0.2, 0, -1)))
-        self.dots.append(Dot(scene: self, color: UIColor(white: 0.5, alpha: 1), point3d: Float3d(-0.2, 0, 1)))
+        self.dots.append(Dot(scene: self, color: UIColor(white: 0.5, alpha: 1), point3d: Float3d(0.45, 0.45, -1)))
+        self.dots.append(Dot(scene: self, color: UIColor(white: 0.5, alpha: 1), point3d: Float3d(-0.45, -0.45, 1)))
         
         for dot in self.dots {
             self.addChild(dot.node)
