@@ -10,80 +10,50 @@ import GameplayKit
 
 class GameScene: SKScene {
     
-    private var label : SKLabelNode?
-    private var spinnyNode : SKShapeNode?
+    private var dotNode : SKShapeNode?
     
     // Scene will appear. Create content here. (not "touch moved")
     override func didMove(to view: SKView) {
         
-        self.backgroundColor = UIColor(white: 0.5, alpha: 1)
+        self.backgroundColor = UIColor(white: 0.0, alpha: 1)
         
-        // Some label
-        self.label = SKLabelNode(text: "aaaaaa")
-        self.addChild(self.label!)
-//        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
-//        if let label = self.label {
-//            label.alpha = 0.0
-//            label.run(SKAction.fadeIn(withDuration: 2.0))
-//        }
+        // Dot.
+        let w = self.size.width
+        let h = self.size.height
+        let r = 0.05 * w
+        let dotColor = UIColor(white: 0.7, alpha: 1)
         
-        // Create shape node to use during mouse interaction
-        let w = (self.size.width + self.size.height) * 0.05
-        self.spinnyNode = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
+        self.dotNode = SKShapeNode.init(circleOfRadius: r)
         
-        if let spinnyNode = self.spinnyNode {
-            spinnyNode.lineWidth = 2.5
-            
-            spinnyNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 1)))
-            spinnyNode.run(SKAction.sequence([SKAction.wait(forDuration: 0.5),
-                                              SKAction.fadeOut(withDuration: 0.5),
-                                              SKAction.removeFromParent()]))
-        }
-    }
-    
-    
-    func touchDown(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.green
-            self.addChild(n)
-        }
-    }
-    
-    func touchMoved(toPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.blue
-            self.addChild(n)
-        }
-    }
-    
-    func touchUp(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.red
-            self.addChild(n)
+        if let dotNode = self.dotNode {
+            dotNode.strokeColor = dotColor
+            dotNode.fillColor = dotColor
+            dotNode.position = CGPoint(x: 0.5 * w, y: 0.5 * h)
+            dotNode.glowWidth = r * 0.5
+            self.addChild(dotNode)
         }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        if let label = self.label {
-//            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
-//        }
-        
-        for t in touches { self.touchDown(atPoint: t.location(in: self)) }
+//        for t in touches { self.touchDown(atPoint: t.location(in: self)) }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
+        if let t = touches.first {
+            let dx = t.location(in: self).x - t.previousLocation(in: self).x
+            let dy = t.location(in: self).y - t.previousLocation(in: self).y
+            
+            self.dotNode?.position.x += dx
+            self.dotNode?.position.y += dy
+        }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
+//        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
+//        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
     }
     
     
