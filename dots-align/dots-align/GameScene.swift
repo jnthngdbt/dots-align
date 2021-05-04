@@ -94,6 +94,10 @@ class Dot {
         return CGFloat(self.point.z) * amplitude + 1.0 // converts [-1, 1] z to e.g. [0.8, 1.2] for 0.2 amplitude
     }
     
+    func addToScene() {
+        self.scene.addChild(self.node)
+    }
+    
     func rotate(vector: Float3d) {
         let norm = simd_length(vector)
         
@@ -111,37 +115,53 @@ class Dot {
     }
 }
 
-class Pattern {
-    func random(nbDots: Int, scene: SKScene, color: UIColor) -> Array<Dot> {
-        var dots = Array<Dot>()
+class Cloud {
+    var dots = Array<Dot>()
+    
+    func add(points: Array<Float3d>, scene: SKScene, color: UIColor) {
+        for p in points {
+            dots.append(Dot(scene: scene, color: color, point3d: p))
+        }
+    }
+    
+    class func generateRandomPoints(nbPoints: Int) -> Array<Float3d> {
+        var points = Array<Float3d>()
         
-        for _ in 1...nbDots {
+        for _ in 1...nbPoints {
             let x = Float.random(in: -1...1)
             let y = Float.random(in: -1...1)
+            let z = Float.random(in: -1...1)
             
-            // Create same point symmetric in z.
-            dots.append(Dot(scene: scene, color: color, point3d: Float3d(x, y, 0.4)))
-            dots.append(Dot(scene: scene, color: color, point3d: Float3d(x, y, -0.4)))
+            let point = simd_normalize(Float3d(x, y, z))
+            points.append(point)
         }
         
-        return dots
+        return points
+    }
+        
+    func addToScene() {
+        for dot in self.dots {
+            dot.addToScene()
+        }
     }
 }
 
 class GameScene: SKScene {
     
-    private var dots = Array<Dot>()
+    private var cloud = Cloud()
+    private var model = Cloud()
     
     // Scene will appear. Create content here. (not "touch moved")
     override func didMove(to view: SKView) {
         
         self.backgroundColor = UIColor(white: 0.0, alpha: 1)
         
-        self.dots = Pattern().random(nbDots: 8, scene: self, color: UIColor.init(white: 0.5, alpha: 1))
+        let points = Cloud.generateRandomPoints(nbPoints: 4)
+        self.cloud.add(points: points, scene: self, color: UIColor.init(white: 0.5, alpha: 1))
+        self.model.add(points: points, scene: self, color: UIColor.init(red: 1, green: 0, blue: 0, alpha: 0.9))
         
-        for dot in self.dots {
-            self.addChild(dot.node)
-        }
+        self.cloud.addToScene()
+        self.model.addToScene()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -153,7 +173,7 @@ class GameScene: SKScene {
             let dx = Float(t.location(in: self).x - t.previousLocation(in: self).x)
             let dy = Float(t.location(in: self).y - t.previousLocation(in: self).y)
             
-            for dot in self.dots {
+            for dot in self.cloud.dots {
                 dot.rotate(vector: Float3d(dx, dy, 0))
             }
         }
