@@ -111,6 +111,23 @@ class Dot {
     }
 }
 
+class Pattern {
+    func random(nbDots: Int, scene: SKScene, color: UIColor) -> Array<Dot> {
+        var dots = Array<Dot>()
+        
+        for _ in 1...nbDots {
+            let x = Float.random(in: -1...1)
+            let y = Float.random(in: -1...1)
+            
+            // Create same point symmetric in z.
+            dots.append(Dot(scene: scene, color: color, point3d: Float3d(x, y, 0.4)))
+            dots.append(Dot(scene: scene, color: color, point3d: Float3d(x, y, -0.4)))
+        }
+        
+        return dots
+    }
+}
+
 class GameScene: SKScene {
     
     private var dots = Array<Dot>()
@@ -120,8 +137,7 @@ class GameScene: SKScene {
         
         self.backgroundColor = UIColor(white: 0.0, alpha: 1)
         
-        self.dots.append(Dot(scene: self, color: UIColor(white: 0.5, alpha: 1), point3d: Float3d(0.45, 0.45, -1)))
-        self.dots.append(Dot(scene: self, color: UIColor(white: 0.5, alpha: 1), point3d: Float3d(-0.45, -0.45, 1)))
+        self.dots = Pattern().random(nbDots: 8, scene: self, color: UIColor.init(white: 0.5, alpha: 1))
         
         for dot in self.dots {
             self.addChild(dot.node)
