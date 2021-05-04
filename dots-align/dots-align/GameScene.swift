@@ -11,10 +11,10 @@ import GameplayKit
 typealias Float3d = SIMD3<Float>
 
 class Dot {
-    let nominalRadiusSceneFactor: CGFloat = 0.02
+    let nominalRadiusSceneFactor: CGFloat = 0.015
     let glowWidthFactor: CGFloat = 0.0
     
-    let depthRadiusAmplitude: CGFloat = 0.4
+    let depthRadiusAmplitude: CGFloat = 0
     let depthColorAmplitude: CGFloat = 0.4
     
     var node: SKShapeNode
@@ -124,7 +124,7 @@ class Cloud {
         }
     }
     
-    class func generateRandomPoints(nbPoints: Int) -> Array<Float3d> {
+    class func generateSymmetricRandomPoints(nbPoints: Int) -> Array<Float3d> {
         var points = Array<Float3d>()
         
         for _ in 1...nbPoints {
@@ -132,8 +132,8 @@ class Cloud {
             let y = Float.random(in: -1...1)
             let z = Float.random(in: -1...1)
             
-            let point = simd_normalize(Float3d(x, y, z))
-            points.append(point)
+            points.append(simd_normalize(Float3d(x, y, z)))
+            points.append(simd_normalize(Float3d(x, y, -z)))
         }
         
         return points
@@ -149,23 +149,27 @@ class Cloud {
 class GameScene: SKScene {
     
     private var cloud = Cloud()
-    private var model = Cloud()
     
     // Scene will appear. Create content here. (not "touch moved")
     override func didMove(to view: SKView) {
         
-        self.backgroundColor = UIColor(white: 0.0, alpha: 1)
+        self.backgroundColor = UIColor(white: 0.1, alpha: 1)
         
-        let points = Cloud.generateRandomPoints(nbPoints: 4)
+        let points = Cloud.generateSymmetricRandomPoints(nbPoints: 20)
         self.cloud.add(points: points, scene: self, color: UIColor.init(white: 0.5, alpha: 1))
-        self.model.add(points: points, scene: self, color: UIColor.init(red: 1, green: 0, blue: 0, alpha: 0.9))
-        
         self.cloud.addToScene()
-        self.model.addToScene()
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        for t in touches { self.touchDown(atPoint: t.location(in: self)) }
+        
+        let w = self.size.width
+        let h = self.size.height
+        
+        let sceneCenter = CGPoint(x: 0.5 * w, y: 0.5 * h)
+        
+        let sphere = SKShapeNode.init(circleOfRadius: 0.25 * min(self.size.width, self.size.height))
+        sphere.fillColor = UIColor(white: 0.0, alpha: 0.4)
+        sphere.strokeColor = UIColor.clear
+        sphere.position = sceneCenter
+        
+        self.addChild(sphere)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -179,14 +183,9 @@ class GameScene: SKScene {
         }
     }
     
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-    }
-    
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-    }
-    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) { }
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) { }
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
