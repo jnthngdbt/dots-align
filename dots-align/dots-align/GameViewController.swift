@@ -22,9 +22,10 @@ class GameViewController: UIViewController {
             view.presentScene(scene)
             view.ignoresSiblingOrder = true
             
-            // Debug.
-//            view.showsFPS = true
-//            view.showsNodeCount = true
+            if scene.debug {
+                view.showsFPS = true
+                view.showsNodeCount = true
+            }
         }
     }
 

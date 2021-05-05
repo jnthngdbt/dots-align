@@ -84,7 +84,7 @@ class Dot {
 
 class Cloud {
     let alignedOrientation = Vector3d(0, 0, 1)
-    let alignedDistThresh = 0.01
+    let alignedDistThresh = 0.02
     
     var dots = Array<Dot>()
     var orientation = Vector3d(0, 0, 1)
@@ -92,6 +92,13 @@ class Cloud {
     func add(points: Array<Vector3d>, scene: GameScene, color: UIColor) {
         for p in points {
             dots.append(Dot(scene: scene, color: color, point3d: p))
+        }
+        
+        if scene.debug {
+            dots.append(Dot(scene: scene, color: UIColor.red, point3d: self.alignedOrientation))
+            dots.last!.node.setScale(0.2)
+            dots.append(Dot(scene: scene, color: UIColor.red, point3d: -self.alignedOrientation))
+            dots.last!.node.setScale(0.2)
         }
     }
     
@@ -170,6 +177,8 @@ class Level {
 class GameScene: SKScene {
 
     var level = Level()
+    
+    let debug = false
     
     func minSize() -> CGFloat {
         return min(self.size.width, self.size.height)
