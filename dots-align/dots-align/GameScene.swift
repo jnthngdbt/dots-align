@@ -11,34 +11,25 @@ import GameplayKit
 typealias Float3d = SIMD3<Float>
 
 class Dot {
-    let nominalRadiusSceneFactor: CGFloat = 0.015
-    let glowWidthFactor: CGFloat = 0.0
-    
-    let depthRadiusAmplitude: CGFloat = 0
-    let depthColorAmplitude: CGFloat = 0.4
+    let radiusFactor: CGFloat = 0.02
+    let depthColorAmplitude: CGFloat = 0.3
     
     var node: SKShapeNode
     var point: Float3d
-    let scene: SKScene
+    let scene: GameScene
     let color: UIColor
-    let sphereDiameterFactor: CGFloat = 0.6
-    let sphereDiameter: CGFloat
-    let sceneSize: CGFloat
 
-    init(scene: SKScene, color: UIColor, point3d: Float3d) {
+    init(scene: GameScene, color: UIColor, point3d: Float3d) {
         self.scene = scene
         self.color = color
         self.point = simd_normalize(point3d)
         
-        self.sceneSize = min(self.scene.size.width, self.scene.size.height)
-        
-        let nominalRadius = self.nominalRadiusSceneFactor * self.sceneSize
-        self.node = SKShapeNode.init(circleOfRadius: nominalRadius)
-        self.node.glowWidth = nominalRadius * self.glowWidthFactor
-        
-        self.sphereDiameter = self.sphereDiameterFactor * self.sceneSize
+        let radius = self.radiusFactor * self.scene.minSize()
+        self.node = SKShapeNode.init(circleOfRadius: radius)
         
         self.update()
+        
+        self.scene.addChild(self.node)
     }
     
     func update() {
@@ -47,11 +38,8 @@ class Dot {
     }
     
     func updatePosition() {
-        let w = self.scene.size.width
-        let h = self.scene.size.height
-        
-        let sceneCenter = CGPoint(x: 0.5 * w, y: 0.5 * h)
-        let sphereRadius = 0.5 * self.sphereDiameter
+        let sceneCenter = self.scene.center()
+        let sphereRadius = 0.5 * self.scene.level.unitSphereDiameter
         
         let x = sceneCenter.x + CGFloat(self.point.x) * sphereRadius
         let y = sceneCenter.y + CGFloat(self.point.y) * sphereRadius
@@ -62,13 +50,7 @@ class Dot {
     }
     
     func updateStyle() {
-        self.updateRadius()
         self.updateColor()
-    }
-    
-    func updateRadius() {
-        let scale = self.getScaleFromDepth(amplitude: self.depthRadiusAmplitude)
-        self.node.setScale(scale)
     }
     
     func updateColor() {
@@ -94,15 +76,11 @@ class Dot {
         return CGFloat(self.point.z) * amplitude + 1.0 // converts [-1, 1] z to e.g. [0.8, 1.2] for 0.2 amplitude
     }
     
-    func addToScene() {
-        self.scene.addChild(self.node)
-    }
-    
     func rotate(vector: Float3d) {
         let norm = simd_length(vector)
         
         if norm > 0 {
-            let angle = Float.pi * norm / Float(self.sphereDiameter)
+            let angle = Float.pi * norm / Float(self.scene.level.unitSphereDiameter)
             
             let unit = simd_normalize(vector)
             let axis = simd_normalize(simd_cross(unit, Float3d(0, 0, -1)))
@@ -118,7 +96,7 @@ class Dot {
 class Cloud {
     var dots = Array<Dot>()
     
-    func add(points: Array<Float3d>, scene: SKScene, color: UIColor) {
+    func add(points: Array<Float3d>, scene: GameScene, color: UIColor) {
         for p in points {
             dots.append(Dot(scene: scene, color: color, point3d: p))
         }
@@ -138,38 +116,70 @@ class Cloud {
         
         return points
     }
-        
-    func addToScene() {
+    
+    func clear() {
         for dot in self.dots {
-            dot.addToScene()
+            dot.node.removeFromParent()
         }
+        
+        self.dots.removeAll()
+    }
+}
+
+class Level {
+    let unitSphereDiameterFactor: CGFloat = 0.6
+    let orbDiameterFactor: CGFloat = 0.5
+    
+    var unitSphereDiameter: CGFloat = 1.0
+    var orbDiameter: CGFloat = 1.0
+    var orb = SKShapeNode()
+    
+    var cloud = Cloud()
+    
+    func new(nbPoints: Int, scene: GameScene, color: UIColor) {
+        self.clear()
+        
+        self.unitSphereDiameter = self.unitSphereDiameterFactor * scene.minSize()
+        self.orbDiameter = self.orbDiameterFactor * scene.minSize()
+        
+        let points = Cloud.generateSymmetricRandomPoints(nbPoints: nbPoints)
+        self.cloud.add(points: points, scene: scene, color: color)
+        
+        self.orb = SKShapeNode.init(circleOfRadius: 0.5 * self.orbDiameter)
+        self.orb.fillColor = UIColor(white: 0.0, alpha: 0.4)
+        self.orb.strokeColor = UIColor.clear
+        self.orb.position = scene.center()
+        scene.addChild(self.orb)
+    }
+    
+    func clear() {
+        self.orb.removeFromParent()
+        self.cloud.clear()
     }
 }
 
 class GameScene: SKScene {
+
+    var level = Level()
     
-    private var cloud = Cloud()
+    func minSize() -> CGFloat {
+        return min(self.size.width, self.size.height)
+    }
+    
+    func center() -> CGPoint {
+        let w = self.size.width
+        let h = self.size.height
+        return CGPoint(x: 0.5 * w, y: 0.5 * h)
+    }
+    
+    func newLevel() {
+        self.level.new(nbPoints: 20, scene: self, color: UIColor(red: 0.5, green: 0.3, blue: 0.5, alpha: 1))
+    }
     
     // Scene will appear. Create content here. (not "touch moved")
     override func didMove(to view: SKView) {
-        
         self.backgroundColor = UIColor(white: 0.1, alpha: 1)
-        
-        let points = Cloud.generateSymmetricRandomPoints(nbPoints: 20)
-        self.cloud.add(points: points, scene: self, color: UIColor.init(white: 0.5, alpha: 1))
-        self.cloud.addToScene()
-        
-        let w = self.size.width
-        let h = self.size.height
-        
-        let sceneCenter = CGPoint(x: 0.5 * w, y: 0.5 * h)
-        
-        let sphere = SKShapeNode.init(circleOfRadius: 0.25 * min(self.size.width, self.size.height))
-        sphere.fillColor = UIColor(white: 0.0, alpha: 0.4)
-        sphere.strokeColor = UIColor.clear
-        sphere.position = sceneCenter
-        
-        self.addChild(sphere)
+        self.newLevel()
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -177,14 +187,14 @@ class GameScene: SKScene {
             let dx = Float(t.location(in: self).x - t.previousLocation(in: self).x)
             let dy = Float(t.location(in: self).y - t.previousLocation(in: self).y)
             
-            for dot in self.cloud.dots {
+            for dot in self.level.cloud.dots {
                 dot.rotate(vector: Float3d(dx, dy, 0))
             }
         }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { }
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) { }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) { self.newLevel() }
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) { }
     
     override func update(_ currentTime: TimeInterval) {
