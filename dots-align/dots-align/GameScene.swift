@@ -8,18 +8,18 @@
 import SpriteKit
 import GameplayKit
 
-typealias Float3d = SIMD3<Float>
+typealias Vector3d = SIMD3<Double>
 
 class Dot {
     let radiusFactor: CGFloat = 0.02
     let depthColorAmplitude: CGFloat = 0.3
     
     var node: SKShapeNode
-    var point: Float3d
+    var point: Vector3d
     let scene: GameScene
     let color: UIColor
 
-    init(scene: GameScene, color: UIColor, point3d: Float3d) {
+    init(scene: GameScene, color: UIColor, point3d: Vector3d) {
         self.scene = scene
         self.color = color
         self.point = simd_normalize(point3d)
@@ -76,41 +76,41 @@ class Dot {
         return CGFloat(self.point.z) * amplitude + 1.0 // converts [-1, 1] z to e.g. [0.8, 1.2] for 0.2 amplitude
     }
     
-    func rotate(quaternion: simd_quatf) {
+    func rotate(quaternion: simd_quatd) {
         self.point = quaternion.act(self.point)
         self.update()
     }
 }
 
 class Cloud {
-    let alignedOrientation = Float3d(0, 0, 1)
-    let alignedDotProduct: Float = 0.9999
+    let alignedOrientation = Vector3d(0, 0, 1)
+    let alignedDistThresh = 0.01
     
     var dots = Array<Dot>()
-    var orientation = Float3d(0, 0, 1)
+    var orientation = Vector3d(0, 0, 1)
     
-    func add(points: Array<Float3d>, scene: GameScene, color: UIColor) {
+    func add(points: Array<Vector3d>, scene: GameScene, color: UIColor) {
         for p in points {
             dots.append(Dot(scene: scene, color: color, point3d: p))
         }
     }
     
-    class func generateSymmetricRandomPoints(nbPoints: Int) -> Array<Float3d> {
-        var points = Array<Float3d>()
+    class func generateSymmetricRandomPoints(nbPoints: Int) -> Array<Vector3d> {
+        var points = Array<Vector3d>()
         
         for _ in 1...nbPoints {
-            let x = Float.random(in: -1...1)
-            let y = Float.random(in: -1...1)
-            let z = Float.random(in: -1...1)
+            let x = Double.random(in: -1...1)
+            let y = Double.random(in: -1...1)
+            let z = Double.random(in: -1...1)
             
-            points.append(simd_normalize(Float3d(x, y, z)))
-            points.append(simd_normalize(Float3d(x, y, -z)))
+            points.append(simd_normalize(Vector3d(x, y, z)))
+            points.append(simd_normalize(Vector3d(x, y, -z)))
         }
         
         return points
     }
     
-    func rotate(quaternion: simd_quatf) {
+    func rotate(quaternion: simd_quatd) {
         self.orientation = quaternion.act(self.orientation)
         for dot in self.dots {
             dot.rotate(quaternion: quaternion)
@@ -118,8 +118,8 @@ class Cloud {
     }
     
     func isAligned() -> Bool {
-        let dot = simd_dot(self.orientation, self.alignedOrientation)
-        return abs(dot) > self.alignedDotProduct
+        let dist = simd_distance(self.orientation, self.alignedOrientation)
+        return dist < self.alignedDistThresh
     }
     
     func clear() {
@@ -151,7 +151,7 @@ class Level {
         
         let points = Cloud.generateSymmetricRandomPoints(nbPoints: nbPoints)
         self.cloud.add(points: points, scene: scene, color: color)
-        self.cloud.rotate(quaternion: simd_quatf(angle: 0.25 * Float.pi, axis: simd_normalize(Float3d(1,1,0))))
+        self.cloud.rotate(quaternion: simd_quatd(angle: 0.25 * Double.pi, axis: simd_normalize(Vector3d(1,1,0))))
         
         self.orb = SKShapeNode.init(circleOfRadius: 0.5 * self.orbDiameter)
         self.orb.fillColor = UIColor(white: 0.0, alpha: 0.4)
@@ -184,14 +184,14 @@ class GameScene: SKScene {
         self.level.new(nbPoints: 20, scene: self, color: UIColor(red: 0.5, green: 0.3, blue: 0.5, alpha: 1))
     }
     
-    func rotate(touchVector: Float3d) {
+    func rotate(touchVector: Vector3d) {
         let norm = simd_length(touchVector)
         
         if norm > 0 {
-            let angle = Float.pi * norm / Float(self.level.unitSphereDiameter)
+            let angle = Double.pi * norm / Double(self.level.unitSphereDiameter)
             let unit = simd_normalize(touchVector)
-            let axis = simd_normalize(simd_cross(unit, Float3d(0, 0, -1)))
-            let q = simd_quatf(angle: angle, axis: axis)
+            let axis = simd_normalize(simd_cross(unit, Vector3d(0, 0, -1)))
+            let q = simd_quatd(angle: angle, axis: axis)
             
             self.level.cloud.rotate(quaternion: q)
         }
@@ -205,9 +205,9 @@ class GameScene: SKScene {
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let t = touches.first {
-            let dx = Float(t.location(in: self).x - t.previousLocation(in: self).x)
-            let dy = Float(t.location(in: self).y - t.previousLocation(in: self).y)
-            self.rotate(touchVector: Float3d(dx, dy, 0))
+            let dx = Double(t.location(in: self).x - t.previousLocation(in: self).x)
+            let dy = Double(t.location(in: self).y - t.previousLocation(in: self).y)
+            self.rotate(touchVector: Vector3d(dx, dy, 0))
         }
         
         if self.level.cloud.isAligned() {
