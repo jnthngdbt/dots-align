@@ -118,8 +118,9 @@ class Cloud {
     }
     
     func isAligned() -> Bool {
-        let dist = simd_distance(self.orientation, self.alignedOrientation)
-        return dist < self.alignedDistThresh
+        let distDirA = simd_distance(self.orientation, self.alignedOrientation)
+        let distDirB = simd_distance(self.orientation, -self.alignedOrientation)
+        return distDirA < self.alignedDistThresh || distDirB < self.alignedDistThresh
     }
     
     func clear() {
