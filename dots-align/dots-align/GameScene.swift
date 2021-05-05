@@ -76,25 +76,18 @@ class Dot {
         return CGFloat(self.point.z) * amplitude + 1.0 // converts [-1, 1] z to e.g. [0.8, 1.2] for 0.2 amplitude
     }
     
-    func rotate(vector: Float3d) {
-        let norm = simd_length(vector)
-        
-        if norm > 0 {
-            let angle = Float.pi * norm / Float(self.scene.level.unitSphereDiameter)
-            
-            let unit = simd_normalize(vector)
-            let axis = simd_normalize(simd_cross(unit, Float3d(0, 0, -1)))
-            
-            let q = simd_quatf(angle: angle, axis: axis)
-            self.point = q.act(self.point)
-            
-            self.update()
-        }
+    func rotate(quaternion: simd_quatf) {
+        self.point = quaternion.act(self.point)
+        self.update()
     }
 }
 
 class Cloud {
+    let alignedOrientation = Float3d(0, 0, 1)
+    let alignedDotProduct: Float = 0.9999
+    
     var dots = Array<Dot>()
+    var orientation = Float3d(0, 0, 1)
     
     func add(points: Array<Float3d>, scene: GameScene, color: UIColor) {
         for p in points {
@@ -117,7 +110,21 @@ class Cloud {
         return points
     }
     
+    func rotate(quaternion: simd_quatf) {
+        self.orientation = quaternion.act(self.orientation)
+        for dot in self.dots {
+            dot.rotate(quaternion: quaternion)
+        }
+    }
+    
+    func isAligned() -> Bool {
+        let dot = simd_dot(self.orientation, self.alignedOrientation)
+        return abs(dot) > self.alignedDotProduct
+    }
+    
     func clear() {
+        self.orientation = self.alignedOrientation
+        
         for dot in self.dots {
             dot.node.removeFromParent()
         }
@@ -144,6 +151,7 @@ class Level {
         
         let points = Cloud.generateSymmetricRandomPoints(nbPoints: nbPoints)
         self.cloud.add(points: points, scene: scene, color: color)
+        self.cloud.rotate(quaternion: simd_quatf(angle: 0.25 * Float.pi, axis: simd_normalize(Float3d(1,1,0))))
         
         self.orb = SKShapeNode.init(circleOfRadius: 0.5 * self.orbDiameter)
         self.orb.fillColor = UIColor(white: 0.0, alpha: 0.4)
@@ -176,6 +184,19 @@ class GameScene: SKScene {
         self.level.new(nbPoints: 20, scene: self, color: UIColor(red: 0.5, green: 0.3, blue: 0.5, alpha: 1))
     }
     
+    func rotate(touchVector: Float3d) {
+        let norm = simd_length(touchVector)
+        
+        if norm > 0 {
+            let angle = Float.pi * norm / Float(self.level.unitSphereDiameter)
+            let unit = simd_normalize(touchVector)
+            let axis = simd_normalize(simd_cross(unit, Float3d(0, 0, -1)))
+            let q = simd_quatf(angle: angle, axis: axis)
+            
+            self.level.cloud.rotate(quaternion: q)
+        }
+    }
+    
     // Scene will appear. Create content here. (not "touch moved")
     override func didMove(to view: SKView) {
         self.backgroundColor = UIColor(white: 0.1, alpha: 1)
@@ -186,15 +207,16 @@ class GameScene: SKScene {
         if let t = touches.first {
             let dx = Float(t.location(in: self).x - t.previousLocation(in: self).x)
             let dy = Float(t.location(in: self).y - t.previousLocation(in: self).y)
-            
-            for dot in self.level.cloud.dots {
-                dot.rotate(vector: Float3d(dx, dy, 0))
-            }
+            self.rotate(touchVector: Float3d(dx, dy, 0))
+        }
+        
+        if self.level.cloud.isAligned() {
+            self.newLevel()
         }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { }
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) { self.newLevel() }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) { }
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) { }
     
     override func update(_ currentTime: TimeInterval) {
