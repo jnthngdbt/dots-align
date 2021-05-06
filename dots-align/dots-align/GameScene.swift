@@ -10,6 +10,26 @@ import GameplayKit
 
 typealias Vector3d = SIMD3<Double>
 
+extension UIColor {
+    func toColor(_ color: UIColor, percentage: CGFloat) -> UIColor {
+        let percentage = max(min(percentage, 100), 0) / 100
+        switch percentage {
+            case 0: return self
+            case 1: return color
+            default:
+                var (r1, g1, b1, a1): (CGFloat, CGFloat, CGFloat, CGFloat) = (0, 0, 0, 0)
+                var (r2, g2, b2, a2): (CGFloat, CGFloat, CGFloat, CGFloat) = (0, 0, 0, 0)
+                guard self.getRed(&r1, green: &g1, blue: &b1, alpha: &a1) else { return self }
+                guard color.getRed(&r2, green: &g2, blue: &b2, alpha: &a2) else { return self }
+
+                return UIColor(red: CGFloat(r1 + (r2 - r1) * percentage),
+                               green: CGFloat(g1 + (g2 - g1) * percentage),
+                               blue: CGFloat(b1 + (b2 - b1) * percentage),
+                               alpha: CGFloat(a1 + (a2 - a1) * percentage))
+        }
+    }
+}
+
 class Dot {
     let radiusFactor: CGFloat = 0.02
     let depthColorAmplitude: CGFloat = 0.3
@@ -88,6 +108,7 @@ class Cloud {
     
     var dots = Array<Dot>()
     var orientation = Vector3d(0, 0, 1)
+    var alignedDist = 0.0
     
     func add(points: Array<Vector3d>, scene: GameScene, color: UIColor) {
         for p in points {
@@ -119,19 +140,24 @@ class Cloud {
     
     func rotate(quaternion: simd_quatd) {
         self.orientation = quaternion.act(self.orientation)
+        
+        self.alignedDist = min(
+            simd_distance(self.orientation, self.alignedOrientation),
+            simd_distance(self.orientation, -self.alignedOrientation)
+        )
+        
         for dot in self.dots {
             dot.rotate(quaternion: quaternion)
         }
     }
     
     func isAligned() -> Bool {
-        let distDirA = simd_distance(self.orientation, self.alignedOrientation)
-        let distDirB = simd_distance(self.orientation, -self.alignedOrientation)
-        return distDirA < self.alignedDistThresh || distDirB < self.alignedDistThresh
+        return self.alignedDist < self.alignedDistThresh
     }
     
     func clear() {
         self.orientation = self.alignedOrientation
+        self.alignedDist = 0
         
         for dot in self.dots {
             dot.node.removeFromParent()
