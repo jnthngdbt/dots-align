@@ -32,6 +32,37 @@ extension UIColor {
     }
 }
 
+class Utils {
+    class func randomPoint() -> Vector3d {
+        let x = Utils.randomCoordinateNonZero()
+        let y = Utils.randomCoordinateNonZero()
+        let z = Utils.randomCoordinateNonZero()
+        let p = Vector3d(x,y,z)
+        return simd_normalize(p)
+    }
+    
+    class func randomCoordinateNonZero(eps: Scalar = 0.001) -> Scalar {
+        return self.randomSign() * Scalar.random(in: eps...1)
+    }
+    
+    class func randomSign() -> Scalar {
+        return Bool.random() ? 1 : -1
+    }
+    
+    class func quaternionFromDir(dir: Vector3d, speed: Scalar = 1) -> Quat {
+        let norm = simd_length(dir)
+        
+        if norm > 0 {
+            let angle = asin(norm)
+            let unit = simd_normalize(dir)
+            let axis = simd_normalize(simd_cross(unit, Vector3d(0, 0, -1)))
+            return Quat(angle: speed * angle, axis: axis)
+        }
+        
+        return Quat(angle: 0, axis: Vector3d(0, 0, 1)) // no effect
+    }
+}
+
 class Dot {
     let radiusFactor: CGFloat = 0.02
     let depthColorAmplitude: CGFloat = 0.3
@@ -134,9 +165,9 @@ class Cloud {
             // Uniform distribution in 3d is a cube.
             // No spherical symmetry, but creates interesting patterns mapped on a sphere.
             // For spherical symmetry, use normal distribution
-            let x = Scalar.random(in: -1...1)
-            let y = Scalar.random(in: -1...1)
-            let z = Scalar.random(in: -1...1)
+            let x = Utils.randomCoordinateNonZero()
+            let y = Utils.randomCoordinateNonZero()
+            let z = Utils.randomCoordinateNonZero()
             
             points.append(simd_normalize(Vector3d(x, y, z)))
             points.append(simd_normalize(Vector3d(x, y, -z)))
@@ -157,6 +188,19 @@ class Cloud {
         for dot in self.dots {
             dot.rotate(quaternion: quaternion)
         }
+    }
+    
+    func desalign() {
+        let eps = 2 * self.alignedDistThresh // make sure to not start aligned
+        let x = Utils.randomCoordinateNonZero(eps: eps)
+        let y = Utils.randomCoordinateNonZero(eps: eps)
+        let z = 1.0
+        let p = simd_normalize(Vector3d(x,y,z))
+        
+        let dir = p - self.alignedOrientation
+        let q = Utils.quaternionFromDir(dir: dir)
+        
+        self.rotate(quaternion: q)
     }
     
     func isAligned() -> Bool {
@@ -193,7 +237,7 @@ class Level {
         
         let points = Cloud.generateSymmetricRandomPoints(nbPoints: nbPoints)
         self.cloud.add(points: points, scene: scene, color: color)
-        self.cloud.rotate(quaternion: Quat(angle: 0.25 * Scalar.pi, axis: simd_normalize(Vector3d(1,1,0))))
+        self.cloud.desalign()
         
         self.orb = SKShapeNode.init(circleOfRadius: 0.5 * self.orbDiameter)
         self.orb.fillColor = UIColor(white: 0.0, alpha: 0.4)
@@ -209,11 +253,10 @@ class Level {
 }
 
 class GameScene: SKScene {
-
-    var level = Level()
-    
     let debug = false
-    
+    let orbitingSpeed = 1.5
+        
+    var level = Level()
     var locked = false
     
     func minSize() -> CGFloat {
@@ -240,14 +283,9 @@ class GameScene: SKScene {
     }
     
     func rotate(touchVector: Vector3d, speed: Scalar = 1) {
-        let norm = simd_length(touchVector)
-        
-        if norm > 0 {
-            let angle = 2 * asin(norm / Scalar(self.level.unitSphereDiameter))
-            let unit = simd_normalize(touchVector)
-            let axis = simd_normalize(simd_cross(unit, Vector3d(0, 0, -1)))
-            let q = Quat(angle: speed * angle, axis: axis)
-            
+        if self.level.unitSphereDiameter > 0 {
+            let normalized = 2 * touchVector / Scalar(self.level.unitSphereDiameter) // normalize by radius
+            let q = Utils.quaternionFromDir(dir: normalized, speed: speed)
             self.level.cloud.rotate(quaternion: q)
         }
     }
@@ -266,7 +304,7 @@ class GameScene: SKScene {
         if let t = touches.first {
             let dx = Scalar(t.location(in: self).x - t.previousLocation(in: self).x)
             let dy = Scalar(t.location(in: self).y - t.previousLocation(in: self).y)
-            self.rotate(touchVector: Vector3d(dx, dy, 0), speed: 1.5)
+            self.rotate(touchVector: Vector3d(dx, dy, 0), speed: self.orbitingSpeed)
         }
         
         if self.level.cloud.isAligned() {
