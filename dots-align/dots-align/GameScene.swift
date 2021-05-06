@@ -141,10 +141,11 @@ class Cloud {
     func rotate(quaternion: simd_quatd) {
         self.orientation = quaternion.act(self.orientation)
         
-        self.alignedDist = min(
-            simd_distance(self.orientation, self.alignedOrientation),
-            simd_distance(self.orientation, -self.alignedOrientation)
-        )
+        if self.orientation.z < 0 {
+            self.orientation *= -1
+        }
+        
+        self.alignedDist = simd_distance(self.orientation, self.alignedOrientation)
         
         for dot in self.dots {
             dot.rotate(quaternion: quaternion)
