@@ -8,7 +8,9 @@
 import SpriteKit
 import GameplayKit
 
-typealias Vector3d = SIMD3<Double>
+typealias Scalar = Double
+typealias Vector3d = SIMD3<Scalar>
+typealias Quat = simd_quatd
 
 extension UIColor {
     func toColor(_ color: UIColor, percentage: CGFloat) -> UIColor {
@@ -38,14 +40,16 @@ class Dot {
     var point: Vector3d
     let scene: GameScene
     let color: UIColor
+    
+    var radius: CGFloat = 0.0
 
     init(scene: GameScene, color: UIColor, point3d: Vector3d) {
         self.scene = scene
         self.color = color
         self.point = simd_normalize(point3d)
         
-        let radius = self.radiusFactor * self.scene.minSize()
-        self.node = SKShapeNode.init(circleOfRadius: radius)
+        self.radius = self.radiusFactor * self.scene.minSize()
+        self.node = SKShapeNode.init(circleOfRadius: self.radius)
         
         self.update()
         
@@ -96,7 +100,7 @@ class Dot {
         return CGFloat(self.point.z) * amplitude + 1.0 // converts [-1, 1] z to e.g. [0.8, 1.2] for 0.2 amplitude
     }
     
-    func rotate(quaternion: simd_quatd) {
+    func rotate(quaternion: Quat) {
         self.point = quaternion.act(self.point)
         self.update()
     }
@@ -104,7 +108,7 @@ class Dot {
 
 class Cloud {
     let alignedOrientation = Vector3d(0, 0, 1)
-    let alignedDistThresh = 0.02
+    let alignedDistThresh = 0.05
     
     var dots = Array<Dot>()
     var orientation = Vector3d(0, 0, 1)
@@ -127,9 +131,12 @@ class Cloud {
         var points = Array<Vector3d>()
         
         for _ in 1...nbPoints {
-            let x = Double.random(in: -1...1)
-            let y = Double.random(in: -1...1)
-            let z = Double.random(in: -1...1)
+            // Uniform distribution in 3d is a cube.
+            // No spherical symmetry, but creates interesting patterns mapped on a sphere.
+            // For spherical symmetry, use normal distribution
+            let x = Scalar.random(in: -1...1)
+            let y = Scalar.random(in: -1...1)
+            let z = Scalar.random(in: -1...1)
             
             points.append(simd_normalize(Vector3d(x, y, z)))
             points.append(simd_normalize(Vector3d(x, y, -z)))
@@ -138,7 +145,7 @@ class Cloud {
         return points
     }
     
-    func rotate(quaternion: simd_quatd) {
+    func rotate(quaternion: Quat) {
         self.orientation = quaternion.act(self.orientation)
         
         if self.orientation.z < 0 {
@@ -186,7 +193,7 @@ class Level {
         
         let points = Cloud.generateSymmetricRandomPoints(nbPoints: nbPoints)
         self.cloud.add(points: points, scene: scene, color: color)
-        self.cloud.rotate(quaternion: simd_quatd(angle: 0.25 * Double.pi, axis: simd_normalize(Vector3d(1,1,0))))
+        self.cloud.rotate(quaternion: Quat(angle: 0.25 * Scalar.pi, axis: simd_normalize(Vector3d(1,1,0))))
         
         self.orb = SKShapeNode.init(circleOfRadius: 0.5 * self.orbDiameter)
         self.orb.fillColor = UIColor(white: 0.0, alpha: 0.4)
@@ -207,6 +214,8 @@ class GameScene: SKScene {
     
     let debug = false
     
+    var locked = false
+    
     func minSize() -> CGFloat {
         return min(self.size.width, self.size.height)
     }
@@ -218,17 +227,26 @@ class GameScene: SKScene {
     }
     
     func newLevel() {
-        self.level.new(nbPoints: 20, scene: self, color: UIColor(red: 0.5, green: 0.3, blue: 0.5, alpha: 1))
+        self.level.new(nbPoints: 20, scene: self, color: UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1))
+        self.locked = false
     }
     
-    func rotate(touchVector: Vector3d) {
+    func lock() {
+        self.locked = true
+
+        let diam = Scalar(self.level.unitSphereDiameter)
+        let dir = 0.5 * diam * (self.level.cloud.alignedOrientation - self.level.cloud.orientation)
+        self.rotate(touchVector: dir)
+    }
+    
+    func rotate(touchVector: Vector3d, speed: Scalar = 1) {
         let norm = simd_length(touchVector)
         
         if norm > 0 {
-            let angle = Double.pi * norm / Double(self.level.unitSphereDiameter)
+            let angle = 2 * asin(norm / Scalar(self.level.unitSphereDiameter))
             let unit = simd_normalize(touchVector)
             let axis = simd_normalize(simd_cross(unit, Vector3d(0, 0, -1)))
-            let q = simd_quatd(angle: angle, axis: axis)
+            let q = Quat(angle: speed * angle, axis: axis)
             
             self.level.cloud.rotate(quaternion: q)
         }
@@ -241,19 +259,28 @@ class GameScene: SKScene {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if self.locked {
+            return
+        }
+        
         if let t = touches.first {
-            let dx = Double(t.location(in: self).x - t.previousLocation(in: self).x)
-            let dy = Double(t.location(in: self).y - t.previousLocation(in: self).y)
-            self.rotate(touchVector: Vector3d(dx, dy, 0))
+            let dx = Scalar(t.location(in: self).x - t.previousLocation(in: self).x)
+            let dy = Scalar(t.location(in: self).y - t.previousLocation(in: self).y)
+            self.rotate(touchVector: Vector3d(dx, dy, 0), speed: 1.5)
         }
         
         if self.level.cloud.isAligned() {
-            self.newLevel()
+            self.lock()
         }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { }
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) { }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if self.locked {
+            self.locked = false
+            self.newLevel()
+        }
+    }
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) { }
     
     override func update(_ currentTime: TimeInterval) {
