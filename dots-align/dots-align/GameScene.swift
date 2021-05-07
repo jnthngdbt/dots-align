@@ -123,7 +123,7 @@ class Dot {
         
         let color = UIColor(red: r, green: g, blue: b, alpha: a)
         
-        self.node.strokeColor = color
+        self.node.strokeColor = UIColor.clear
         self.node.fillColor = color
     }
     
@@ -246,6 +246,34 @@ class Level {
         scene.addChild(self.orb)
     }
     
+    func animateOut() {
+        for dot in self.cloud.dots {
+            let expand = SKAction.group([
+                SKAction.fadeAlpha(to: 1.0, duration: 0.05),
+                SKAction.scale(to: 1.3, duration: 0.05)
+            ])
+            
+            let back = SKAction.group([
+                SKAction.fadeAlpha(to: 1.0, duration: 0.05),
+                SKAction.scale(to: 1.0, duration: 0.05)
+            ])
+            
+            let collapse = SKAction.group([
+                SKAction.fadeAlpha(to: 0.0, duration: 0.1),
+                SKAction.scale(to: 0, duration: 0.1)
+            ])
+            
+            let animation = SKAction.sequence([
+                expand,
+                back,
+                SKAction.wait(forDuration: 0.3),
+                collapse
+            ])
+
+            dot.node.run(animation)
+        }
+    }
+    
     func clear() {
         self.orb.removeFromParent()
         self.cloud.clear()
@@ -280,6 +308,8 @@ class GameScene: SKScene {
         let diam = Scalar(self.level.unitSphereDiameter)
         let dir = 0.5 * diam * (self.level.cloud.alignedOrientation - self.level.cloud.orientation)
         self.rotate(touchVector: dir)
+        
+        self.level.animateOut()
     }
     
     func rotate(touchVector: Vector3d, speed: Scalar = 1) {
