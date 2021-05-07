@@ -223,18 +223,25 @@ class Level {
     let unitSphereDiameterFactor: CGFloat = 0.6
     let orbDiameterFactor: CGFloat = 0.5
     
+    let minNbPoints = 4
+    let maxNbPoints = 30
+    
+    var nbPoints = 0
+    
     var unitSphereDiameter: CGFloat = 1.0
     var orbDiameter: CGFloat = 1.0
     var orb = SKShapeNode()
     
     var cloud = Cloud()
     
-    func new(nbPoints: Int, scene: GameScene, color: UIColor) {
+    func new(scene: GameScene, color: UIColor) {
         self.clear()
         
         self.unitSphereDiameter = self.unitSphereDiameterFactor * scene.minSize()
         self.orbDiameter = self.orbDiameterFactor * scene.minSize()
         
+        self.nbPoints = 2 * Int.random(in: self.minNbPoints/2...self.maxNbPoints/2) // odd random integer in range
+        print(self.nbPoints)
         let points = Cloud.generateSymmetricRandomPoints(nbPoints: nbPoints)
         self.cloud.add(points: points, scene: scene, color: color)
         self.cloud.desalign()
@@ -307,7 +314,7 @@ class GameScene: SKScene {
     }
     
     func newLevel() {
-        self.level.new(nbPoints: 20, scene: self, color: UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1))
+        self.level.new(scene: self, color: UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1))
         self.locked = false
     }
     
