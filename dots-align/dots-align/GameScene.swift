@@ -244,13 +244,22 @@ class Level {
         self.orb.strokeColor = UIColor.clear
         self.orb.position = scene.center()
         scene.addChild(self.orb)
+        
+        self.animateIn()
+    }
+    
+    func animateIn() {
+        for dot in self.cloud.dots {
+            dot.node.setScale(0)
+            dot.node.run(SKAction.scale(to: 1, duration: 0.1))
+        }
     }
     
     func animateOut() {
         for dot in self.cloud.dots {
             let expand = SKAction.group([
-                SKAction.fadeAlpha(to: 1.0, duration: 0.05),
-                SKAction.scale(to: 1.3, duration: 0.05)
+                SKAction.fadeAlpha(to: 0.9, duration: 0.05),
+                SKAction.scale(to: 1.5, duration: 0.05)
             ])
             
             let back = SKAction.group([
