@@ -254,7 +254,7 @@ class Level {
 
 class GameScene: SKScene {
     let debug = false
-    let orbitingSpeed = 1.5
+    let orbitingSpeed = 2.0
         
     var level = Level()
     var locked = false
