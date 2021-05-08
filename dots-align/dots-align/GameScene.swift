@@ -94,7 +94,7 @@ class Dot {
     
     func updatePosition() {
         let sceneCenter = self.scene.center()
-        let sphereRadius = 0.5 * self.scene.level.unitSphereDiameter
+        let sphereRadius = 0.5 * self.scene.unitSphereDiameter
         
         let x = sceneCenter.x + CGFloat(self.point.x) * sphereRadius
         let y = sceneCenter.y + CGFloat(self.point.y) * sphereRadius
@@ -152,9 +152,7 @@ class Cloud {
         
         if scene.debug {
             dots.append(Dot(scene: scene, color: UIColor.red, point3d: self.alignedOrientation))
-            dots.last!.node.setScale(0.2)
             dots.append(Dot(scene: scene, color: UIColor.red, point3d: -self.alignedOrientation))
-            dots.last!.node.setScale(0.2)
         }
     }
     
@@ -220,37 +218,19 @@ class Cloud {
 }
 
 class Level {
-    let unitSphereDiameterFactor: CGFloat = 0.6
-    let orbDiameterFactor: CGFloat = 0.5
-    
     let minNbPoints = 4
     let maxNbPoints = 30
-    
     var nbPoints = 0
-    
-    var unitSphereDiameter: CGFloat = 1.0
-    var orbDiameter: CGFloat = 1.0
-    var orb = SKShapeNode()
     
     var cloud = Cloud()
     
     func new(scene: GameScene, color: UIColor) {
         self.clear()
         
-        self.unitSphereDiameter = self.unitSphereDiameterFactor * scene.minSize()
-        self.orbDiameter = self.orbDiameterFactor * scene.minSize()
-        
         self.nbPoints = 2 * Int.random(in: self.minNbPoints/2...self.maxNbPoints/2) // odd random integer in range
-        print(self.nbPoints)
         let points = Cloud.generateSymmetricRandomPoints(nbPoints: nbPoints)
         self.cloud.add(points: points, scene: scene, color: color)
         self.cloud.desalign()
-        
-        self.orb = SKShapeNode.init(circleOfRadius: 0.5 * self.orbDiameter)
-        self.orb.fillColor = UIColor(white: 0.0, alpha: 0.4)
-        self.orb.strokeColor = UIColor.clear
-        self.orb.position = scene.center()
-        scene.addChild(self.orb)
         
         self.animateIn()
     }
@@ -291,17 +271,24 @@ class Level {
     }
     
     func clear() {
-        self.orb.removeFromParent()
         self.cloud.clear()
     }
 }
 
 class GameScene: SKScene {
-    let debug = false
+    let debug = true
+    
     let orbitingSpeed = 2.0
+    
+    let unitSphereDiameterFactor: CGFloat = 0.6
+    let orbDiameterFactor: CGFloat = 0.5
         
     var level = Level()
     var locked = false
+    
+    var unitSphereDiameter: CGFloat = 1.0
+    var orbDiameter: CGFloat = 1.0
+    var orb = SKShapeNode()
     
     func minSize() -> CGFloat {
         return min(self.size.width, self.size.height)
@@ -321,7 +308,7 @@ class GameScene: SKScene {
     func lock() {
         self.locked = true
 
-        let diam = Scalar(self.level.unitSphereDiameter)
+        let diam = Scalar(self.unitSphereDiameter)
         let dir = 0.5 * diam * (self.level.cloud.alignedOrientation - self.level.cloud.orientation)
         self.rotate(touchVector: dir)
         
@@ -329,8 +316,8 @@ class GameScene: SKScene {
     }
     
     func rotate(touchVector: Vector3d, speed: Scalar = 1) {
-        if self.level.unitSphereDiameter > 0 {
-            let normalized = 2 * touchVector / Scalar(self.level.unitSphereDiameter) // normalize by radius
+        if self.unitSphereDiameter > 0 {
+            let normalized = 2 * touchVector / Scalar(self.unitSphereDiameter) // normalize by radius
             let q = Utils.quaternionFromDir(dir: normalized, speed: speed)
             self.level.cloud.rotate(quaternion: q)
         }
@@ -339,6 +326,16 @@ class GameScene: SKScene {
     // Scene will appear. Create content here. (not "touch moved")
     override func didMove(to view: SKView) {
         self.backgroundColor = UIColor(white: 0.1, alpha: 1)
+        
+        self.unitSphereDiameter = self.unitSphereDiameterFactor * self.minSize()
+        self.orbDiameter = self.orbDiameterFactor * self.minSize()
+        
+        self.orb = SKShapeNode.init(circleOfRadius: 0.5 * self.orbDiameter)
+        self.orb.fillColor = UIColor(white: 0.0, alpha: 0.4)
+        self.orb.strokeColor = UIColor.clear
+        self.orb.position = self.center()
+        self.addChild(self.orb)
+        
         self.newLevel()
     }
     
