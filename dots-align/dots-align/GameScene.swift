@@ -32,6 +32,31 @@ extension UIColor {
     }
 }
 
+class Const {
+    class Dot {
+        static let radiusFactor: CGFloat = 0.02
+        static let depthColorAmplitude: CGFloat = 0.3
+    }
+    
+    class Cloud {
+        static let alignedOrientation = Vector3d(0, 0, 1)
+        static let alignedDistThresh = 0.05
+    }
+    
+    class Level {
+        static let minNbPoints = 4
+        static let maxNbPoints = 30
+    }
+    
+    class Scene {
+        static let orbitingSpeed = 2.0
+        static let unitSphereDiameterFactor: CGFloat = 0.6
+        static let orbDiameterFactor: CGFloat = 0.5
+    }
+    
+    static let debug = false
+}
+
 class Utils {
     class func randomPoint() -> Vector3d {
         let x = Utils.randomCoordinateNonZero()
@@ -49,6 +74,10 @@ class Utils {
         return Bool.random() ? 1 : -1
     }
     
+    class func randomOdd(inMin: Int, inMax: Int) -> Int {
+        return 2 * Int.random(in: inMin/2...inMax/2)
+    }
+    
     class func quaternionFromDir(dir: Vector3d, speed: Scalar = 1) -> Quat {
         let norm = simd_length(dir)
         
@@ -64,14 +93,10 @@ class Utils {
 }
 
 class Dot {
-    let radiusFactor: CGFloat = 0.02
-    let depthColorAmplitude: CGFloat = 0.3
-    
     var node: SKShapeNode
     var point: Vector3d
     let scene: GameScene
     let color: UIColor
-    
     var radius: CGFloat = 0.0
 
     init(scene: GameScene, color: UIColor, point3d: Vector3d) {
@@ -79,7 +104,7 @@ class Dot {
         self.color = color
         self.point = simd_normalize(point3d)
         
-        self.radius = self.radiusFactor * self.scene.minSize()
+        self.radius = Const.Dot.radiusFactor * self.scene.minSize()
         self.node = SKShapeNode.init(circleOfRadius: self.radius)
         
         self.update()
@@ -109,7 +134,7 @@ class Dot {
     }
     
     func updateColor() {
-        let scale = self.getScaleFromDepth(amplitude: self.depthColorAmplitude)
+        let scale = self.getScaleFromDepth(amplitude: Const.Dot.depthColorAmplitude)
         
         var r: CGFloat = 0.0
         var g: CGFloat = 0.0
@@ -138,9 +163,6 @@ class Dot {
 }
 
 class Cloud {
-    let alignedOrientation = Vector3d(0, 0, 1)
-    let alignedDistThresh = 0.05
-    
     var dots = Array<Dot>()
     var orientation = Vector3d(0, 0, 1)
     var alignedDist = 0.0
@@ -150,9 +172,9 @@ class Cloud {
             dots.append(Dot(scene: scene, color: color, point3d: p))
         }
         
-        if scene.debug {
-            dots.append(Dot(scene: scene, color: UIColor.red, point3d: self.alignedOrientation))
-            dots.append(Dot(scene: scene, color: UIColor.red, point3d: -self.alignedOrientation))
+        if Const.debug {
+            dots.append(Dot(scene: scene, color: UIColor.red, point3d: Const.Cloud.alignedOrientation))
+            dots.append(Dot(scene: scene, color: UIColor.red, point3d: -Const.Cloud.alignedOrientation))
         }
     }
     
@@ -181,7 +203,7 @@ class Cloud {
             self.orientation *= -1
         }
         
-        self.alignedDist = simd_distance(self.orientation, self.alignedOrientation)
+        self.alignedDist = simd_distance(self.orientation, Const.Cloud.alignedOrientation)
         
         for dot in self.dots {
             dot.rotate(quaternion: quaternion)
@@ -189,24 +211,24 @@ class Cloud {
     }
     
     func desalign() {
-        let eps = 2 * self.alignedDistThresh // make sure to not start aligned
+        let eps = 2 * Const.Cloud.alignedDistThresh // make sure to not start aligned
         let x = Utils.randomCoordinateNonZero(eps: eps)
         let y = Utils.randomCoordinateNonZero(eps: eps)
         let z = 1.0
         let p = simd_normalize(Vector3d(x,y,z))
         
-        let dir = p - self.alignedOrientation
+        let dir = p - Const.Cloud.alignedOrientation
         let q = Utils.quaternionFromDir(dir: dir)
         
         self.rotate(quaternion: q)
     }
     
     func isAligned() -> Bool {
-        return self.alignedDist < self.alignedDistThresh
+        return self.alignedDist < Const.Cloud.alignedDistThresh
     }
     
     func clear() {
-        self.orientation = self.alignedOrientation
+        self.orientation = Const.Cloud.alignedOrientation
         self.alignedDist = 0
         
         for dot in self.dots {
@@ -218,16 +240,13 @@ class Cloud {
 }
 
 class Level {
-    let minNbPoints = 4
-    let maxNbPoints = 30
     var nbPoints = 0
-    
     var cloud = Cloud()
     
     func new(scene: GameScene, color: UIColor) {
         self.clear()
         
-        self.nbPoints = 2 * Int.random(in: self.minNbPoints/2...self.maxNbPoints/2) // odd random integer in range
+        self.nbPoints = Utils.randomOdd(inMin:Const.Level.minNbPoints, inMax:Const.Level.maxNbPoints) // odd random integer in range
         let points = Cloud.generateSymmetricRandomPoints(nbPoints: nbPoints)
         self.cloud.add(points: points, scene: scene, color: color)
         self.cloud.desalign()
@@ -276,13 +295,6 @@ class Level {
 }
 
 class GameScene: SKScene {
-    let debug = true
-    
-    let orbitingSpeed = 2.0
-    
-    let unitSphereDiameterFactor: CGFloat = 0.6
-    let orbDiameterFactor: CGFloat = 0.5
-        
     var level = Level()
     var locked = false
     
@@ -309,7 +321,7 @@ class GameScene: SKScene {
         self.locked = true
 
         let diam = Scalar(self.unitSphereDiameter)
-        let dir = 0.5 * diam * (self.level.cloud.alignedOrientation - self.level.cloud.orientation)
+        let dir = 0.5 * diam * (Const.Cloud.alignedOrientation - self.level.cloud.orientation)
         self.rotate(touchVector: dir)
         
         self.level.animateOut()
@@ -327,8 +339,8 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         self.backgroundColor = UIColor(white: 0.1, alpha: 1)
         
-        self.unitSphereDiameter = self.unitSphereDiameterFactor * self.minSize()
-        self.orbDiameter = self.orbDiameterFactor * self.minSize()
+        self.unitSphereDiameter = Const.Scene.unitSphereDiameterFactor * self.minSize()
+        self.orbDiameter = Const.Scene.orbDiameterFactor * self.minSize()
         
         self.orb = SKShapeNode.init(circleOfRadius: 0.5 * self.orbDiameter)
         self.orb.fillColor = UIColor(white: 0.0, alpha: 0.4)
@@ -347,7 +359,7 @@ class GameScene: SKScene {
         if let t = touches.first {
             let dx = Scalar(t.location(in: self).x - t.previousLocation(in: self).x)
             let dy = Scalar(t.location(in: self).y - t.previousLocation(in: self).y)
-            self.rotate(touchVector: Vector3d(dx, dy, 0), speed: self.orbitingSpeed)
+            self.rotate(touchVector: Vector3d(dx, dy, 0), speed: Const.Scene.orbitingSpeed)
         }
         
         if self.level.cloud.isAligned() {
