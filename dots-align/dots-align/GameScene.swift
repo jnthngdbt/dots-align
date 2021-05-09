@@ -294,8 +294,52 @@ class Level {
     }
 }
 
+class Indicators {
+    var remainingLabel = SKLabelNode(text: "LEFT")
+    var remaining = SKLabelNode(text: "60")
+    
+    var dotsLabel = SKLabelNode(text: "DOTS")
+    var dots = SKLabelNode(text: "0")
+    
+    var multiplierLabel = SKLabelNode(text: "BONUS")
+    var multiplier = SKLabelNode(text: "x5")
+    
+    var scoreLabel = SKLabelNode(text: "SCORE")
+    var score = SKLabelNode(text: "0")
+    
+    func set(scene: GameScene) {
+        var idx = 1
+        add(scene: scene, label: self.remainingLabel    , data: self.remaining  , idx: idx); idx += 1
+        add(scene: scene, label: self.dotsLabel         , data: self.dots       , idx: idx); idx += 1
+        add(scene: scene, label: self.multiplierLabel   , data: self.multiplier , idx: idx); idx += 1
+        add(scene: scene, label: self.scoreLabel        , data: self.score      , idx: idx); idx += 1
+    }
+    
+    private func add(scene: GameScene, label: SKLabelNode, data: SKLabelNode, idx: Int) {
+        let h = scene.size.height
+        let w = scene.size.width
+        
+        let fontSizeLabel = 0.04 * scene.minSize()
+        let fontSizeData = 0.08 * scene.minSize()
+        
+        let labelPosY = h * (1 - 0.05)
+        let dataPosY = labelPosY - 0.08 * scene.minSize()
+        
+        label.position = CGPoint(x: w * 0.2 * CGFloat(idx), y: labelPosY)
+        data.position = CGPoint(x: w * 0.2 * CGFloat(idx), y: dataPosY)
+        
+        label.fontSize = fontSizeLabel
+        data.fontSize = fontSizeData
+        
+        scene.addChild(label)
+        scene.addChild(data)
+    }
+}
+
 class GameScene: SKScene {
     var level = Level()
+    var indicators = Indicators()
+    
     var locked = false
     
     var unitSphereDiameter: CGFloat = 1.0
@@ -338,6 +382,8 @@ class GameScene: SKScene {
     // Scene will appear. Create content here. (not "touch moved")
     override func didMove(to view: SKView) {
         self.backgroundColor = UIColor(white: 0.1, alpha: 1)
+        
+        self.indicators.set(scene: self)
         
         self.unitSphereDiameter = Const.Scene.unitSphereDiameterFactor * self.minSize()
         self.orbDiameter = Const.Scene.orbDiameterFactor * self.minSize()
