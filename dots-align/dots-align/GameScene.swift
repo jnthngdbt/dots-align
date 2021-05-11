@@ -197,6 +197,11 @@ class Cloud {
         return points
     }
     
+    func rotate(dir: Vector3d, speed: Scalar = 1) {
+        let q = Utils.quaternionFromDir(dir: dir, speed: speed)
+        self.rotate(quaternion: q)
+    }
+    
     func rotate(quaternion: Quat) {
         self.orientation = quaternion.act(self.orientation)
         
@@ -219,9 +224,8 @@ class Cloud {
         let p = simd_normalize(Vector3d(x,y,z))
         
         let dir = p - Const.Cloud.alignedOrientation
-        let q = Utils.quaternionFromDir(dir: dir)
         
-        self.rotate(quaternion: q)
+        self.rotate(dir: dir)
     }
     
     func isAligned() -> Bool {
@@ -262,8 +266,7 @@ class Level {
         self.blockRotation = true
 
         let dir = Const.Cloud.alignedOrientation - self.cloud.orientation
-        let q = Utils.quaternionFromDir(dir: dir)
-        self.cloud.rotate(quaternion: q)
+        self.cloud.rotate(dir: dir)
         
         self.animateOut()
     }
@@ -412,9 +415,8 @@ class GameScene: SKScene {
             let v = Vector3d(dx, dy, 0)
             
             if self.unitSphereDiameter > 0 {
-                let normalized = 2 * v / Scalar(self.unitSphereDiameter) // normalize by radius
-                let q = Utils.quaternionFromDir(dir: normalized, speed: Const.Scene.orbitingSpeed)
-                self.game.level.cloud.rotate(quaternion: q)
+                let dir = 2 * v / Scalar(self.unitSphereDiameter) // normalize by radius
+                self.game.level.cloud.rotate(dir: dir, speed: Const.Scene.orbitingSpeed)
             }
         }
         
