@@ -41,6 +41,7 @@ class Const {
     class Cloud {
         static let alignedOrientation = Vector3d(0, 0, 1)
         static let alignedDistThresh = 0.05
+        static let color = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
     }
     
     class Level {
@@ -242,16 +243,35 @@ class Cloud {
 class Level {
     var nbPoints = 0
     var cloud = Cloud()
+    var blockRotation = false
     
-    func new(scene: GameScene, color: UIColor) {
+    func new(scene: GameScene) {
+        self.blockRotation = false
+        
         self.clear()
         
         self.nbPoints = Utils.randomOdd(inMin:Const.Level.minNbPoints, inMax:Const.Level.maxNbPoints) // odd random integer in range
         let points = Cloud.generateSymmetricRandomPoints(nbPoints: nbPoints)
-        self.cloud.add(points: points, scene: scene, color: color)
+        self.cloud.add(points: points, scene: scene, color: Const.Cloud.color)
         self.cloud.desalign()
         
         self.animateIn()
+    }
+    
+    func end() {
+        self.blockRotation = true
+
+        let dir = Const.Cloud.alignedOrientation - self.cloud.orientation
+        let q = Utils.quaternionFromDir(dir: dir)
+        self.cloud.rotate(quaternion: q)
+        
+        self.animateOut()
+    }
+    
+    func checkResolution() {
+        if self.cloud.isAligned() {
+            self.end()
+        }
     }
     
     func animateIn() {
@@ -336,15 +356,22 @@ class Indicators {
     }
 }
 
-class GameScene: SKScene {
+class Game {
     var level = Level()
-    var indicators = Indicators()
     
-    var locked = false
+    func new(scene: GameScene) {
+        self.level.new(scene: scene)
+    }
+}
+
+class GameScene: SKScene {
+    var indicators = Indicators()
     
     var unitSphereDiameter: CGFloat = 1.0
     var orbDiameter: CGFloat = 1.0
     var orb = SKShapeNode()
+    
+    var game = Game()
     
     func minSize() -> CGFloat {
         return min(self.size.width, self.size.height)
@@ -354,29 +381,6 @@ class GameScene: SKScene {
         let w = self.size.width
         let h = self.size.height
         return CGPoint(x: 0.5 * w, y: 0.5 * h)
-    }
-    
-    func newLevel() {
-        self.level.new(scene: self, color: UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1))
-        self.locked = false
-    }
-    
-    func lock() {
-        self.locked = true
-
-        let diam = Scalar(self.unitSphereDiameter)
-        let dir = 0.5 * diam * (Const.Cloud.alignedOrientation - self.level.cloud.orientation)
-        self.rotate(touchVector: dir)
-        
-        self.level.animateOut()
-    }
-    
-    func rotate(touchVector: Vector3d, speed: Scalar = 1) {
-        if self.unitSphereDiameter > 0 {
-            let normalized = 2 * touchVector / Scalar(self.unitSphereDiameter) // normalize by radius
-            let q = Utils.quaternionFromDir(dir: normalized, speed: speed)
-            self.level.cloud.rotate(quaternion: q)
-        }
     }
     
     // Scene will appear. Create content here. (not "touch moved")
@@ -394,30 +398,33 @@ class GameScene: SKScene {
         self.orb.position = self.center()
         self.addChild(self.orb)
         
-        self.newLevel()
+        self.game.new(scene: self)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if self.locked {
+        if self.game.level.blockRotation {
             return
         }
         
         if let t = touches.first {
             let dx = Scalar(t.location(in: self).x - t.previousLocation(in: self).x)
             let dy = Scalar(t.location(in: self).y - t.previousLocation(in: self).y)
-            self.rotate(touchVector: Vector3d(dx, dy, 0), speed: Const.Scene.orbitingSpeed)
+            let v = Vector3d(dx, dy, 0)
+            
+            if self.unitSphereDiameter > 0 {
+                let normalized = 2 * v / Scalar(self.unitSphereDiameter) // normalize by radius
+                let q = Utils.quaternionFromDir(dir: normalized, speed: Const.Scene.orbitingSpeed)
+                self.game.level.cloud.rotate(quaternion: q)
+            }
         }
         
-        if self.level.cloud.isAligned() {
-            self.lock()
-        }
+        self.game.level.checkResolution()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if self.locked {
-            self.locked = false
-            self.newLevel()
+        if self.game.level.blockRotation {
+            self.game.level.new(scene: self)
         }
     }
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) { }
