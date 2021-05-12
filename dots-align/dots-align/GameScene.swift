@@ -247,10 +247,10 @@ class Cloud {
 class Level {
     var nbPoints = 0
     var cloud = Cloud()
-    var blockRotation = false
+    var solved = false
     
     func new(scene: GameScene) {
-        self.blockRotation = false
+        self.solved = false
         
         self.clear()
         
@@ -262,19 +262,13 @@ class Level {
         self.animateIn()
     }
     
-    func end() {
-        self.blockRotation = true
+    func solve() {
+        self.solved = true
 
         let dir = Const.Cloud.alignedOrientation - self.cloud.orientation
         self.cloud.rotate(dir: dir)
         
         self.animateOut()
-    }
-    
-    func checkResolution() {
-        if self.cloud.isAligned() {
-            self.end()
-        }
     }
     
     func animateIn() {
@@ -317,6 +311,14 @@ class Level {
     }
 }
 
+class Game {
+    var level = Level()
+    
+    func new(scene: GameScene) {
+        self.level.new(scene: scene)
+    }
+}
+
 class Indicators {
     var remainingLabel = SKLabelNode(text: "LEFT")
     var remaining = SKLabelNode(text: "60")
@@ -341,29 +343,29 @@ class Indicators {
     private func add(scene: GameScene, label: SKLabelNode, data: SKLabelNode, idx: Int) {
         let h = scene.size.height
         let w = scene.size.width
-        
-        let fontSizeLabel = 0.04 * scene.minSize()
-        let fontSizeData = 0.08 * scene.minSize()
-        
+
         let labelPosY = h * (1 - 0.05)
         let dataPosY = labelPosY - 0.08 * scene.minSize()
         
         label.position = CGPoint(x: w * 0.2 * CGFloat(idx), y: labelPosY)
         data.position = CGPoint(x: w * 0.2 * CGFloat(idx), y: dataPosY)
         
-        label.fontSize = fontSizeLabel
-        data.fontSize = fontSizeData
+        label.fontSize = 0.04 * scene.minSize()
+        data.fontSize = 0.08 * scene.minSize()
+        
+        // Default: HelveticaNeue-UltraLight.
+        // Some nice: HelveticaNeue, AvenirNextCondensed, AvenirNext
+        // Heavy, Bold, DemiBold, Medium, Regular, UltraLight.
+        let fontName = "AvenirNextCondensed-Bold"
+        label.fontName = fontName
+        data.fontName = fontName
+        
+        let fontColor = UIColor(white: 0.4, alpha: 1)
+        label.fontColor = fontColor
+        data.fontColor = fontColor
         
         scene.addChild(label)
         scene.addChild(data)
-    }
-}
-
-class Game {
-    var level = Level()
-    
-    func new(scene: GameScene) {
-        self.level.new(scene: scene)
     }
 }
 
@@ -405,7 +407,7 @@ class GameScene: SKScene {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if self.game.level.blockRotation {
+        if self.game.level.solved {
             return
         }
         
@@ -420,12 +422,14 @@ class GameScene: SKScene {
             }
         }
         
-        self.game.level.checkResolution()
+        if self.game.level.cloud.isAligned() {
+            self.game.level.solve()
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if self.game.level.blockRotation {
+        if self.game.level.solved {
             self.game.level.new(scene: self)
         }
     }
