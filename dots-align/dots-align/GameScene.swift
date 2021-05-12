@@ -269,23 +269,27 @@ class Level {
     var cloud: Cloud!
     var indicators: Indicators!
     
-    var nbPoints = 0
+    var nbPatternPoints = 0
     var angleCumul = 0.0
     var solved = false
     
-    init(scene: GameScene) {
-        self.indicators = scene.indicators
+    init(scene: GameScene, indicators: Indicators) {
+        self.indicators = indicators
         
-        self.nbPoints = Utils.randomOdd(inMin:Const.Level.minNbPoints, inMax:Const.Level.maxNbPoints) // odd random integer in range
-        let points = Cloud.generateSymmetricRandomPoints(nbPoints: nbPoints)
+        self.nbPatternPoints = Utils.randomOdd(inMin:Const.Level.minNbPoints, inMax:Const.Level.maxNbPoints) // odd random integer in range
+        let points = Cloud.generateSymmetricRandomPoints(nbPoints: nbPatternPoints)
         
         self.cloud = Cloud(points: points, scene: scene, color: Const.Cloud.color)
         self.cloud.desalign()
         
         self.animateIn()
         
-        self.indicators.update(name: IndicatorNames.dots, value: self.nbPoints)
+        self.indicators.update(name: IndicatorNames.dots, value: self.getTotalNbDots())
         self.indicators.update(name: IndicatorNames.bonus, value: Const.Level.maxMultiplier, prefix: "x")
+    }
+    
+    func getTotalNbDots() -> Int {
+        return 2 * self.nbPatternPoints
     }
     
     func computeMultiplier() -> Int {
@@ -312,7 +316,7 @@ class Level {
     }
     
     func computeScore() -> Int {
-        return self.nbPoints * self.computeMultiplier()
+        return self.getTotalNbDots() * self.computeMultiplier()
     }
     
     func animateIn() {
@@ -357,10 +361,8 @@ class Game {
     var score = 0
     
     init(scene: GameScene) {
-        self.level = Level(scene: scene)
-        
-        self.indicators = scene.indicators
-        self.indicators.update(name: IndicatorNames.score, value: 0)
+        self.indicators = Indicators(scene: scene)
+        self.level = Level(scene: scene, indicators: self.indicators)
     }
     
     func checkIfLevelSolved() {
@@ -375,7 +377,7 @@ class Game {
     
     func newLevelIfNecessary(scene: GameScene) {
         if self.level.solved {
-            self.level = Level(scene: scene)
+            self.level = Level(scene: scene, indicators: self.indicators)
             self.indicators.update(name: IndicatorNames.score, value: self.score)
         }
     }
@@ -456,7 +458,6 @@ class Indicators {
 
 class GameScene: SKScene {
     var game: Game!
-    var indicators: Indicators!
     
     var unitSphereDiameter: CGFloat = 1.0
     var orbDiameter: CGFloat = 1.0
@@ -475,8 +476,6 @@ class GameScene: SKScene {
     // Scene will appear. Create content here. (not "touch moved")
     override func didMove(to view: SKView) {
         self.backgroundColor = UIColor(white: 0.1, alpha: 1)
-        
-        self.indicators = Indicators(scene: self)
         
         self.unitSphereDiameter = Const.Scene.unitSphereDiameterFactor * self.minSize()
         self.orbDiameter = Const.Scene.orbDiameterFactor * self.minSize()
