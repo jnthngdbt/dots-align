@@ -54,7 +54,7 @@ class Const {
     }
     
     class Game {
-        static let maxLevel = 20
+        static let maxLevel = 5
     }
     
     class Scene {
@@ -359,10 +359,14 @@ class Game {
     var level: Level!
     var indicators: Indicators!
     var score = 0
+    var left = Const.Game.maxLevel
+    var isGameEnded = false
     
     init(scene: GameScene) {
         self.indicators = Indicators(scene: scene)
         self.level = Level(scene: scene, indicators: self.indicators)
+        self.indicators.update(name: IndicatorNames.score, value: 0)
+        self.indicators.update(name: IndicatorNames.left, value: self.left)
     }
     
     func checkIfLevelSolved() {
@@ -377,8 +381,15 @@ class Game {
     
     func newLevelIfNecessary(scene: GameScene) {
         if self.level.solved {
-            self.level = Level(scene: scene, indicators: self.indicators)
-            self.indicators.update(name: IndicatorNames.score, value: self.score)
+            self.left -= 1
+            
+            if self.left <= 0 {
+                self.isGameEnded = true
+            } else {
+                self.level = Level(scene: scene, indicators: self.indicators)
+                self.indicators.update(name: IndicatorNames.score, value: self.score)
+                self.indicators.update(name: IndicatorNames.left, value: self.left)
+            }
         }
     }
 }
@@ -511,6 +522,9 @@ class GameScene: SKScene {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.game.newLevelIfNecessary(scene: self)
+        if self.game.isGameEnded {
+            self.game = Game(scene: self)
+        }
     }
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) { }
     
