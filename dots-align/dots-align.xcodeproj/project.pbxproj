@@ -14,6 +14,27 @@
 		E100A7D6263E44FC00F81153 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E100A7D5263E44FC00F81153 /* Assets.xcassets */; };
 		E100A7E1263E44FC00F81153 /* dots_alignTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E100A7E0263E44FC00F81153 /* dots_alignTests.swift */; };
 		E100A7EC263E44FC00F81153 /* dots_alignUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E100A7EB263E44FC00F81153 /* dots_alignUITests.swift */; };
+		EC77FD17264C7C1B00B901FD /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD16264C7C1B00B901FD /* Utils.swift */; };
+		EC77FD18264C7C1B00B901FD /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD16264C7C1B00B901FD /* Utils.swift */; };
+		EC77FD19264C7C1B00B901FD /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD16264C7C1B00B901FD /* Utils.swift */; };
+		EC77FD1B264C7CD100B901FD /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD1A264C7CD100B901FD /* Constants.swift */; };
+		EC77FD1C264C7CD100B901FD /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD1A264C7CD100B901FD /* Constants.swift */; };
+		EC77FD1D264C7CD100B901FD /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD1A264C7CD100B901FD /* Constants.swift */; };
+		EC77FD1F264C7D2300B901FD /* Dot.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD1E264C7D2200B901FD /* Dot.swift */; };
+		EC77FD20264C7D2300B901FD /* Dot.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD1E264C7D2200B901FD /* Dot.swift */; };
+		EC77FD21264C7D2300B901FD /* Dot.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD1E264C7D2200B901FD /* Dot.swift */; };
+		EC77FD23264C7D7000B901FD /* Cloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD22264C7D7000B901FD /* Cloud.swift */; };
+		EC77FD24264C7D7000B901FD /* Cloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD22264C7D7000B901FD /* Cloud.swift */; };
+		EC77FD25264C7D7000B901FD /* Cloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD22264C7D7000B901FD /* Cloud.swift */; };
+		EC77FD27264C7DE600B901FD /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD26264C7DE600B901FD /* Level.swift */; };
+		EC77FD28264C7DE600B901FD /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD26264C7DE600B901FD /* Level.swift */; };
+		EC77FD29264C7DE600B901FD /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD26264C7DE600B901FD /* Level.swift */; };
+		EC77FD2B264C7E0F00B901FD /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD2A264C7E0F00B901FD /* Game.swift */; };
+		EC77FD2C264C7E0F00B901FD /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD2A264C7E0F00B901FD /* Game.swift */; };
+		EC77FD2D264C7E0F00B901FD /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD2A264C7E0F00B901FD /* Game.swift */; };
+		EC77FD2F264C7F3000B901FD /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD2E264C7F3000B901FD /* Indicator.swift */; };
+		EC77FD30264C7F3000B901FD /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD2E264C7F3000B901FD /* Indicator.swift */; };
+		EC77FD31264C7F3000B901FD /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD2E264C7F3000B901FD /* Indicator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +68,13 @@
 		E100A7E7263E44FC00F81153 /* dots-alignUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "dots-alignUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E100A7EB263E44FC00F81153 /* dots_alignUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dots_alignUITests.swift; sourceTree = "<group>"; };
 		E100A7ED263E44FC00F81153 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EC77FD16264C7C1B00B901FD /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		EC77FD1A264C7CD100B901FD /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		EC77FD1E264C7D2200B901FD /* Dot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dot.swift; sourceTree = "<group>"; };
+		EC77FD22264C7D7000B901FD /* Cloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cloud.swift; sourceTree = "<group>"; };
+		EC77FD26264C7DE600B901FD /* Level.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
+		EC77FD2A264C7E0F00B901FD /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		EC77FD2E264C7F3000B901FD /* Indicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Indicator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,11 +126,18 @@
 			isa = PBXGroup;
 			children = (
 				E100A7C8263E44F900F81153 /* AppDelegate.swift */,
+				E100A7D5263E44FC00F81153 /* Assets.xcassets */,
+				EC77FD1A264C7CD100B901FD /* Constants.swift */,
+				EC77FD1E264C7D2200B901FD /* Dot.swift */,
+				EC77FD22264C7D7000B901FD /* Cloud.swift */,
+				EC77FD26264C7DE600B901FD /* Level.swift */,
+				EC77FD2A264C7E0F00B901FD /* Game.swift */,
 				E100A7CE263E44F900F81153 /* GameScene.swift */,
 				E100A7D0263E44F900F81153 /* GameViewController.swift */,
-				E100A7D2263E44F900F81153 /* Main.storyboard */,
-				E100A7D5263E44FC00F81153 /* Assets.xcassets */,
+				EC77FD2E264C7F3000B901FD /* Indicator.swift */,
 				E100A7D7263E44FC00F81153 /* Info.plist */,
+				E100A7D2263E44F900F81153 /* Main.storyboard */,
+				EC77FD16264C7C1B00B901FD /* Utils.swift */,
 			);
 			path = "dots-align";
 			sourceTree = "<group>";
@@ -254,9 +289,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC77FD1B264C7CD100B901FD /* Constants.swift in Sources */,
+				EC77FD2B264C7E0F00B901FD /* Game.swift in Sources */,
 				E100A7CF263E44F900F81153 /* GameScene.swift in Sources */,
+				EC77FD2F264C7F3000B901FD /* Indicator.swift in Sources */,
 				E100A7D1263E44F900F81153 /* GameViewController.swift in Sources */,
 				E100A7C9263E44F900F81153 /* AppDelegate.swift in Sources */,
+				EC77FD23264C7D7000B901FD /* Cloud.swift in Sources */,
+				EC77FD17264C7C1B00B901FD /* Utils.swift in Sources */,
+				EC77FD27264C7DE600B901FD /* Level.swift in Sources */,
+				EC77FD1F264C7D2300B901FD /* Dot.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,7 +306,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC77FD28264C7DE600B901FD /* Level.swift in Sources */,
+				EC77FD24264C7D7000B901FD /* Cloud.swift in Sources */,
+				EC77FD2C264C7E0F00B901FD /* Game.swift in Sources */,
 				E100A7E1263E44FC00F81153 /* dots_alignTests.swift in Sources */,
+				EC77FD18264C7C1B00B901FD /* Utils.swift in Sources */,
+				EC77FD1C264C7CD100B901FD /* Constants.swift in Sources */,
+				EC77FD20264C7D2300B901FD /* Dot.swift in Sources */,
+				EC77FD30264C7F3000B901FD /* Indicator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,7 +321,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC77FD29264C7DE600B901FD /* Level.swift in Sources */,
+				EC77FD25264C7D7000B901FD /* Cloud.swift in Sources */,
+				EC77FD2D264C7E0F00B901FD /* Game.swift in Sources */,
 				E100A7EC263E44FC00F81153 /* dots_alignUITests.swift in Sources */,
+				EC77FD19264C7C1B00B901FD /* Utils.swift in Sources */,
+				EC77FD1D264C7CD100B901FD /* Constants.swift in Sources */,
+				EC77FD21264C7D2300B901FD /* Dot.swift in Sources */,
+				EC77FD31264C7F3000B901FD /* Indicator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
