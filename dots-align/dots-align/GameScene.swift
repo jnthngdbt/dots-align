@@ -47,6 +47,12 @@ class Const {
     class Level {
         static let minNbPoints = 4
         static let maxNbPoints = 30
+        static let maxMultiplier = 5
+        static let maxAngleCumul = 1.5 * Scalar.pi
+    }
+    
+    class Game {
+        static let maxLevel = 20
     }
     
     class Scene {
@@ -245,8 +251,11 @@ class Cloud {
 }
 
 class Level {
-    var nbPoints = 0
     var cloud = Cloud()
+    var indicators: Indicators?
+    
+    var nbPoints = 0
+    var angleCumul = 0.0
     var solved = false
     
     func new(scene: GameScene) {
@@ -254,12 +263,31 @@ class Level {
         
         self.clear()
         
+        self.indicators = scene.indicators
+        
         self.nbPoints = Utils.randomOdd(inMin:Const.Level.minNbPoints, inMax:Const.Level.maxNbPoints) // odd random integer in range
         let points = Cloud.generateSymmetricRandomPoints(nbPoints: nbPoints)
         self.cloud.add(points: points, scene: scene, color: Const.Cloud.color)
         self.cloud.desalign()
         
         self.animateIn()
+        
+        self.indicators?.updateDots(nbDots: self.nbPoints)
+        self.indicators?.updateMultiplier(multiplier: Const.Level.maxMultiplier)
+    }
+    
+    func computeMultiplier() -> Int {
+        let steps = Const.Level.maxAngleCumul / Scalar(Const.Level.maxMultiplier - 1)
+        let multiplier = Const.Level.maxMultiplier - Int(angleCumul / steps)
+        return max(1, multiplier)
+    }
+    
+    func rotate(dir: Vector3d, speed: Scalar = 1) {
+        let q = Utils.quaternionFromDir(dir: dir, speed: speed)
+        self.cloud.rotate(quaternion: q)
+        
+        self.angleCumul += q.angle
+        self.indicators?.updateMultiplier(multiplier: self.computeMultiplier())
     }
     
     func solve() {
@@ -269,6 +297,10 @@ class Level {
         self.cloud.rotate(dir: dir)
         
         self.animateOut()
+    }
+    
+    func computeScore() -> Int {
+        return self.nbPoints * self.computeMultiplier()
     }
     
     func animateIn() {
@@ -308,14 +340,33 @@ class Level {
     
     func clear() {
         self.cloud.clear()
+        
+        self.angleCumul = 0
+        self.nbPoints = 0
+        self.solved = false
     }
 }
 
 class Game {
     var level = Level()
+    var indicators: Indicators?
+    var score = 0
     
     func new(scene: GameScene) {
         self.level.new(scene: scene)
+        
+        self.score = 0
+        self.indicators = scene.indicators
+        self.indicators?.updateScore(score: 0)
+    }
+    
+    func checkIfLevelSolved() {
+        if self.level.cloud.isAligned() {
+            self.level.solve()
+            
+            self.score += self.level.computeScore()
+            self.indicators?.updateScore(score: self.score)
+        }
     }
 }
 
@@ -338,6 +389,22 @@ class Indicators {
         add(scene: scene, label: self.dotsLabel         , data: self.dots       , idx: idx); idx += 1
         add(scene: scene, label: self.multiplierLabel   , data: self.multiplier , idx: idx); idx += 1
         add(scene: scene, label: self.scoreLabel        , data: self.score      , idx: idx); idx += 1
+    }
+    
+    func updateRemaining(remaining: Int) {
+        self.remaining.text = String(remaining)
+    }
+    
+    func updateDots(nbDots: Int) {
+        self.dots.text = String(nbDots)
+    }
+    
+    func updateMultiplier(multiplier: Int) {
+        self.multiplier.text = "x" + String(multiplier)
+    }
+    
+    func updateScore(score: Int) {
+        self.score.text = String(score)
     }
     
     private func add(scene: GameScene, label: SKLabelNode, data: SKLabelNode, idx: Int) {
@@ -418,13 +485,11 @@ class GameScene: SKScene {
             
             if self.unitSphereDiameter > 0 {
                 let dir = 2 * v / Scalar(self.unitSphereDiameter) // normalize by radius
-                self.game.level.cloud.rotate(dir: dir, speed: Const.Scene.orbitingSpeed)
+                self.game.level.rotate(dir: dir, speed: Const.Scene.orbitingSpeed)
             }
         }
         
-        if self.game.level.cloud.isAligned() {
-            self.game.level.solve()
-        }
+        self.game.checkIfLevelSolved()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { }
