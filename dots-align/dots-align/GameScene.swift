@@ -32,6 +32,8 @@ extension UIColor {
     }
 }
 
+enum IndicatorNames: Int, CaseIterable { case left, dots, bonus, score  }
+
 class Const {
     class Dot {
         static let radiusFactor: CGFloat = 0.02
@@ -281,8 +283,8 @@ class Level {
         
         self.animateIn()
         
-        self.indicators?.updateDots(nbDots: self.nbPoints)
-        self.indicators?.updateMultiplier(multiplier: Const.Level.maxMultiplier)
+        self.indicators?.update(name: IndicatorNames.dots, value: self.nbPoints)
+        self.indicators?.update(name: IndicatorNames.bonus, value: Const.Level.maxMultiplier, prefix: "x")
     }
     
     func computeMultiplier() -> Int {
@@ -296,7 +298,7 @@ class Level {
         self.cloud.rotate(quaternion: q)
         
         self.angleCumul += q.angle
-        self.indicators?.updateMultiplier(multiplier: self.computeMultiplier())
+        self.indicators?.update(name: IndicatorNames.bonus, value: self.computeMultiplier(), prefix: "x")
     }
     
     func solve() {
@@ -366,7 +368,7 @@ class Game {
         
         self.score = 0
         self.indicators = scene.indicators
-        self.indicators?.updateScore(score: 0)
+        self.indicators?.update(name: IndicatorNames.score, value: 0)
     }
     
     func checkIfLevelSolved() {
@@ -375,82 +377,97 @@ class Game {
             
             let levelScore = self.level.computeScore()
             self.score += levelScore
-            self.indicators?.updateScore(score: levelScore, isLevelScore: true)
+            self.indicators?.update(name: IndicatorNames.score, value: levelScore, prefix: "+", highlight: true)
         }
     }
     
     func newLevelIfNecessary(scene: GameScene) {
         if self.level.solved {
             self.level.new(scene: scene)
-            self.indicators?.updateScore(score: self.score)
+            self.indicators?.update(name: IndicatorNames.score, value: self.score)
         }
     }
 }
 
-class Indicators {
-    var remainingLabel = SKLabelNode(text: "LEFT")
-    var remaining = SKLabelNode(text: "60")
-    
-    var dotsLabel = SKLabelNode(text: "DOTS")
-    var dots = SKLabelNode(text: "0")
-    
-    var multiplierLabel = SKLabelNode(text: "BONUS")
-    var multiplier = SKLabelNode(text: "x5")
-    
-    var scoreLabel = SKLabelNode(text: "SCORE")
-    var score = SKLabelNode(text: "0")
-    
-    func set(scene: GameScene) {
-        var idx = 1
-        add(scene: scene, label: self.remainingLabel    , data: self.remaining  , idx: idx); idx += 1
-        add(scene: scene, label: self.dotsLabel         , data: self.dots       , idx: idx); idx += 1
-        add(scene: scene, label: self.multiplierLabel   , data: self.multiplier , idx: idx); idx += 1
-        add(scene: scene, label: self.scoreLabel        , data: self.score      , idx: idx); idx += 1
-    }
-    
-    func updateRemaining(remaining: Int) {
-        self.remaining.text = String(remaining)
-    }
-    
-    func updateDots(nbDots: Int) {
-        self.dots.text = String(nbDots)
-    }
-    
-    func updateMultiplier(multiplier: Int) {
-        self.multiplier.text = "x" + String(multiplier)
-    }
-    
-    func updateScore(score: Int, isLevelScore: Bool = false) {
-        if isLevelScore {
-            self.score.text = "+" + String(score)
-            self.score.fontColor = Const.Indicators.fontColorHighlight
-        } else {
-            self.score.text = String(score)
-            self.score.fontColor = Const.Indicators.fontColor
-        }
-    }
-    
-    private func add(scene: GameScene, label: SKLabelNode, data: SKLabelNode, idx: Int) {
+class Indicator {
+    var label = SKLabelNode(text: "LABEL")
+    var data = SKLabelNode(text: "DATA")
+
+    init(scene: GameScene, idx: Int) {
         let h = scene.size.height
         let w = scene.size.width
 
         let labelPosY = h * (1 - 0.05)
         let dataPosY = labelPosY - 0.08 * scene.minSize()
+
+        let nbIndicators = IndicatorNames.allCases.count
+        let posX = w * CGFloat(idx + 1) / CGFloat(nbIndicators + 1)
         
-        label.position = CGPoint(x: w * 0.2 * CGFloat(idx), y: labelPosY)
-        data.position = CGPoint(x: w * 0.2 * CGFloat(idx), y: dataPosY)
-        
+        label.position = CGPoint(x: posX, y: labelPosY)
+        data.position = CGPoint(x: posX, y: dataPosY)
+
         label.fontSize = 0.04 * scene.minSize()
         data.fontSize = 0.08 * scene.minSize()
-        
+
         label.fontName = Const.Indicators.fontName
         data.fontName = Const.Indicators.fontName
-        
+
         label.fontColor = Const.Indicators.fontColor
         data.fontColor = Const.Indicators.fontColor
-        
+
         scene.addChild(label)
         scene.addChild(data)
+    }
+
+    func updateData(value: Int, prefix: String = "", highlight: Bool = false) {
+        self.data.text = prefix + String(value)
+        if highlight {
+            self.data.fontColor = Const.Indicators.fontColorHighlight
+        } else {
+            self.data.fontColor = Const.Indicators.fontColor
+        }
+    }
+    
+    func remove() {
+        self.label.removeFromParent()
+        self.data.removeFromParent()
+    }
+}
+
+class Indicators {
+    var indicators = Array<Indicator>()
+    
+    func set(scene: GameScene) {
+        self.clear()
+        for i in 0..<IndicatorNames.allCases.count {
+            self.indicators.append(Indicator(scene: scene, idx: i))
+        }
+        
+        self.indicators[IndicatorNames.left.rawValue].label.text = "LEFT"
+        self.indicators[IndicatorNames.left.rawValue].data.text = "20"
+        
+        self.indicators[IndicatorNames.dots.rawValue].label.text = "DOTS"
+        self.indicators[IndicatorNames.dots.rawValue].data.text = "0"
+        
+        self.indicators[IndicatorNames.bonus.rawValue].label.text = "BONUS"
+        self.indicators[IndicatorNames.bonus.rawValue].data.text = "x0"
+        
+        self.indicators[IndicatorNames.score.rawValue].label.text = "SCORE"
+        self.indicators[IndicatorNames.score.rawValue].data.text = "0"
+    }
+    
+    func update(name: IndicatorNames, value: Int, prefix: String = "", highlight: Bool = false) {
+        if indicators.count > name.rawValue {
+            indicators[name.rawValue].updateData(value: value, prefix: prefix, highlight: highlight)
+        }
+    }
+    
+    func clear() {
+        for ind in indicators {
+            ind.remove()
+        }
+        
+        indicators.removeAll()
     }
 }
 
