@@ -61,6 +61,15 @@ class Const {
         static let orbDiameterFactor: CGFloat = 0.5
     }
     
+    class Indicators {
+        // Default: HelveticaNeue-UltraLight.
+        // Some nice: HelveticaNeue, AvenirNextCondensed, AvenirNext
+        // Heavy, Bold, DemiBold, Medium, Regular, UltraLight.
+        static let fontName = "AvenirNextCondensed-Bold"
+        static let fontColor = UIColor(white: 0.4, alpha: 1)
+        static let fontColorHighlight = UIColor(white: 0.8, alpha: 1)
+    }
+    
     static let debug = false
 }
 
@@ -364,7 +373,15 @@ class Game {
         if self.level.cloud.isAligned() {
             self.level.solve()
             
-            self.score += self.level.computeScore()
+            let levelScore = self.level.computeScore()
+            self.score += levelScore
+            self.indicators?.updateScore(score: levelScore, isLevelScore: true)
+        }
+    }
+    
+    func newLevelIfNecessary(scene: GameScene) {
+        if self.level.solved {
+            self.level.new(scene: scene)
             self.indicators?.updateScore(score: self.score)
         }
     }
@@ -403,8 +420,14 @@ class Indicators {
         self.multiplier.text = "x" + String(multiplier)
     }
     
-    func updateScore(score: Int) {
-        self.score.text = String(score)
+    func updateScore(score: Int, isLevelScore: Bool = false) {
+        if isLevelScore {
+            self.score.text = "+" + String(score)
+            self.score.fontColor = Const.Indicators.fontColorHighlight
+        } else {
+            self.score.text = String(score)
+            self.score.fontColor = Const.Indicators.fontColor
+        }
     }
     
     private func add(scene: GameScene, label: SKLabelNode, data: SKLabelNode, idx: Int) {
@@ -420,16 +443,11 @@ class Indicators {
         label.fontSize = 0.04 * scene.minSize()
         data.fontSize = 0.08 * scene.minSize()
         
-        // Default: HelveticaNeue-UltraLight.
-        // Some nice: HelveticaNeue, AvenirNextCondensed, AvenirNext
-        // Heavy, Bold, DemiBold, Medium, Regular, UltraLight.
-        let fontName = "AvenirNextCondensed-Bold"
-        label.fontName = fontName
-        data.fontName = fontName
+        label.fontName = Const.Indicators.fontName
+        data.fontName = Const.Indicators.fontName
         
-        let fontColor = UIColor(white: 0.4, alpha: 1)
-        label.fontColor = fontColor
-        data.fontColor = fontColor
+        label.fontColor = Const.Indicators.fontColor
+        data.fontColor = Const.Indicators.fontColor
         
         scene.addChild(label)
         scene.addChild(data)
@@ -494,9 +512,7 @@ class GameScene: SKScene {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if self.game.level.solved {
-            self.game.level.new(scene: self)
-        }
+        self.game.newLevelIfNecessary(scene: self)
     }
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) { }
     
