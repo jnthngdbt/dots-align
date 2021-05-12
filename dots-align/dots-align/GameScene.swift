@@ -178,6 +178,10 @@ class Dot {
         self.point = quaternion.act(self.point)
         self.update()
     }
+    
+    deinit {
+        self.node.removeFromParent()
+    }
 }
 
 class Cloud {
@@ -185,7 +189,7 @@ class Cloud {
     var orientation = Vector3d(0, 0, 1)
     var alignedDist = 0.0
     
-    func add(points: Array<Vector3d>, scene: GameScene, color: UIColor) {
+    init(points: Array<Vector3d>, scene: GameScene, color: UIColor) {
         for p in points {
             dots.append(Dot(scene: scene, color: color, point3d: p))
         }
@@ -262,29 +266,26 @@ class Cloud {
 }
 
 class Level {
-    var cloud = Cloud()
-    var indicators: Indicators?
+    var cloud: Cloud!
+    var indicators: Indicators!
     
     var nbPoints = 0
     var angleCumul = 0.0
     var solved = false
     
-    func new(scene: GameScene) {
-        self.solved = false
-        
-        self.clear()
-        
+    init(scene: GameScene) {
         self.indicators = scene.indicators
         
         self.nbPoints = Utils.randomOdd(inMin:Const.Level.minNbPoints, inMax:Const.Level.maxNbPoints) // odd random integer in range
         let points = Cloud.generateSymmetricRandomPoints(nbPoints: nbPoints)
-        self.cloud.add(points: points, scene: scene, color: Const.Cloud.color)
+        
+        self.cloud = Cloud(points: points, scene: scene, color: Const.Cloud.color)
         self.cloud.desalign()
         
         self.animateIn()
         
-        self.indicators?.update(name: IndicatorNames.dots, value: self.nbPoints)
-        self.indicators?.update(name: IndicatorNames.bonus, value: Const.Level.maxMultiplier, prefix: "x")
+        self.indicators.update(name: IndicatorNames.dots, value: self.nbPoints)
+        self.indicators.update(name: IndicatorNames.bonus, value: Const.Level.maxMultiplier, prefix: "x")
     }
     
     func computeMultiplier() -> Int {
@@ -298,7 +299,7 @@ class Level {
         self.cloud.rotate(quaternion: q)
         
         self.angleCumul += q.angle
-        self.indicators?.update(name: IndicatorNames.bonus, value: self.computeMultiplier(), prefix: "x")
+        self.indicators.update(name: IndicatorNames.bonus, value: self.computeMultiplier(), prefix: "x")
     }
     
     func solve() {
@@ -348,27 +349,18 @@ class Level {
             dot.node.run(animation)
         }
     }
-    
-    func clear() {
-        self.cloud.clear()
-        
-        self.angleCumul = 0
-        self.nbPoints = 0
-        self.solved = false
-    }
 }
 
 class Game {
-    var level = Level()
-    var indicators: Indicators?
+    var level: Level!
+    var indicators: Indicators!
     var score = 0
     
-    func new(scene: GameScene) {
-        self.level.new(scene: scene)
+    init(scene: GameScene) {
+        self.level = Level(scene: scene)
         
-        self.score = 0
         self.indicators = scene.indicators
-        self.indicators?.update(name: IndicatorNames.score, value: 0)
+        self.indicators.update(name: IndicatorNames.score, value: 0)
     }
     
     func checkIfLevelSolved() {
@@ -377,14 +369,14 @@ class Game {
             
             let levelScore = self.level.computeScore()
             self.score += levelScore
-            self.indicators?.update(name: IndicatorNames.score, value: levelScore, prefix: "+", highlight: true)
+            self.indicators.update(name: IndicatorNames.score, value: levelScore, prefix: "+", highlight: true)
         }
     }
     
     func newLevelIfNecessary(scene: GameScene) {
         if self.level.solved {
-            self.level.new(scene: scene)
-            self.indicators?.update(name: IndicatorNames.score, value: self.score)
+            self.level = Level(scene: scene)
+            self.indicators.update(name: IndicatorNames.score, value: self.score)
         }
     }
 }
@@ -428,7 +420,7 @@ class Indicator {
         }
     }
     
-    func remove() {
+    deinit {
         self.label.removeFromParent()
         self.data.removeFromParent()
     }
@@ -437,8 +429,7 @@ class Indicator {
 class Indicators {
     var indicators = Array<Indicator>()
     
-    func set(scene: GameScene) {
-        self.clear()
+    init(scene: GameScene) {
         for i in 0..<IndicatorNames.allCases.count {
             self.indicators.append(Indicator(scene: scene, idx: i))
         }
@@ -461,24 +452,15 @@ class Indicators {
             indicators[name.rawValue].updateData(value: value, prefix: prefix, highlight: highlight)
         }
     }
-    
-    func clear() {
-        for ind in indicators {
-            ind.remove()
-        }
-        
-        indicators.removeAll()
-    }
 }
 
 class GameScene: SKScene {
-    var indicators = Indicators()
+    var game: Game!
+    var indicators: Indicators!
     
     var unitSphereDiameter: CGFloat = 1.0
     var orbDiameter: CGFloat = 1.0
     var orb = SKShapeNode()
-    
-    var game = Game()
     
     func minSize() -> CGFloat {
         return min(self.size.width, self.size.height)
@@ -494,7 +476,7 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         self.backgroundColor = UIColor(white: 0.1, alpha: 1)
         
-        self.indicators.set(scene: self)
+        self.indicators = Indicators(scene: self)
         
         self.unitSphereDiameter = Const.Scene.unitSphereDiameterFactor * self.minSize()
         self.orbDiameter = Const.Scene.orbDiameterFactor * self.minSize()
@@ -505,7 +487,7 @@ class GameScene: SKScene {
         self.orb.position = self.center()
         self.addChild(self.orb)
         
-        self.game.new(scene: self)
+        self.game = Game(scene: self)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
