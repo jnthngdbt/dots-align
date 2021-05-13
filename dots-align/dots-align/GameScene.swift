@@ -80,7 +80,7 @@ class GameScene: SKScene {
             if let t = touches.first {
                 let location = t.location(in: self)
                 let node = atPoint(location)
-                if node.name == "startLevelGame" {
+                if node.name == Const.Button.startLevelGameId {
                     self.startGame()
                 }
             }

@@ -49,8 +49,17 @@ class Const {
     }
     
     class Menu {
-        static let fontColor = UIColor(white: 0.4, alpha: 1)
-        static let fontSizeFactor = 0.08
+        
+    }
+    
+    class Button {
+        static let fillColor = UIColor(white: 0.1, alpha: 1)
+        static let fontColor = UIColor(red: 0.5, green: 0.5, blue: 0.8, alpha: 1)
+        static let fontSizeFactor: CGFloat = 0.08
+        static let widthFactor: CGFloat = 0.75
+        static let heightFactor: CGFloat = 0.2
+        
+        static let startLevelGameId = "startLevelGame"
     }
     
     static let backgroudColor = UIColor(white: 0.15, alpha: 0)

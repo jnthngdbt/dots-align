@@ -13,20 +13,22 @@ class Button {
     let shape: SKShapeNode
     
     init(scene: GameScene) {
-        let size = CGSize(width: 0.75 * scene.minSize(), height: 0.2 * scene.minSize())
+        let w = Const.Button.widthFactor * scene.minSize()
+        let h = Const.Button.heightFactor * scene.minSize()
+        let size = CGSize(width: w, height: h)
         
         self.label = SKLabelNode(text: "PLAY 20 LEVELS")
-        self.label.fontColor = Const.Menu.fontColor
+        self.label.fontColor = Const.Button.fontColor
         self.label.fontName = Const.fontName
-        self.label.fontSize = CGFloat(Const.Menu.fontSizeFactor) * scene.minSize()
+        self.label.fontSize = Const.Button.fontSizeFactor * scene.minSize()
         self.label.verticalAlignmentMode = .center
-        self.label.name = "startLevelGame"
+        self.label.name = Const.Button.startLevelGameId
         
         self.shape = SKShapeNode(rectOf: size, cornerRadius: 0.5 * size.height)
-        self.shape.fillColor = UIColor.init(white: 0.1, alpha: 1)
+        self.shape.fillColor = Const.Button.fillColor
         self.shape.strokeColor = UIColor.clear
         self.shape.position = scene.center()
-        self.shape.name = "startLevelGame"
+        self.shape.name = Const.Button.startLevelGameId
         
         self.shape.addChild(self.label)
         
