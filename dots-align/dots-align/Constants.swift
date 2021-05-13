@@ -22,6 +22,10 @@ class Const {
         static let color = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
     }
     
+    class Orb {
+        static let color = UIColor(white: 0, alpha: 0.4)
+    }
+    
     class Level {
         static let minNbPoints = 4
         static let maxNbPoints = 30
@@ -40,13 +44,21 @@ class Const {
     }
     
     class Indicators {
-        // Default: HelveticaNeue-UltraLight.
-        // Some nice: HelveticaNeue, AvenirNextCondensed, AvenirNext
-        // Heavy, Bold, DemiBold, Medium, Regular, UltraLight.
-        static let fontName = "AvenirNextCondensed-Bold"
         static let fontColor = UIColor(white: 0.4, alpha: 1)
         static let fontColorHighlight = UIColor(white: 0.8, alpha: 1)
     }
+    
+    class Menu {
+        static let fontColor = UIColor(white: 0.4, alpha: 1)
+        static let fontSizeFactor = 0.08
+    }
+    
+    static let backgroudColor = UIColor(white: 0.15, alpha: 0)
+    
+    // Default: HelveticaNeue-UltraLight.
+    // Some nice: HelveticaNeue, AvenirNextCondensed, AvenirNext
+    // Heavy, Bold, DemiBold, Medium, Regular, UltraLight.
+    static let fontName = "AvenirNextCondensed-Bold"
     
     static let debug = false
 }
