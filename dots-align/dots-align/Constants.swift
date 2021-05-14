@@ -60,6 +60,7 @@ class Const {
         static let heightFactor: CGFloat = 0.2
         
         static let startLevelGameId = "startLevelGame"
+        static let replayGameId = "replayGame"
     }
     
     static let backgroudColor = UIColor(white: 0.15, alpha: 0)

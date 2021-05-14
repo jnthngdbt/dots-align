@@ -26,7 +26,8 @@ class Orb {
 class GameScene: SKScene {
     var game: Game?
     var orb: Orb?
-    var menu: MainMenu?
+    var mainMenu: MainMenu?
+    var endGameMenu: EndGameMenu?
     
     var unitSphereDiameter: CGFloat = 1.0
     var orbDiameter: CGFloat = 1.0
@@ -76,18 +77,12 @@ class GameScene: SKScene {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if self.menu != nil {
-            if let t = touches.first {
-                let location = t.location(in: self)
-                let node = atPoint(location)
-                if node.name == Const.Button.startLevelGameId {
-                    self.startGame()
-                }
-            }
-        } else {
+        let isButtonTapped = self.manageButtonTap(touches: touches)
+        
+        if !isButtonTapped {
             self.game?.newLevelIfNecessary(scene: self)
             if self.game?.isGameEnded == true {
-                self.showMainMenu()
+                self.showEndGameMenu()
             }
         }
     }
@@ -97,15 +92,41 @@ class GameScene: SKScene {
         // Called before each frame is rendered
     }
     
+    func manageButtonTap(touches: Set<UITouch>) -> Bool {
+        if let t = touches.first {
+            let location = t.location(in: self)
+            let node = atPoint(location)
+            
+            if node.name == Const.Button.startLevelGameId {
+                self.startGame()
+                return true
+            } else if node.name == Const.Button.replayGameId {
+                self.startGame()
+                return true
+            }
+        }
+        
+        return false
+    }
+    
     func startGame() {
         self.orb = Orb(scene: self)
         self.game = Game(scene: self)
-        self.menu = nil
+        self.mainMenu = nil
+        self.endGameMenu = nil
     }
     
     func showMainMenu() {
         self.orb = nil
         self.game = nil
-        self.menu = MainMenu(scene: self)
+        self.mainMenu = MainMenu(scene: self)
+        self.endGameMenu = nil
+    }
+    
+    func showEndGameMenu() {
+        self.orb = nil
+        self.game = nil
+        self.mainMenu = nil
+        self.endGameMenu = EndGameMenu(scene: self)
     }
 }
