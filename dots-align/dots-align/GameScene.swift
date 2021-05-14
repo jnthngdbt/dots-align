@@ -103,6 +103,9 @@ class GameScene: SKScene {
             } else if node.name == Const.Button.replayGameId {
                 self.startGame()
                 return true
+            } else if node.name == Const.Button.homeId {
+                self.showMainMenu()
+                return true
             }
         }
         

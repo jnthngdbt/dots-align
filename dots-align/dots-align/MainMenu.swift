@@ -35,22 +35,69 @@ class Button {
         scene.addChild(self.shape)
     }
     
+    func size() -> CGSize {
+        return self.shape.frame.size
+    }
+    
     deinit {
         self.shape.removeFromParent() // removes child label also
     }
 }
 
-class MainMenu {
-    let startLevelGameBtn: Button!
+class Menu {
+    var buttons = Array<Button>()
+    let spacing: CGFloat!
     
     init(scene: GameScene) {
-        self.startLevelGameBtn = Button(scene: scene, text: "PLAY 20 LEVELS", id: Const.Button.startLevelGameId)
+        self.spacing = Const.Menu.spacingFactor * scene.minSize()
+    }
+    
+    func arrange(scene: GameScene) {
+        if self.buttons.count <= 0 {
+            return
+        }
+        
+        var totalHeight = CGFloat(self.buttons.count - 1) * self.spacing
+        for b in self.buttons {
+            totalHeight += b.shape.frame.height
+        }
+        
+        var pos = scene.center()
+        pos.y += 0.5 * totalHeight
+        
+        for b in self.buttons {
+            let halfHeight = 0.5 * b.shape.frame.height
+            pos.y -= halfHeight
+            b.shape.position = pos
+            pos.y -= halfHeight + self.spacing
+            
+        }
     }
 }
 
-class EndGameMenu {
-    let startLevelGameBtn: Button!
-    init(scene: GameScene) {
-        self.startLevelGameBtn = Button(scene: scene, text: "REPLAY", id: Const.Button.replayGameId)
+class MainMenu: Menu {
+    override init(scene: GameScene) {
+        super.init(scene: scene)
+        
+        self.buttons.append(Button(scene: scene, text: "TUTORIAL", id: Const.Button.tutorialId))
+        
+        let levelGameText = "PLAY " + String(Const.Game.maxLevel) + " LEVELS"
+        self.buttons.append(Button(scene: scene, text: levelGameText, id: Const.Button.startLevelGameId))
+        
+        let timeGameText = "PLAY " + String(Const.Game.maxSeconds) + " SECONDS"
+        self.buttons.append(Button(scene: scene, text: timeGameText, id: Const.Button.startTimedGameId))
+        
+        self.arrange(scene: scene)
+    }
+}
+
+class EndGameMenu: Menu {
+    override init(scene: GameScene) {
+        super.init(scene: scene)
+        
+        self.buttons.append(Button(scene: scene, text: "REPLAY", id: Const.Button.replayGameId))
+        self.buttons.append(Button(scene: scene, text: "HOME", id: Const.Button.homeId))
+        
+        self.arrange(scene: scene)
     }
 }

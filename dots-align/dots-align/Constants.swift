@@ -35,6 +35,7 @@ class Const {
     
     class Game {
         static let maxLevel = 5
+        static let maxSeconds = 60
     }
     
     class Scene {
@@ -49,7 +50,7 @@ class Const {
     }
     
     class Menu {
-        
+        static let spacingFactor: CGFloat = 0.025
     }
     
     class Button {
@@ -57,10 +58,13 @@ class Const {
         static let fontColor = UIColor(red: 0.5, green: 0.5, blue: 0.8, alpha: 1)
         static let fontSizeFactor: CGFloat = 0.08
         static let widthFactor: CGFloat = 0.75
-        static let heightFactor: CGFloat = 0.2
+        static let heightFactor: CGFloat = 0.18
         
+        static let tutorialId = "tutorial"
         static let startLevelGameId = "startLevelGame"
+        static let startTimedGameId = "startTimedGame"
         static let replayGameId = "replayGame"
+        static let homeId = "home"
     }
     
     static let backgroudColor = UIColor(white: 0.15, alpha: 0)
