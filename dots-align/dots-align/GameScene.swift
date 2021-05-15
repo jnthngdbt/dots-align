@@ -82,7 +82,7 @@ class GameScene: SKScene {
         if !isButtonTapped {
             self.game?.newLevelIfNecessary(scene: self)
             if self.game?.isGameEnded == true {
-                self.showEndGameMenu()
+                self.showEndGameMenu(score: self.game!.score)
             }
         }
     }
@@ -126,10 +126,10 @@ class GameScene: SKScene {
         self.endGameMenu = nil
     }
     
-    func showEndGameMenu() {
+    func showEndGameMenu(score: Int) {
         self.orb = nil
         self.game = nil
         self.mainMenu = nil
-        self.endGameMenu = EndGameMenu(scene: self)
+        self.endGameMenu = EndGameMenu(scene: self, score: score)
     }
 }

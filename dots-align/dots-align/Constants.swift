@@ -34,7 +34,7 @@ class Const {
     }
     
     class Game {
-        static let maxLevel = 5
+        static let maxLevel = 10
         static let maxSeconds = 60
     }
     

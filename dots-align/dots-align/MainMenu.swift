@@ -11,8 +11,9 @@ import SpriteKit
 class Button {
     let label: SKLabelNode
     let shape: SKShapeNode
+    var spacingAfter: CGFloat = 0.0
     
-    init(scene: GameScene, text: String, id: String) {
+    init(scene: GameScene, text: String, id: String = "") {
         let w = Const.Button.widthFactor * scene.minSize()
         let h = Const.Button.heightFactor * scene.minSize()
         let size = CGSize(width: w, height: h)
@@ -32,6 +33,8 @@ class Button {
         
         self.shape.addChild(self.label)
         
+        self.spacingAfter = Const.Menu.spacingFactor * scene.minSize()
+        
         scene.addChild(self.shape)
     }
     
@@ -46,21 +49,17 @@ class Button {
 
 class Menu {
     var buttons = Array<Button>()
-    let spacing: CGFloat!
-    
-    init(scene: GameScene) {
-        self.spacing = Const.Menu.spacingFactor * scene.minSize()
-    }
     
     func arrange(scene: GameScene) {
         if self.buttons.count <= 0 {
             return
         }
         
-        var totalHeight = CGFloat(self.buttons.count - 1) * self.spacing
+        var totalHeight: CGFloat = 0.0
         for b in self.buttons {
-            totalHeight += b.shape.frame.height
+            totalHeight += b.shape.frame.height + b.spacingAfter
         }
+        totalHeight -= self.buttons.last!.spacingAfter
         
         var pos = scene.center()
         pos.y += 0.5 * totalHeight
@@ -69,15 +68,14 @@ class Menu {
             let halfHeight = 0.5 * b.shape.frame.height
             pos.y -= halfHeight
             b.shape.position = pos
-            pos.y -= halfHeight + self.spacing
-            
+            pos.y -= halfHeight + b.spacingAfter
         }
     }
 }
 
 class MainMenu: Menu {
-    override init(scene: GameScene) {
-        super.init(scene: scene)
+    init(scene: GameScene) {
+        super.init()
         
         self.buttons.append(Button(scene: scene, text: "TUTORIAL", id: Const.Button.tutorialId))
         
@@ -92,12 +90,32 @@ class MainMenu: Menu {
 }
 
 class EndGameMenu: Menu {
-    override init(scene: GameScene) {
-        super.init(scene: scene)
+    init(scene: GameScene, score: Int) {
+        super.init()
+        
+        self.addScoreLabel(scene: scene, label: "SCORE", value: score, spacingAfterFactor: 1.0)
+        self.addScoreLabel(scene: scene, label: "BEST", value: score, spacingAfterFactor: 3.0)
         
         self.buttons.append(Button(scene: scene, text: "REPLAY", id: Const.Button.replayGameId))
         self.buttons.append(Button(scene: scene, text: "HOME", id: Const.Button.homeId))
         
         self.arrange(scene: scene)
+    }
+    
+    func addScoreLabel(scene: GameScene, label: String, value: Int, spacingAfterFactor: CGFloat = 1.0) {
+        let scoreLabel = Button(scene: scene, text: label)
+        scoreLabel.shape.fillColor = UIColor.clear
+        scoreLabel.label.fontSize *= 2.25
+        scoreLabel.shape.setScale(0.4)
+        scoreLabel.label.fontColor = Const.Indicators.fontColor
+        scoreLabel.spacingAfter *= 0
+        self.buttons.append(scoreLabel)
+        
+        let scoreButton = Button(scene: scene, text: String(value))
+        scoreButton.shape.fillColor = UIColor.clear
+        scoreButton.label.fontSize *= 2.25
+        scoreButton.label.fontColor = Const.Indicators.fontColor
+        scoreButton.spacingAfter *= spacingAfterFactor
+        self.buttons.append(scoreButton)
     }
 }
