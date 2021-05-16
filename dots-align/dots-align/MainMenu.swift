@@ -33,6 +33,8 @@ class Button {
         
         self.shape.addChild(self.label)
         
+        self.shape.zPosition = 2.0 // make to be in foreground (max z of sphere dots is 1)
+        
         self.spacingAfter = Const.Menu.spacingFactor * scene.minSize()
         
         scene.addChild(self.shape)
@@ -74,7 +76,15 @@ class Menu {
 }
 
 class MainMenu: Menu {
+    let cloud: Cloud!
+    
     init(scene: GameScene) {
+        // Set cloud.
+        let radius = 0.5 * Const.Menu.sphereDiameterFactor * scene.minSize()
+        let points = Cloud.generateSymmetricRandomPoints(nbPoints: Const.Menu.sphereNbDots)
+        self.cloud = Cloud(points: points, scene: scene, color: Const.Menu.sphereDotsColor, radius: radius)
+        self.cloud.desalign()
+        
         super.init()
         
         self.buttons.append(Button(scene: scene, text: "TUTORIAL", id: Const.Button.tutorialId))

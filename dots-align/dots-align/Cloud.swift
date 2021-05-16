@@ -12,15 +12,18 @@ class Cloud {
     var dots = Array<Dot>()
     var orientation = Vector3d(0, 0, 1)
     var alignedDist = 0.0
+    let radius: CGFloat
     
-    init(points: Array<Vector3d>, scene: GameScene, color: UIColor) {
+    init(points: Array<Vector3d>, scene: GameScene, color: UIColor, radius: CGFloat) {
+        self.radius = radius
+        
         for p in points {
-            dots.append(Dot(scene: scene, color: color, point3d: p))
+            dots.append(Dot(scene: scene, color: color, point3d: p, sphereRadius: radius))
         }
         
         if Const.debug {
-            dots.append(Dot(scene: scene, color: UIColor.red, point3d: Const.Cloud.alignedOrientation))
-            dots.append(Dot(scene: scene, color: UIColor.red, point3d: -Const.Cloud.alignedOrientation))
+            dots.append(Dot(scene: scene, color: UIColor.red, point3d: Const.Cloud.alignedOrientation, sphereRadius: radius))
+            dots.append(Dot(scene: scene, color: UIColor.red, point3d: -Const.Cloud.alignedOrientation, sphereRadius: radius))
         }
     }
     

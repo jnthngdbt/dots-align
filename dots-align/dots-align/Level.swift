@@ -22,7 +22,8 @@ class Level {
         self.nbPatternPoints = Utils.randomOdd(inMin:Const.Level.minNbPoints, inMax:Const.Level.maxNbPoints) // odd random integer in range
         let points = Cloud.generateSymmetricRandomPoints(nbPoints: nbPatternPoints)
         
-        self.cloud = Cloud(points: points, scene: scene, color: Const.Cloud.color)
+        let radius = 0.5 * Const.Game.sphereDiameterFactor * scene.minSize()
+        self.cloud = Cloud(points: points, scene: scene, color: Const.Cloud.color, radius: radius)
         self.cloud.desalign()
         
         self.animateIn()

@@ -34,13 +34,13 @@ class Const {
     }
     
     class Game {
-        static let maxLevel = 10
+        static let maxLevel = 5
         static let maxSeconds = 60
+        static let sphereDiameterFactor: CGFloat = 0.6
     }
     
     class Scene {
         static let orbitingSpeed = 2.0
-        static let unitSphereDiameterFactor: CGFloat = 0.6
         static let orbDiameterFactor: CGFloat = 0.5
     }
     
@@ -51,6 +51,9 @@ class Const {
     
     class Menu {
         static let spacingFactor: CGFloat = 0.025
+        static let sphereDiameterFactor: CGFloat = 2.0
+        static let sphereNbDots = 200
+        static let sphereDotsColor = UIColor(white: 0.3, alpha: 0.6)
     }
     
     class Button {

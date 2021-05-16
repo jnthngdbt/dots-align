@@ -29,7 +29,6 @@ class GameScene: SKScene {
     var mainMenu: MainMenu?
     var endGameMenu: EndGameMenu?
     
-    var unitSphereDiameter: CGFloat = 1.0
     var orbDiameter: CGFloat = 1.0
     
     func minSize() -> CGFloat {
@@ -46,7 +45,6 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         self.backgroundColor = Const.backgroudColor
         
-        self.unitSphereDiameter = Const.Scene.unitSphereDiameterFactor * self.minSize()
         self.orbDiameter = Const.Scene.orbDiameterFactor * self.minSize()
         
         self.showMainMenu()
@@ -66,8 +64,9 @@ class GameScene: SKScene {
             let dy = Scalar(t.location(in: self).y - t.previousLocation(in: self).y)
             let v = Vector3d(dx, dy, 0)
             
-            if self.unitSphereDiameter > 0 {
-                let dir = 2 * v / Scalar(self.unitSphereDiameter) // normalize by radius
+            let radius = self.game!.level.cloud.radius
+            if radius > 0 {
+                let dir = v / Scalar(radius)
                 self.game!.level.rotate(dir: dir, speed: Const.Scene.orbitingSpeed)
             }
         }

@@ -14,12 +14,14 @@ class Dot {
     let scene: GameScene
     let color: UIColor
     var radius: CGFloat = 0.0
+    var sphereRadius: CGFloat = 0.0
 
-    init(scene: GameScene, color: UIColor, point3d: Vector3d) {
+    init(scene: GameScene, color: UIColor, point3d: Vector3d, sphereRadius: CGFloat) {
         self.scene = scene
         self.color = color
         self.point = simd_normalize(point3d)
         
+        self.sphereRadius = sphereRadius
         self.radius = Const.Dot.radiusFactor * self.scene.minSize()
         self.node = SKShapeNode.init(circleOfRadius: self.radius)
         
@@ -35,10 +37,9 @@ class Dot {
     
     func updatePosition() {
         let sceneCenter = self.scene.center()
-        let sphereRadius = 0.5 * self.scene.unitSphereDiameter
         
-        let x = sceneCenter.x + CGFloat(self.point.x) * sphereRadius
-        let y = sceneCenter.y + CGFloat(self.point.y) * sphereRadius
+        let x = sceneCenter.x + CGFloat(self.point.x) * self.sphereRadius
+        let y = sceneCenter.y + CGFloat(self.point.y) * self.sphereRadius
         let z = CGFloat(self.point.z)
         
         self.node.position = CGPoint(x:x, y:y)
