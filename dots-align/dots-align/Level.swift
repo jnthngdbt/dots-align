@@ -66,7 +66,7 @@ class Level {
     func animateIn() {
         for dot in self.cloud.dots {
             dot.node.setScale(0)
-            dot.node.run(SKAction.scale(to: 1, duration: 0.1))
+            dot.node.run(SKAction.scale(to: 1, duration: 0.2))
         }
     }
     
@@ -83,8 +83,8 @@ class Level {
             ])
             
             let collapse = SKAction.group([
-                SKAction.fadeAlpha(to: 0.0, duration: 0.1),
-                SKAction.scale(to: 0, duration: 0.1)
+                SKAction.fadeAlpha(to: 0.0, duration: 0.2),
+                SKAction.scale(to: 0, duration: 0.2)
             ])
             
             let animation = SKAction.sequence([
