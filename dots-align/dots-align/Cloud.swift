@@ -80,6 +80,12 @@ class Cloud {
         return self.alignedDist < Const.Cloud.alignedDistThresh
     }
     
+    func animate(action: SKAction) {
+        for dot in self.dots {
+            dot.animate(action: action)
+        }
+    }
+    
     func clear() {
         self.orientation = Const.Cloud.alignedOrientation
         self.alignedDist = 0

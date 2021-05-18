@@ -63,38 +63,39 @@ class Level {
         return self.getTotalNbDots() * self.computeMultiplier()
     }
     
-    func animateIn() {
-        for dot in self.cloud.dots {
-            dot.node.setScale(0)
-            dot.node.run(SKAction.scale(to: 1, duration: 0.2))
-        }
+    private func animateIn() {
+        let animation = SKAction.sequence([
+            SKAction.scale(to: 0, duration: 0.0),
+            SKAction.wait(forDuration: 0.2),
+            SKAction.scale(to: 1, duration: Const.Animation.expandSec)
+        ])
+        
+        self.cloud.animate(action: animation)
     }
     
-    func animateOut() {
-        for dot in self.cloud.dots {
-            let expand = SKAction.group([
-                SKAction.fadeAlpha(to: 0.9, duration: 0.05),
-                SKAction.scale(to: 1.5, duration: 0.05)
-            ])
-            
-            let back = SKAction.group([
-                SKAction.fadeAlpha(to: 1.0, duration: 0.05),
-                SKAction.scale(to: 1.0, duration: 0.05)
-            ])
-            
-            let collapse = SKAction.group([
-                SKAction.fadeAlpha(to: 0.0, duration: 0.2),
-                SKAction.scale(to: 0, duration: 0.2)
-            ])
-            
-            let animation = SKAction.sequence([
-                expand,
-                back,
-                SKAction.wait(forDuration: 0.3),
-                collapse
-            ])
+    private func animateOut() {
+        let expand = SKAction.group([
+            SKAction.fadeAlpha(to: 0.9, duration: 0.5 * Const.Animation.blinkSec),
+            SKAction.scale(to: 1.5, duration: 0.5 * Const.Animation.blinkSec)
+        ])
+        
+        let back = SKAction.group([
+            SKAction.fadeAlpha(to: 1.0, duration: 0.5 * Const.Animation.blinkSec),
+            SKAction.scale(to: 1.0, duration: 0.5 * Const.Animation.blinkSec)
+        ])
+        
+        let collapse = SKAction.group([
+            SKAction.fadeAlpha(to: 0.0, duration: Const.Animation.collapseSec),
+            SKAction.scale(to: 0, duration: Const.Animation.collapseSec)
+        ])
+        
+        let animation = SKAction.sequence([
+            expand,
+            back,
+            SKAction.wait(forDuration: 0.3),
+            collapse
+        ])
 
-            dot.node.run(animation)
-        }
+        self.cloud.animate(action: animation)
     }
 }

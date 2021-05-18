@@ -78,6 +78,10 @@ class Dot {
         self.update()
     }
     
+    func animate(action: SKAction) {
+        self.node.run(action)
+    }
+    
     deinit {
         self.node.removeFromParent()
     }

@@ -70,6 +70,13 @@ class Const {
         static let homeId = "home"
     }
     
+    class Animation {
+        static let waitSec = 0.2
+        static let collapseSec = 0.15
+        static let expandSec = 0.15
+        static let blinkSec = 0.12
+    }
+    
     static let backgroudColor = UIColor(white: 0.15, alpha: 0)
     
     // Default: HelveticaNeue-UltraLight.
