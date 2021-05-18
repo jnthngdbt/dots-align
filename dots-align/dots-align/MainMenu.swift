@@ -96,6 +96,38 @@ class MainMenu: Menu {
         self.buttons.append(Button(scene: scene, text: timeGameText, id: Const.Button.startTimedGameId))
         
         self.arrange(scene: scene)
+        
+        self.animateIn()
+    }
+    
+    func update() {
+        let dt = 0.016 // ms for 60 hz
+        let radPerSec = Scalar.pi / 60
+        let rad = dt * radPerSec
+        let q = Quat(angle: rad, axis: simd_normalize(Vector3d(-1, 1, 0)))
+        self.cloud.rotate(quaternion: q)
+    }
+    
+    private func animateIn() {
+        let blinkUp = SKAction.group([
+            SKAction.fadeAlpha(by: 0, duration: 0.05),
+            SKAction.scale(to: 1.5, duration: 0.05)
+        ])
+        
+        let blinkDown = SKAction.group([
+            SKAction.fadeAlpha(by: 0, duration: 0.05),
+            SKAction.scale(to: 1.0, duration: 0.05)
+        ])
+        
+        let animation = SKAction.sequence([
+            SKAction.scale(to: 0, duration: 0.0),
+            SKAction.wait(forDuration: 0.5),
+            SKAction.scale(to: 1, duration: 0.2),
+            blinkUp,
+            blinkDown
+        ])
+        
+        self.cloud.animate(action: animation)
     }
 }
 

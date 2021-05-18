@@ -43,7 +43,7 @@ class GameScene: SKScene {
     
     // Scene will appear. Create content here. (not "touch moved")
     override func didMove(to view: SKView) {
-        self.backgroundColor = Const.backgroudColor
+        self.backgroundColor = Const.backgroundColor
         
         self.orbDiameter = Const.Scene.orbDiameterFactor * self.minSize()
         
@@ -88,7 +88,7 @@ class GameScene: SKScene {
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) { }
     
     override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
+        self.mainMenu?.update()
     }
     
     func manageButtonTap(touches: Set<UITouch>) -> Bool {

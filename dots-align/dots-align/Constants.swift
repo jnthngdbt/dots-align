@@ -51,7 +51,7 @@ class Const {
     
     class Menu {
         static let spacingFactor: CGFloat = 0.025
-        static let sphereDiameterFactor: CGFloat = 2.0
+        static let sphereDiameterFactor: CGFloat = 1.8
         static let sphereNbDots = 200
         static let sphereDotsColor = UIColor(white: 0.3, alpha: 0.6)
     }
@@ -77,7 +77,7 @@ class Const {
         static let blinkSec = 0.12
     }
     
-    static let backgroudColor = UIColor(white: 0.15, alpha: 0)
+    static let backgroundColor = UIColor(white: 0.15, alpha: 1)
     
     // Default: HelveticaNeue-UltraLight.
     // Some nice: HelveticaNeue, AvenirNextCondensed, AvenirNext
