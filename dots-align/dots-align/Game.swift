@@ -14,21 +14,29 @@ class Game {
     var score = 0
     var left = Const.Game.maxLevel
     var isGameEnded = false
+    var levelScoreLabel: SKLabelNode!
     
     init(scene: GameScene) {
         self.indicators = GameIndicators(scene: scene)
         self.level = Level(scene: scene, indicators: self.indicators)
         self.indicators.update(name: IndicatorNames.score, value: 0)
         self.indicators.update(name: IndicatorNames.left, value: self.left)
+        
+        var pos = scene.center()
+        pos.y += (0.5 * Const.Game.sphereDiameterFactor + 0.05) * scene.minSize()
+        self.levelScoreLabel = SKLabelNode(text: "0")
+        self.levelScoreLabel.fontColor = UIColor(white: 0.6, alpha: 1)
+        self.levelScoreLabel.fontName = Const.fontName
+        self.levelScoreLabel.fontSize = 0.08 * scene.minSize()
+        self.levelScoreLabel.position = pos
+        self.levelScoreLabel.alpha = 0 // start hidden
+        scene.addChild(self.levelScoreLabel)
     }
     
     func checkIfLevelSolved() {
         if self.level.cloud.isAligned() {
             self.level.solve()
-            
-            let levelScore = self.level.computeScore()
-            self.score += levelScore
-            self.indicators.update(name: IndicatorNames.score, value: levelScore, prefix: "+", highlight: true)
+            self.updateLevelScoreLabel()
         }
     }
     
@@ -44,6 +52,25 @@ class Game {
                 self.indicators.update(name: IndicatorNames.left, value: self.left)
             }
         }
+    }
+    
+    func updateLevelScoreLabel() {
+        let levelScore = self.level.computeScore()
+        self.score += levelScore
+        self.levelScoreLabel.text = String(levelScore)
+        
+        let animation = SKAction.sequence([
+            SKAction.fadeAlpha(to: 1.0, duration: Const.Animation.blinkSec),
+            SKAction.fadeAlpha(to: 0.6, duration: Const.Animation.blinkSec),
+            SKAction.wait(forDuration: Const.Animation.blinkWaitSec),
+            SKAction.fadeAlpha(to: 0.0, duration: 0.3),
+        ])
+        
+        self.levelScoreLabel.run(animation)
+    }
+    
+    deinit {
+        self.levelScoreLabel.removeFromParent()
     }
 }
 

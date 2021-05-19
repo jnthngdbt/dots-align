@@ -71,10 +71,10 @@ class Const {
     }
     
     class Animation {
-        static let waitSec = 0.2
         static let collapseSec = 0.15
         static let expandSec = 0.15
-        static let blinkSec = 0.12
+        static let blinkSec = 0.06
+        static let blinkWaitSec = 0.3
     }
     
     static let backgroundColor = UIColor(white: 0.15, alpha: 1)
