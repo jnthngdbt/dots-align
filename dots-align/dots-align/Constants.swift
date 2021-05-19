@@ -45,7 +45,7 @@ class Const {
     }
     
     class Indicators {
-        static let fontColor = UIColor(white: 0.4, alpha: 1)
+        static let fontColor = UIColor(red: 0.5, green: 0.5, blue: 0.8, alpha: 1)
         static let fontColorHighlight = UIColor(white: 0.8, alpha: 1)
     }
     
@@ -59,9 +59,9 @@ class Const {
     class Button {
         static let fillColor = UIColor(white: 0.1, alpha: 1)
         static let fontColor = UIColor(red: 0.5, green: 0.5, blue: 0.8, alpha: 1)
-        static let fontSizeFactor: CGFloat = 0.08
-        static let widthFactor: CGFloat = 0.75
-        static let heightFactor: CGFloat = 0.18
+        static let fontSizeFactor: CGFloat = 0.07
+        static let widthFactor: CGFloat = 0.65
+        static let heightFactor: CGFloat = 0.14
         
         static let tutorialId = "tutorial"
         static let startLevelGameId = "startLevelGame"

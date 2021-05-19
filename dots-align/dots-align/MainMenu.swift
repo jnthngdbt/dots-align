@@ -77,6 +77,7 @@ class Menu {
 
 class MainMenu: Menu {
     let cloud: Cloud!
+    let title: SKLabelNode!
     
     init(scene: GameScene) {
         // Set cloud.
@@ -84,6 +85,8 @@ class MainMenu: Menu {
         let points = Cloud.generateSymmetricRandomPoints(nbPoints: Const.Menu.sphereNbDots)
         self.cloud = Cloud(points: points, scene: scene, color: Const.Menu.sphereDotsColor, radius: radius)
         self.cloud.desalign()
+        
+        self.title = SKLabelNode(text: "ALIGN DOTS")
         
         super.init()
         
@@ -96,6 +99,14 @@ class MainMenu: Menu {
         self.buttons.append(Button(scene: scene, text: timeGameText, id: Const.Button.startTimedGameId))
         
         self.arrange(scene: scene)
+        
+        self.title.fontColor = Const.Button.fillColor
+        self.title.fontName = "AvenirNextCondensed-Heavy"
+        self.title.fontSize = 0.16 * scene.minSize()
+        self.title.position = CGPoint(x: self.buttons.last!.shape.position.x, y: 0.85 * scene.size.height)
+        self.title.zPosition = self.buttons.last!.shape.zPosition
+        self.title.verticalAlignmentMode = .center
+        scene.addChild(self.title)
         
         self.animateIn()
     }
@@ -128,6 +139,10 @@ class MainMenu: Menu {
         ])
         
         self.cloud.animate(action: animation)
+    }
+    
+    deinit {
+        self.title.removeFromParent()
     }
 }
 
