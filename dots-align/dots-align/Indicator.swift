@@ -16,11 +16,12 @@ class Indicator {
         let h = scene.size.height
         let w = scene.size.width
 
-        let labelPosY = h * (1 - 0.05)
+        let labelPosY = 0.94 * h
         let dataPosY = labelPosY - 0.08 * scene.minSize()
 
+        let padding = 0.14 * scene.minSize() // left and right padding, indicators are centered and distributed on remaining
         let nbIndicators = IndicatorNames.allCases.count
-        let posX = w * CGFloat(idx + 1) / CGFloat(nbIndicators + 1)
+        let posX = padding + (w - 2.0 * padding) * CGFloat(idx) / CGFloat(nbIndicators - 1)
         
         label.position = CGPoint(x: posX, y: labelPosY)
         data.position = CGPoint(x: posX, y: dataPosY)

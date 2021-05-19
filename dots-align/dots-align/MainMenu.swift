@@ -57,6 +57,17 @@ class Menu {
             return
         }
         
+        var pos = getTopPosition(scene: scene)
+        
+        for b in self.buttons {
+            let halfHeight = 0.5 * b.shape.frame.height
+            pos.y -= halfHeight
+            b.shape.position = pos
+            pos.y -= halfHeight + b.spacingAfter
+        }
+    }
+    
+    func getTopPosition(scene: GameScene) -> CGPoint {
         var totalHeight: CGFloat = 0.0
         for b in self.buttons {
             totalHeight += b.shape.frame.height + b.spacingAfter
@@ -66,12 +77,7 @@ class Menu {
         var pos = scene.center()
         pos.y += 0.5 * totalHeight
         
-        for b in self.buttons {
-            let halfHeight = 0.5 * b.shape.frame.height
-            pos.y -= halfHeight
-            b.shape.position = pos
-            pos.y -= halfHeight + b.spacingAfter
-        }
+        return pos
     }
 }
 
@@ -100,15 +106,24 @@ class MainMenu: Menu {
         
         self.arrange(scene: scene)
         
+        self.setTitle(scene: scene)
+        
+        self.animateIn()
+    }
+    
+    func setTitle(scene: GameScene) {
+        // Center title between screen top and buttons.
+        let buttonTopPos = self.getTopPosition(scene: scene)
+        let titlePosX = self.buttons.last!.shape.position.x
+        let titlePosY = buttonTopPos.y + 0.5 * (scene.size.height - buttonTopPos.y)
+        
         self.title.fontColor = Const.Button.fillColor
         self.title.fontName = "AvenirNextCondensed-Heavy"
         self.title.fontSize = 0.16 * scene.minSize()
-        self.title.position = CGPoint(x: self.buttons.last!.shape.position.x, y: 0.85 * scene.size.height)
+        self.title.position = CGPoint(x: titlePosX, y: titlePosY)
         self.title.zPosition = self.buttons.last!.shape.zPosition
         self.title.verticalAlignmentMode = .center
         scene.addChild(self.title)
-        
-        self.animateIn()
     }
     
     func update() {
@@ -150,8 +165,8 @@ class EndGameMenu: Menu {
     init(scene: GameScene, score: Int) {
         super.init()
         
-        self.addScoreLabel(scene: scene, label: "SCORE", value: score, spacingAfterFactor: 1.0)
-        self.addScoreLabel(scene: scene, label: "BEST", value: score, spacingAfterFactor: 3.0)
+        self.addScoreLabel(scene: scene, label: "SCORE", value: score, spacingAfterFactor: 2.0)
+        self.addScoreLabel(scene: scene, label: "BEST", value: score, spacingAfterFactor: 5.0)
         
         self.buttons.append(Button(scene: scene, text: "REPLAY", id: Const.Button.replayGameId))
         self.buttons.append(Button(scene: scene, text: "HOME", id: Const.Button.homeId))
@@ -164,14 +179,14 @@ class EndGameMenu: Menu {
         scoreLabel.shape.fillColor = UIColor.clear
         scoreLabel.label.fontSize *= 2.25
         scoreLabel.shape.setScale(0.4)
-        scoreLabel.label.fontColor = Const.Indicators.fontColor
+        scoreLabel.label.fontColor = UIColor(white: 0.4, alpha: 1)
         scoreLabel.spacingAfter *= 0
         self.buttons.append(scoreLabel)
         
         let scoreButton = Button(scene: scene, text: String(value))
         scoreButton.shape.fillColor = UIColor.clear
         scoreButton.label.fontSize *= 2.25
-        scoreButton.label.fontColor = Const.Indicators.fontColor
+        scoreButton.label.fontColor = UIColor(white: 0.4, alpha: 1)
         scoreButton.spacingAfter *= spacingAfterFactor
         self.buttons.append(scoreButton)
     }
