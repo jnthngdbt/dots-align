@@ -29,6 +29,8 @@ class GameScene: SKScene {
     var mainMenu: MainMenu?
     var endGameMenu: EndGameMenu?
     
+    var gameMode = GameMode.level
+    
     var orbDiameter: CGFloat = 1.0
     
     func minSize() -> CGFloat {
@@ -81,7 +83,7 @@ class GameScene: SKScene {
         if !isButtonTapped {
             self.game?.newLevelIfNecessary(scene: self)
             if self.game?.isGameEnded == true {
-                self.showEndGameMenu(score: self.game!.score)
+                self.showEndGameMenu()
             }
         }
     }
@@ -97,10 +99,13 @@ class GameScene: SKScene {
             let node = atPoint(location)
             
             if node.name == Const.Button.startLevelGameId {
-                self.startGame()
+                self.startGame(mode: GameMode.level)
+                return true
+            } else if node.name == Const.Button.startTimedGameId {
+                self.startGame(mode: GameMode.time)
                 return true
             } else if node.name == Const.Button.replayGameId {
-                self.startGame()
+                self.startGame(mode: self.gameMode)
                 return true
             } else if node.name == Const.Button.homeId {
                 self.showMainMenu()
@@ -111,24 +116,46 @@ class GameScene: SKScene {
         return false
     }
     
-    func startGame() {
+    func startGame(mode: GameMode) {
+        self.gameMode = mode
+        
         self.orb = Orb(scene: self)
-        self.game = Game(scene: self)
+        self.game = Game(scene: self, mode: mode)
         self.mainMenu = nil
         self.endGameMenu = nil
+        
+        if mode == GameMode.time {
+            let countdownStep = SKAction.sequence([
+                SKAction.wait(forDuration: 1.0),
+                SKAction.run(self.game!.timeCountdown)
+            ])
+
+            let countdown = SKAction.sequence([
+                SKAction.repeat(countdownStep, count: Const.Game.maxSeconds),
+                SKAction.run(self.showEndGameMenu)
+            ])
+            
+            run(countdown, withKey: Const.Game.countdownKey)
+        }
     }
     
     func showMainMenu() {
         self.orb = nil
-        self.game = nil
+        self.clearGame()
         self.mainMenu = MainMenu(scene: self)
         self.endGameMenu = nil
     }
     
-    func showEndGameMenu(score: Int) {
+    func showEndGameMenu() {
+        let score = self.game?.score ?? 0
         self.orb = nil
-        self.game = nil
+        self.clearGame()
         self.mainMenu = nil
         self.endGameMenu = EndGameMenu(scene: self, score: score)
+    }
+    
+    func clearGame() {
+        self.game = nil
+        self.removeAction(forKey: Const.Game.countdownKey)
     }
 }

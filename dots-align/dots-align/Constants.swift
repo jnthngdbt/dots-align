@@ -9,6 +9,7 @@ import Foundation
 import SpriteKit
 
 enum IndicatorNames: Int, CaseIterable { case left, dots, bonus, score  }
+enum GameMode: Int, CaseIterable { case tutorial, level, time  }
 
 class Const {
     class Dot {
@@ -35,7 +36,8 @@ class Const {
     
     class Game {
         static let maxLevel = 5
-        static let maxSeconds = 60
+        static let maxSeconds = 10
+        static let countdownKey = "gameCountdown"
         static let sphereDiameterFactor: CGFloat = 0.6
     }
     
@@ -51,8 +53,8 @@ class Const {
     
     class Menu {
         static let spacingFactor: CGFloat = 0.025
-        static let sphereDiameterFactor: CGFloat = 1.8
-        static let sphereNbDots = 200
+        static let sphereDiameterFactor: CGFloat = 0.8
+        static let sphereNbDots = 180
         static let sphereDotsColor = UIColor(white: 0.3, alpha: 0.6)
     }
     

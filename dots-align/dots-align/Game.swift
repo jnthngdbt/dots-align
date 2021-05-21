@@ -9,6 +9,7 @@ import Foundation
 import SpriteKit
 
 class Game {
+    let mode: GameMode
     var level: Level!
     var indicators: GameIndicators!
     var score = 0
@@ -16,9 +17,17 @@ class Game {
     var isGameEnded = false
     var levelScoreLabel: SKLabelNode!
     
-    init(scene: GameScene) {
+    init(scene: GameScene, mode: GameMode) {
+        self.mode = mode
         self.indicators = GameIndicators(scene: scene)
         self.level = Level(scene: scene, indicators: self.indicators)
+        
+        switch self.mode {
+        case GameMode.level: self.left = Const.Game.maxLevel
+        case GameMode.time: self.left = Const.Game.maxSeconds
+        default: self.left = 1
+        }
+        
         self.indicators.update(name: IndicatorNames.score, value: 0)
         self.indicators.update(name: IndicatorNames.left, value: self.left)
         
@@ -42,15 +51,19 @@ class Game {
     
     func newLevelIfNecessary(scene: GameScene) {
         if self.level.solved {
-            self.left -= 1
-            
-            if self.left <= 0 {
-                self.isGameEnded = true
-            } else {
-                self.level = Level(scene: scene, indicators: self.indicators)
-                self.indicators.update(name: IndicatorNames.score, value: self.score)
+            if self.mode == GameMode.level {
+                self.left -= 1
+                
                 self.indicators.update(name: IndicatorNames.left, value: self.left)
+                
+                if self.left <= 0 {
+                    self.isGameEnded = true
+                    return
+                }
             }
+            
+            self.level = Level(scene: scene, indicators: self.indicators)
+            self.indicators.update(name: IndicatorNames.score, value: self.score)
         }
     }
     
@@ -67,6 +80,11 @@ class Game {
         ])
         
         self.levelScoreLabel.run(animation)
+    }
+    
+    func timeCountdown() {
+        self.left -= 1
+        self.indicators.update(name: IndicatorNames.left, value: self.left)
     }
     
     deinit {

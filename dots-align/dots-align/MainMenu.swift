@@ -117,7 +117,7 @@ class MainMenu: Menu {
         let titlePosX = self.buttons.last!.shape.position.x
         let titlePosY = buttonTopPos.y + 0.5 * (scene.size.height - buttonTopPos.y)
         
-        self.title.fontColor = Const.Button.fillColor
+        self.title.fontColor = UIColor(white: 0.5, alpha: 1)
         self.title.fontName = "AvenirNextCondensed-Heavy"
         self.title.fontSize = 0.16 * scene.minSize()
         self.title.position = CGPoint(x: titlePosX, y: titlePosY)
@@ -136,19 +136,19 @@ class MainMenu: Menu {
     
     private func animateIn() {
         let blinkUp = SKAction.group([
-            SKAction.fadeAlpha(by: 0, duration: 0.05),
-            SKAction.scale(to: 1.5, duration: 0.05)
+            SKAction.fadeAlpha(by: 0.0, duration: 0.05),
+            SKAction.scale(to: 1.3, duration: 0.05)
         ])
         
         let blinkDown = SKAction.group([
-            SKAction.fadeAlpha(by: 0, duration: 0.05),
+            SKAction.fadeAlpha(by: -0.0, duration: 0.05),
             SKAction.scale(to: 1.0, duration: 0.05)
         ])
         
         let animation = SKAction.sequence([
             SKAction.scale(to: 0, duration: 0.0),
             SKAction.wait(forDuration: 0.5),
-            SKAction.scale(to: 1, duration: 0.2),
+            SKAction.scale(to: 1, duration: 0.1),
             blinkUp,
             blinkDown
         ])
