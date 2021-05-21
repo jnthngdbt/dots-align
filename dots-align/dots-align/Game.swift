@@ -11,7 +11,7 @@ import SpriteKit
 class Game {
     let mode: GameMode
     var level: Level!
-    var indicators: GameIndicators!
+    var indicators: GameIndicators?
     var score = 0
     var left = Const.Game.maxLevel
     var isGameEnded = false
@@ -19,8 +19,14 @@ class Game {
     
     init(scene: GameScene, mode: GameMode) {
         self.mode = mode
-        self.indicators = GameIndicators(scene: scene)
-        self.level = Level(scene: scene, indicators: self.indicators)
+    
+        if mode == GameMode.tutorial {
+            self.indicators = nil
+        } else {
+            self.indicators = GameIndicators(scene: scene)
+        }
+        
+        self.level = Level(scene: scene, indicators: self.indicators, mode: mode)
         
         switch self.mode {
         case GameMode.level: self.left = Const.Game.maxLevel
@@ -28,8 +34,8 @@ class Game {
         default: self.left = 1
         }
         
-        self.indicators.update(name: IndicatorNames.score, value: 0)
-        self.indicators.update(name: IndicatorNames.left, value: self.left)
+        self.indicators?.update(name: IndicatorNames.score, value: 0)
+        self.indicators?.update(name: IndicatorNames.left, value: self.left)
         
         var pos = scene.center()
         pos.y += (0.5 * Const.Game.sphereDiameterFactor + 0.05) * scene.minSize()
@@ -45,7 +51,10 @@ class Game {
     func checkIfLevelSolved() {
         if self.level.cloud.isAligned() {
             self.level.solve()
-            self.updateLevelScoreLabel()
+            
+            if self.mode != GameMode.tutorial {
+                self.updateLevelScoreLabel()
+            }
         }
     }
     
@@ -54,7 +63,7 @@ class Game {
             if self.mode == GameMode.level {
                 self.left -= 1
                 
-                self.indicators.update(name: IndicatorNames.left, value: self.left)
+                self.indicators?.update(name: IndicatorNames.left, value: self.left)
                 
                 if self.left <= 0 {
                     self.isGameEnded = true
@@ -62,8 +71,8 @@ class Game {
                 }
             }
             
-            self.level = Level(scene: scene, indicators: self.indicators)
-            self.indicators.update(name: IndicatorNames.score, value: self.score)
+            self.level = Level(scene: scene, indicators: self.indicators, mode: self.mode)
+            self.indicators?.update(name: IndicatorNames.score, value: self.score)
         }
     }
     
@@ -84,7 +93,7 @@ class Game {
     
     func timeCountdown() {
         self.left -= 1
-        self.indicators.update(name: IndicatorNames.left, value: self.left)
+        self.indicators?.update(name: IndicatorNames.left, value: self.left)
     }
     
     deinit {

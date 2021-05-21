@@ -10,26 +10,26 @@ import SpriteKit
 
 class Level {
     var cloud: Cloud!
-    var indicators: GameIndicators!
+    var indicators: GameIndicators?
     
     var nbPatternPoints = 0
     var angleCumul = 0.0
     var solved = false
     
-    init(scene: GameScene, indicators: GameIndicators) {
+    init(scene: GameScene, indicators: GameIndicators?, mode: GameMode) {
         self.indicators = indicators
         
         self.nbPatternPoints = Utils.randomOdd(inMin:Const.Level.minNbPoints, inMax:Const.Level.maxNbPoints) // odd random integer in range
         let points = Cloud.generateSymmetricRandomPoints(nbPoints: nbPatternPoints)
         
         let radius = 0.5 * Const.Game.sphereDiameterFactor * scene.minSize()
-        self.cloud = Cloud(points: points, scene: scene, color: Const.Cloud.color, radius: radius)
+        self.cloud = Cloud(points: points, scene: scene, color: Const.Cloud.color, radius: radius, addGuides: mode == GameMode.tutorial)
         self.cloud.desalign()
         
         self.animateIn()
         
-        self.indicators.update(name: IndicatorNames.dots, value: self.getTotalNbDots())
-        self.indicators.update(name: IndicatorNames.bonus, value: Const.Level.maxMultiplier, prefix: "x")
+        self.indicators?.update(name: IndicatorNames.dots, value: self.getTotalNbDots())
+        self.indicators?.update(name: IndicatorNames.bonus, value: Const.Level.maxMultiplier, prefix: "x")
     }
     
     func getTotalNbDots() -> Int {
@@ -47,7 +47,7 @@ class Level {
         self.cloud.rotate(quaternion: q)
         
         self.angleCumul += q.angle
-        self.indicators.update(name: IndicatorNames.bonus, value: self.computeMultiplier(), prefix: "x")
+        self.indicators?.update(name: IndicatorNames.bonus, value: self.computeMultiplier(), prefix: "x")
     }
     
     func solve() {

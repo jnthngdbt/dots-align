@@ -98,7 +98,10 @@ class GameScene: SKScene {
             let location = t.location(in: self)
             let node = atPoint(location)
             
-            if node.name == Const.Button.startLevelGameId {
+            if node.name == Const.Button.tutorialId {
+                self.startGame(mode: GameMode.tutorial)
+                return true
+            } else if node.name == Const.Button.startLevelGameId {
                 self.startGame(mode: GameMode.level)
                 return true
             } else if node.name == Const.Button.startTimedGameId {
