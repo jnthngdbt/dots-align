@@ -50,6 +50,7 @@ class Const {
     class Indicators {
         static let fontColor = UIColor(red: 0.5, green: 0.5, blue: 0.8, alpha: 1)
         static let fontColorHighlight = UIColor(white: 0.8, alpha: 1)
+        static let sidePaddingFactor: CGFloat = 0.14
     }
     
     class Menu {

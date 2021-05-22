@@ -23,11 +23,43 @@ class Orb {
     }
 }
 
+class HomeButton {
+    let label: SKLabelNode
+    let shape: SKShapeNode
+    
+    init(scene: GameScene) {
+        self.label = SKLabelNode(text: "×")
+        self.label.fontColor = Const.Button.fontColor
+        self.label.fontName = "AvenirNextCondensed-Regular"
+        self.label.fontSize = 0.1 * scene.minSize()
+        self.label.verticalAlignmentMode = .center
+        self.label.horizontalAlignmentMode = .center
+        self.label.name = Const.Button.homeId
+        
+        self.shape = SKShapeNode(circleOfRadius: 0.05 * scene.minSize())
+        self.shape.fillColor = Const.Button.fillColor
+        self.shape.strokeColor = UIColor.clear
+        self.shape.position = CGPoint(x: Const.Indicators.sidePaddingFactor * scene.minSize(), y: 0.1 * scene.minSize())
+        self.shape.name = Const.Button.homeId
+        
+        self.shape.addChild(self.label)
+        
+        self.shape.zPosition = 2.0 // make to be in foreground (max z of sphere dots is 1)
+        
+        scene.addChild(self.shape)
+    }
+    
+    deinit {
+        self.shape.removeFromParent() // removes child label also
+    }
+}
+
 class GameScene: SKScene {
     var game: Game?
     var orb: Orb?
     var mainMenu: MainMenu?
     var endGameMenu: EndGameMenu?
+    var homeButton: HomeButton?
     
     var gameMode = GameMode.level
     
@@ -123,6 +155,7 @@ class GameScene: SKScene {
         self.gameMode = mode
         
         self.orb = Orb(scene: self)
+        self.homeButton = HomeButton(scene: self)
         self.game = Game(scene: self, mode: mode)
         self.mainMenu = nil
         self.endGameMenu = nil
@@ -159,6 +192,7 @@ class GameScene: SKScene {
     
     func clearGame() {
         self.game = nil
+        self.homeButton = nil
         self.removeAction(forKey: Const.Game.countdownKey)
     }
 }

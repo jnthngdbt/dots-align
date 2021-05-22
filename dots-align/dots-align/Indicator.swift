@@ -19,7 +19,7 @@ class Indicator {
         let labelPosY = 0.94 * h
         let dataPosY = labelPosY - 0.08 * scene.minSize()
 
-        let padding = 0.14 * scene.minSize() // left and right padding, indicators are centered and distributed on remaining
+        let padding = Const.Indicators.sidePaddingFactor * scene.minSize() // left and right padding, indicators are centered and distributed on remaining
         let nbIndicators = IndicatorNames.allCases.count
         let posX = padding + (w - 2.0 * padding) * CGFloat(idx) / CGFloat(nbIndicators - 1)
         
