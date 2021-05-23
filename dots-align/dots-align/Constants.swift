@@ -31,7 +31,7 @@ class Const {
     class Level {
         static let minNbPoints = 4
         static let maxNbPoints = 30
-        static let maxMultiplier = 5
+        static let maxMultiplier: Int = 5
         static let maxAngleCumul = 1.5 * Scalar.pi
     }
     

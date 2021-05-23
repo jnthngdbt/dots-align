@@ -26,16 +26,24 @@ class Game {
             self.indicators = GameIndicators(scene: scene)
         }
         
-        self.level = Level(scene: scene, indicators: self.indicators, mode: mode)
-        
         switch self.mode {
         case GameMode.level: self.left = Const.Game.maxLevel
         case GameMode.time: self.left = Const.Game.maxSeconds
         default: self.left = 1
         }
         
-        self.indicators?.update(name: IndicatorNames.score, value: 0)
+        self.indicators?.indicators[IndicatorNames.left.rawValue].gauge?.max = CGFloat(self.left)
+        self.indicators?.indicators[IndicatorNames.dots.rawValue].gauge?.max = 2.0 * CGFloat(Const.Level.maxNbPoints)
+        self.indicators?.indicators[IndicatorNames.bonus.rawValue].gauge?.min = 1.0
+        self.indicators?.indicators[IndicatorNames.bonus.rawValue].gauge?.max = CGFloat(Const.Level.maxMultiplier)
+        self.indicators?.indicators[IndicatorNames.score.rawValue].gauge?.max = 1000 // TODO best score
+        
         self.indicators?.update(name: IndicatorNames.left, value: self.left)
+        self.indicators?.update(name: IndicatorNames.dots, value: 0)
+        self.indicators?.update(name: IndicatorNames.bonus, value: Const.Level.maxMultiplier)
+        self.indicators?.update(name: IndicatorNames.score, value: 0)
+        
+        self.level = Level(scene: scene, indicators: self.indicators, mode: mode)
         
         var pos = scene.center()
         pos.y += (0.5 * Const.Game.sphereDiameterFactor + 0.05) * scene.minSize()
@@ -106,7 +114,7 @@ class GameIndicators {
     
     init(scene: GameScene) {
         for i in 0..<IndicatorNames.allCases.count {
-            self.indicators.append(Indicator(scene: scene, idx: i))
+            self.indicators.append(Indicator(scene: scene, idx: i, addGauge: true))
         }
         
         self.indicators[IndicatorNames.left.rawValue].label.text = "LEFT"
@@ -122,9 +130,9 @@ class GameIndicators {
         self.indicators[IndicatorNames.score.rawValue].data.text = "0"
     }
     
-    func update(name: IndicatorNames, value: Int, prefix: String = "", highlight: Bool = false) {
+    func update(name: IndicatorNames, value: Int, gaugeValue: CGFloat? = nil, prefix: String = "", highlight: Bool = false) {
         if indicators.count > name.rawValue {
-            indicators[name.rawValue].updateData(value: value, prefix: prefix, highlight: highlight)
+            indicators[name.rawValue].updateData(value: value, gaugeValue: gaugeValue, prefix: prefix, highlight: highlight)
         }
     }
 }

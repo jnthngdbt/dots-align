@@ -29,17 +29,21 @@ class Level {
         self.animateIn()
         
         self.indicators?.update(name: IndicatorNames.dots, value: self.getTotalNbDots())
-        self.indicators?.update(name: IndicatorNames.bonus, value: Const.Level.maxMultiplier, prefix: "x")
+        self.indicators?.update(name: IndicatorNames.bonus, value: Int(Const.Level.maxMultiplier), prefix: "x")
     }
     
     func getTotalNbDots() -> Int {
         return 2 * self.nbPatternPoints
     }
     
-    func computeMultiplier() -> Int {
+    func computeMultiplier() -> CGFloat {
         let steps = Const.Level.maxAngleCumul / Scalar(Const.Level.maxMultiplier - 1)
-        let multiplier = Const.Level.maxMultiplier - Int(angleCumul / steps)
-        return max(1, multiplier)
+        let multiplier = Scalar(Const.Level.maxMultiplier) - self.angleCumul / steps
+        return CGFloat(max(1.0, multiplier))
+    }
+    
+    func computeMultiplierInt() -> Int {
+        return Int(ceil(self.computeMultiplier()))
     }
     
     func rotate(dir: Vector3d, speed: Scalar = 1) {
@@ -47,7 +51,7 @@ class Level {
         self.cloud.rotate(quaternion: q)
         
         self.angleCumul += q.angle
-        self.indicators?.update(name: IndicatorNames.bonus, value: self.computeMultiplier(), prefix: "x")
+        self.indicators?.update(name: IndicatorNames.bonus, value: self.computeMultiplierInt(), gaugeValue: self.computeMultiplier(), prefix: "x")
     }
     
     func solve() {
@@ -60,7 +64,7 @@ class Level {
     }
     
     func computeScore() -> Int {
-        return self.getTotalNbDots() * self.computeMultiplier()
+        return self.getTotalNbDots() * self.computeMultiplierInt()
     }
     
     private func animateIn() {
