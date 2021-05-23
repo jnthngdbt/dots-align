@@ -14,7 +14,7 @@ class Level {
     
     var nbPatternPoints = 0
     var angleCumul = 0.0
-    var solved = false
+    var ended = false
     
     init(scene: GameScene, indicators: GameIndicators?, mode: GameMode) {
         self.indicators = indicators
@@ -55,7 +55,7 @@ class Level {
     }
     
     func solve() {
-        self.solved = true
+        self.ended = true
 
         let dir = Const.Cloud.alignedOrientation - self.cloud.orientation
         self.cloud.rotate(dir: dir)
@@ -77,7 +77,7 @@ class Level {
         self.cloud.animate(action: animation)
     }
     
-    private func animateOut() {
+    func animateOut() {
         self.animateOutCloud()
     }
     

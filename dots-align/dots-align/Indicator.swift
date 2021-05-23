@@ -41,6 +41,11 @@ class ProgressBar {
         self.fill.position.x = rect.origin.x - 0.5 * (1.0 - ratio) * rect.width
     }
     
+    func animate(action: SKAction) {
+        self.edge.run(action)
+        self.fill.run(action)
+    }
+    
     deinit {
         self.edge.removeFromParent()
         self.fill.removeFromParent()
@@ -100,6 +105,12 @@ class Indicator {
         }
         
         self.gauge?.setValue(value: gauge!)
+    }
+    
+    func animate(action: SKAction) {
+        self.label.run(action)
+        self.data.run(action)
+        self.gauge?.animate(action: action)
     }
     
     deinit {

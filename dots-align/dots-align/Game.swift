@@ -14,7 +14,7 @@ class Game {
     var indicators: GameIndicators?
     var score = 0
     var left = Const.Game.maxLevel
-    var isGameEnded = false
+    var ended = false
     var levelScoreLabel: SKLabelNode!
     
     init(scene: GameScene, mode: GameMode) {
@@ -67,14 +67,14 @@ class Game {
     }
     
     func newLevelIfNecessary(scene: GameScene) {
-        if self.level.solved {
+        if self.level.ended {
             if self.mode == GameMode.level {
                 self.left -= 1
                 
                 self.indicators?.update(name: IndicatorNames.left, value: self.left)
                 
                 if self.left <= 0 {
-                    self.isGameEnded = true
+                    self.ended = true
                     return
                 }
             }
@@ -133,6 +133,12 @@ class GameIndicators {
     func update(name: IndicatorNames, value: Int, gaugeValue: CGFloat? = nil, prefix: String = "", highlight: Bool = false) {
         if indicators.count > name.rawValue {
             indicators[name.rawValue].updateData(value: value, gaugeValue: gaugeValue, prefix: prefix, highlight: highlight)
+        }
+    }
+    
+    func animate(action: SKAction) {
+        for i in self.indicators {
+            i.animate(action: action)
         }
     }
 }

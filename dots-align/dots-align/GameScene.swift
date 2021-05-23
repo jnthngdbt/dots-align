@@ -89,7 +89,7 @@ class GameScene: SKScene {
             return
         }
         
-        if self.game!.level.solved {
+        if self.game!.level.ended || self.game!.ended {
             return
         }
         
@@ -114,8 +114,8 @@ class GameScene: SKScene {
         
         if !isButtonTapped {
             self.game?.newLevelIfNecessary(scene: self)
-            if self.game?.isGameEnded == true {
-                self.showEndGameMenu()
+            if self.game?.ended == true {
+                self.endGameAnimation()
             }
         }
     }
@@ -168,10 +168,25 @@ class GameScene: SKScene {
 
             let countdown = SKAction.sequence([
                 SKAction.repeat(countdownStep, count: Const.Game.maxSeconds),
-                SKAction.run(self.showEndGameMenu)
+                SKAction.run(self.endGameAnimation)
             ])
             
             run(countdown, withKey: Const.Game.countdownKey)
+        }
+    }
+    
+    func endGameAnimation() {
+        self.game?.ended = true
+        self.game?.level.cloud.animate(action: SKAction.scale(to: 0, duration: Const.Animation.collapseSec))
+        self.game?.indicators?.animate(action: SKAction.scale(to: 0, duration: Const.Animation.collapseSec))
+        
+        let animation = SKAction.sequence([
+            SKAction.wait(forDuration: 1.0),
+            SKAction.scale(to: 0, duration: Const.Animation.collapseSec)
+        ])
+        
+        self.orb?.node.run(animation) {
+            self.showEndGameMenu()
         }
     }
     
