@@ -35,6 +35,8 @@ class Button {
         
         self.shape.zPosition = 2.0 // make to be in foreground (max z of sphere dots is 1)
         
+        self.shape.alpha = 0.0 // start hidden to make sure to not show it before being ready
+        
         self.spacingAfter = Const.Menu.spacingFactor * scene.minSize()
         
         scene.addChild(self.shape)
@@ -78,6 +80,12 @@ class Menu {
         pos.y += 0.5 * totalHeight
         
         return pos
+    }
+    
+    func animateButtons(action: SKAction) {
+        for b in self.buttons {
+            b.shape.run(action)
+        }
     }
 }
 
@@ -135,6 +143,11 @@ class MainMenu: Menu {
     }
     
     private func animateIn() {
+        self.animateInButtons()
+        self.animateInCloud()
+    }
+    
+    private func animateInCloud() {
         let blinkUp = SKAction.group([
             SKAction.fadeAlpha(by: 0.0, duration: 0.05),
             SKAction.scale(to: 1.3, duration: 0.05)
@@ -156,6 +169,16 @@ class MainMenu: Menu {
         self.cloud.animate(action: animation)
     }
     
+    private func animateInButtons() {
+        let animation = SKAction.sequence([
+            SKAction.fadeAlpha(to: 0, duration: 0.0),
+            SKAction.wait(forDuration: 0.25),
+            SKAction.fadeAlpha(to: 1, duration: 0.1)
+        ])
+        
+        self.animateButtons(action: animation)
+    }
+    
     deinit {
         self.title.removeFromParent()
     }
@@ -172,6 +195,22 @@ class EndGameMenu: Menu {
         self.buttons.append(Button(scene: scene, text: "HOME", id: Const.Button.homeId))
         
         self.arrange(scene: scene)
+        
+        self.animateIn()
+    }
+    
+    private func animateIn() {
+        self.animateInButtons()
+    }
+    
+    private func animateInButtons() {
+        let animation = SKAction.sequence([
+            SKAction.fadeAlpha(to: 0, duration: 0.0),
+            SKAction.wait(forDuration: 0.5),
+            SKAction.fadeAlpha(to: 1, duration: 0.1)
+        ])
+        
+        self.animateButtons(action: animation)
     }
     
     func addScoreLabel(scene: GameScene, label: String, value: Int, spacingAfterFactor: CGFloat = 1.0) {
