@@ -79,6 +79,7 @@ class Const {
         static let expandSec = 0.15
         static let blinkSec = 0.06
         static let blinkWaitSec = 0.3
+        static let scoreRiseSec = 0.2
     }
     
     static let backgroundColor = UIColor(white: 0.15, alpha: 1)

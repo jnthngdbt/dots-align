@@ -16,6 +16,8 @@ class Game {
     var left = Const.Game.maxLevel
     var ended = false
     var levelScoreLabel: SKLabelNode!
+    var levelScoreLabelStartPos: CGPoint!
+    var levelScoreLabelEndPos: CGPoint!
     
     init(scene: GameScene, mode: GameMode) {
         self.mode = mode
@@ -45,13 +47,14 @@ class Game {
         
         self.level = Level(scene: scene, indicators: self.indicators, mode: mode)
         
-        var pos = scene.center()
-        pos.y += (0.5 * Const.Game.sphereDiameterFactor + 0.05) * scene.minSize()
+        self.levelScoreLabelStartPos = scene.center()
+        self.levelScoreLabelEndPos = scene.center()
+        self.levelScoreLabelEndPos.y += (0.5 * Const.Game.sphereDiameterFactor + 0.05) * scene.minSize()
         self.levelScoreLabel = SKLabelNode(text: "0")
         self.levelScoreLabel.fontColor = UIColor(white: 0.6, alpha: 1)
         self.levelScoreLabel.fontName = Const.fontName
-        self.levelScoreLabel.fontSize = 0.08 * scene.minSize()
-        self.levelScoreLabel.position = pos
+        self.levelScoreLabel.fontSize = 0.12 * scene.minSize()
+        self.levelScoreLabel.position = self.levelScoreLabelStartPos
         self.levelScoreLabel.alpha = 0 // start hidden
         scene.addChild(self.levelScoreLabel)
     }
@@ -90,6 +93,11 @@ class Game {
         self.levelScoreLabel.text = String(levelScore)
         
         let animation = SKAction.sequence([
+            SKAction.move(to: self.levelScoreLabelStartPos, duration: 0),
+            SKAction.group([
+                SKAction.move(to: self.levelScoreLabelEndPos, duration: Const.Animation.scoreRiseSec),
+                SKAction.fadeAlpha(to: 0.6, duration: Const.Animation.scoreRiseSec)
+            ]),
             SKAction.fadeAlpha(to: 1.0, duration: Const.Animation.blinkSec),
             SKAction.fadeAlpha(to: 0.6, duration: Const.Animation.blinkSec),
             SKAction.wait(forDuration: Const.Animation.blinkWaitSec),

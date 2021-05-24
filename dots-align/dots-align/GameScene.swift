@@ -181,7 +181,7 @@ class GameScene: SKScene {
         self.game?.indicators?.animate(action: SKAction.scale(to: 0, duration: Const.Animation.collapseSec))
         
         let animation = SKAction.sequence([
-            SKAction.wait(forDuration: 1.0),
+            SKAction.wait(forDuration: 0.5),
             SKAction.scale(to: 0, duration: Const.Animation.collapseSec)
         ])
         
