@@ -1,7 +1,8 @@
 # Logo generation
 
-- did it in PowerPoint (lol)
-- screenshot zoomed in
-- cropped in Paint (lol)
 - https://appicon.co/
   - generates the xcassets
+- copy content of \logo\AppIcons\Assets.xcassets\AppIcon.appiconset\\_ 
+  - into \logo\AppIcons\Assets.xcassets\AppIcon.appiconset
+- copy content of \logo\AppIcons\Assets.xcassets\AppIcon.appiconset
+  - into \dots-align\Assets.xcassets\AppIcon.appiconset
