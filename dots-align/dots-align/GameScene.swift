@@ -93,22 +93,14 @@ class GameScene: SKScene {
             return
         }
         
-        if let t = touches.first {
-            let dx = Scalar(t.location(in: self).x - t.previousLocation(in: self).x)
-            let dy = Scalar(t.location(in: self).y - t.previousLocation(in: self).y)
-            let v = Vector3d(dx, dy, 0)
-            
-            let radius = self.game!.level.cloud.radius
-            if radius > 0 {
-                let dir = v / Scalar(radius)
-                self.game!.level.rotate(dir: dir, speed: Const.Scene.orbitingSpeed)
-            }
-        }
-        
+        self.touchRotate(touches: touches)
         self.game!.checkIfLevelSolved()
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+    }
+    
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         let isButtonTapped = self.manageButtonTap(touches: touches)
         
@@ -123,6 +115,20 @@ class GameScene: SKScene {
     
     override func update(_ currentTime: TimeInterval) {
         self.mainMenu?.update()
+    }
+    
+    func touchRotate(touches: Set<UITouch>) {
+        if let t = touches.first {
+            let dx = Scalar(t.location(in: self).x - t.previousLocation(in: self).x)
+            let dy = Scalar(t.location(in: self).y - t.previousLocation(in: self).y)
+            let v = Vector3d(dx, dy, 0)
+            
+            let radius = self.game!.level.cloud.radius
+            if radius > 0 {
+                let dir = v / Scalar(radius)
+                self.game!.level.rotate(dir: dir, speed: Const.Scene.orbitingSpeed)
+            }
+        }
     }
     
     func manageButtonTap(touches: Set<UITouch>) -> Bool {

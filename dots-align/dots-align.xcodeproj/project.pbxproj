@@ -38,6 +38,7 @@
 		EC77FD33264C7FF600B901FD /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD32264C7FF600B901FD /* MainMenu.swift */; };
 		EC77FD34264C7FF600B901FD /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD32264C7FF600B901FD /* MainMenu.swift */; };
 		EC77FD35264C7FF600B901FD /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD32264C7FF600B901FD /* MainMenu.swift */; };
+		EC812664265DDD1C00FAA61E /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC812663265DDD1C00FAA61E /* Button.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 		EC77FD2A264C7E0F00B901FD /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		EC77FD2E264C7F3000B901FD /* Indicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Indicator.swift; sourceTree = "<group>"; };
 		EC77FD32264C7FF600B901FD /* MainMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
+		EC812663265DDD1C00FAA61E /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +133,7 @@
 			children = (
 				E100A7C8263E44F900F81153 /* AppDelegate.swift */,
 				E100A7D5263E44FC00F81153 /* Assets.xcassets */,
+				EC812663265DDD1C00FAA61E /* Button.swift */,
 				EC77FD1A264C7CD100B901FD /* Constants.swift */,
 				EC77FD1E264C7D2200B901FD /* Dot.swift */,
 				EC77FD22264C7D7000B901FD /* Cloud.swift */,
@@ -301,6 +304,7 @@
 				EC77FD2F264C7F3000B901FD /* Indicator.swift in Sources */,
 				E100A7D1263E44F900F81153 /* GameViewController.swift in Sources */,
 				E100A7C9263E44F900F81153 /* AppDelegate.swift in Sources */,
+				EC812664265DDD1C00FAA61E /* Button.swift in Sources */,
 				EC77FD23264C7D7000B901FD /* Cloud.swift in Sources */,
 				EC77FD17264C7C1B00B901FD /* Utils.swift in Sources */,
 				EC77FD27264C7DE600B901FD /* Level.swift in Sources */,

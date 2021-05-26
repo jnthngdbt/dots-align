@@ -8,51 +8,17 @@
 import Foundation
 import SpriteKit
 
-class Button {
-    let label: SKLabelNode
-    let shape: SKShapeNode
+class MenuButton: Button {
     var spacingAfter: CGFloat = 0.0
     
-    init(scene: GameScene, text: String, id: String = "") {
-        let w = Const.Button.widthFactor * scene.minSize()
-        let h = Const.Button.heightFactor * scene.minSize()
-        let size = CGSize(width: w, height: h)
-        
-        self.label = SKLabelNode(text: text)
-        self.label.fontColor = Const.Button.fontColor
-        self.label.fontName = Const.fontName
-        self.label.fontSize = Const.Button.fontSizeFactor * scene.minSize()
-        self.label.verticalAlignmentMode = .center
-        self.label.name = id
-        
-        self.shape = SKShapeNode(rectOf: size, cornerRadius: 0.5 * size.height)
-        self.shape.fillColor = Const.Button.fillColor
-        self.shape.strokeColor = UIColor.clear
-        self.shape.position = scene.center()
-        self.shape.name = id
-        
-        self.shape.addChild(self.label)
-        
-        self.shape.zPosition = 2.0 // make to be in foreground (max z of sphere dots is 1)
-        
-        self.shape.alpha = 0.0 // start hidden to make sure to not show it before being ready
-        
+    override init(scene: GameScene, text: String, id: String = "") {
+        super.init(scene: scene, text: text, id: id)
         self.spacingAfter = Const.Menu.spacingFactor * scene.minSize()
-        
-        scene.addChild(self.shape)
-    }
-    
-    func size() -> CGSize {
-        return self.shape.frame.size
-    }
-    
-    deinit {
-        self.shape.removeFromParent() // removes child label also
     }
 }
 
 class Menu {
-    var buttons = Array<Button>()
+    var buttons = Array<MenuButton>()
     
     func arrange(scene: GameScene) {
         if self.buttons.count <= 0 {
@@ -104,13 +70,13 @@ class MainMenu: Menu {
         
         super.init()
         
-        self.buttons.append(Button(scene: scene, text: "TUTORIAL", id: Const.Button.tutorialId))
+        self.buttons.append(MenuButton(scene: scene, text: "TUTORIAL", id: Const.Button.tutorialId))
         
         let levelGameText = "PLAY " + String(Const.Game.maxLevel) + " LEVELS"
-        self.buttons.append(Button(scene: scene, text: levelGameText, id: Const.Button.startLevelGameId))
+        self.buttons.append(MenuButton(scene: scene, text: levelGameText, id: Const.Button.startLevelGameId))
         
         let timeGameText = "PLAY " + String(Const.Game.maxSeconds) + " SECONDS"
-        self.buttons.append(Button(scene: scene, text: timeGameText, id: Const.Button.startTimedGameId))
+        self.buttons.append(MenuButton(scene: scene, text: timeGameText, id: Const.Button.startTimedGameId))
         
         self.arrange(scene: scene)
         
@@ -191,8 +157,8 @@ class EndGameMenu: Menu {
         self.addScoreLabel(scene: scene, label: "SCORE", value: score, spacingAfterFactor: 2.0)
         self.addScoreLabel(scene: scene, label: "BEST", value: score, spacingAfterFactor: 5.0)
         
-        self.buttons.append(Button(scene: scene, text: "REPLAY", id: Const.Button.replayGameId))
-        self.buttons.append(Button(scene: scene, text: "HOME", id: Const.Button.homeId))
+        self.buttons.append(MenuButton(scene: scene, text: "REPLAY", id: Const.Button.replayGameId))
+        self.buttons.append(MenuButton(scene: scene, text: "HOME", id: Const.Button.homeId))
         
         self.arrange(scene: scene)
         
@@ -214,7 +180,7 @@ class EndGameMenu: Menu {
     }
     
     func addScoreLabel(scene: GameScene, label: String, value: Int, spacingAfterFactor: CGFloat = 1.0) {
-        let scoreLabel = Button(scene: scene, text: label)
+        let scoreLabel = MenuButton(scene: scene, text: label)
         scoreLabel.shape.fillColor = UIColor.clear
         scoreLabel.label.fontSize *= 2.25
         scoreLabel.shape.setScale(0.4)
@@ -222,7 +188,7 @@ class EndGameMenu: Menu {
         scoreLabel.spacingAfter *= 0
         self.buttons.append(scoreLabel)
         
-        let scoreButton = Button(scene: scene, text: String(value))
+        let scoreButton = MenuButton(scene: scene, text: String(value))
         scoreButton.shape.fillColor = UIColor.clear
         scoreButton.label.fontSize *= 2.25
         scoreButton.label.fontColor = UIColor(white: 0.4, alpha: 1)
