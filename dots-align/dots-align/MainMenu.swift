@@ -62,7 +62,7 @@ class MainMenu: Menu {
     init(scene: GameScene) {
         // Set cloud.
         let radius = 0.5 * Const.Menu.sphereDiameterFactor * scene.minSize()
-        let dotRadius = 0.5 * Const.Menu.dotRadiusFactor * scene.minSize()
+        let dotRadius = Const.Menu.dotRadiusFactor * scene.minSize()
         let points = Cloud.generateSymmetricRandomPoints(nbPoints: Const.Menu.sphereNbDots)
         self.cloud = Cloud(points: points, scene: scene, color: Const.Menu.sphereDotsColor, radius: radius, dotRadius: dotRadius)
         self.cloud.desalign()
@@ -115,22 +115,10 @@ class MainMenu: Menu {
     }
     
     private func animateInCloud() {
-        let blinkUp = SKAction.group([
-            SKAction.fadeAlpha(by: 0.0, duration: 0.05),
-            SKAction.scale(to: 1.3, duration: 0.05)
-        ])
-        
-        let blinkDown = SKAction.group([
-            SKAction.fadeAlpha(by: -0.0, duration: 0.05),
-            SKAction.scale(to: 1.0, duration: 0.05)
-        ])
-        
         let animation = SKAction.sequence([
-            SKAction.scale(to: 0, duration: 0.0),
+            SKAction.fadeAlpha(to: 0, duration: 0.0),
             SKAction.wait(forDuration: 0.5),
-            SKAction.scale(to: 1, duration: 0.1),
-            blinkUp,
-            blinkDown
+            SKAction.fadeAlpha(to: 1, duration: 1.0)
         ])
         
         self.cloud.animate(action: animation)
@@ -138,9 +126,10 @@ class MainMenu: Menu {
     
     private func animateInButtons() {
         let animation = SKAction.sequence([
-            SKAction.fadeAlpha(to: 0, duration: 0.0),
+            SKAction.scale(to: 0, duration: 0.0),
             SKAction.wait(forDuration: 0.25),
-            SKAction.fadeAlpha(to: 1, duration: 0.1)
+            SKAction.fadeAlpha(to: 1, duration: 0.0),
+            SKAction.scale(to: 1, duration: Const.Animation.expandSec)
         ])
         
         self.animateButtons(action: animation)

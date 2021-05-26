@@ -32,8 +32,8 @@ let accentColor = UIColor(red: 1.0, green: 0.5, blue: 0.0, alpha: 1)
 class Const {
     class Dot {
         static let radiusFactor: CGFloat = 0.02
-        static let colorDepthFactorAmplitude: CGFloat = 0.4
-        static let colorHueFactorAmplitude: CGFloat = 0.25
+        static let colorBrightnessFactorAmplitude: CGFloat = 0.5
+        static let colorHueAmplitude: CGFloat = 0.02
     }
     
     class Cloud {
@@ -76,8 +76,8 @@ class Const {
         static let spacingFactor: CGFloat = 0.025
         static let sphereDiameterFactor: CGFloat = 2.0
         static let sphereNbDots = 220
-        static let sphereDotsColor = UIColor(white: 0.25, alpha: 1)
-        static let dotRadiusFactor: CGFloat = 0.01
+        static let sphereDotsColor = UIColor(white: 0.3, alpha: 1)
+        static let dotRadiusFactor: CGFloat = 0.005
     }
     
     class Button {
