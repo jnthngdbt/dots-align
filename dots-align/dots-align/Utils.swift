@@ -13,9 +13,9 @@ typealias Vector3d = SIMD3<Scalar>
 typealias Quat = simd_quatd
 
 extension UIColor {
-    func toColor(_ color: UIColor, percentage: CGFloat) -> UIColor {
-        let percentage = max(min(percentage, 100), 0) / 100
-        switch percentage {
+    func toColor(_ color: UIColor, factor: CGFloat) -> UIColor {
+        let factor = max(min(factor, 1), 0)
+        switch factor {
             case 0: return self
             case 1: return color
             default:
@@ -23,12 +23,25 @@ extension UIColor {
                 var (r2, g2, b2, a2): (CGFloat, CGFloat, CGFloat, CGFloat) = (0, 0, 0, 0)
                 guard self.getRed(&r1, green: &g1, blue: &b1, alpha: &a1) else { return self }
                 guard color.getRed(&r2, green: &g2, blue: &b2, alpha: &a2) else { return self }
+                
+                let r = r1 + (r2 - r1) * factor
+                let g = g1 + (g2 - g1) * factor
+                let b = b1 + (b2 - b1) * factor
+                let a = a1 + (a2 - a1) * factor
 
-                return UIColor(red: CGFloat(r1 + (r2 - r1) * percentage),
-                               green: CGFloat(g1 + (g2 - g1) * percentage),
-                               blue: CGFloat(b1 + (b2 - b1) * percentage),
-                               alpha: CGFloat(a1 + (a2 - a1) * percentage))
+                return UIColor(red: r, green: g, blue: b, alpha: a)
         }
+    }
+    
+    func scale(_ scale: CGFloat) -> UIColor {
+        var (r, g, b, a): (CGFloat, CGFloat, CGFloat, CGFloat) = (0, 0, 0, 0)
+        guard self.getRed(&r, green: &g, blue: &b, alpha: &a) else { return self }
+        
+        r = min(1.0, r * scale)
+        g = min(1.0, g * scale)
+        b = min(1.0, b * scale)
+
+        return UIColor(red: r, green: g, blue: b, alpha: a)
     }
 }
 

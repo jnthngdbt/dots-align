@@ -51,26 +51,13 @@ class Dot {
     }
     
     func updateColor() {
-        let scale = self.getScaleFromDepth(amplitude: Const.Dot.depthColorAmplitude)
         
-        var r: CGFloat = 0.0
-        var g: CGFloat = 0.0
-        var b: CGFloat = 0.0
-        var a: CGFloat = 0.0
-        self.color.getRed(&r, green: &g, blue: &b, alpha: &a)
-        
-        r = min(1.0, r * scale)
-        g = min(1.0, g * scale)
-        b = min(1.0, b * scale)
-        
-        let color = UIColor(red: r, green: g, blue: b, alpha: a)
+        let amp = Const.Dot.depthColorFactorAmplitude
+        let scale = CGFloat(self.point.z) * amp + 1.0 // converts [-1, 1] z to e.g. [0.8, 1.2] for 0.2 amplitude
+        let color = self.color.scale(scale)
         
         self.node.strokeColor = UIColor.clear
         self.node.fillColor = color
-    }
-    
-    func getScaleFromDepth(amplitude: CGFloat) -> CGFloat {
-        return CGFloat(self.point.z) * amplitude + 1.0 // converts [-1, 1] z to e.g. [0.8, 1.2] for 0.2 amplitude
     }
     
     func rotate(quaternion: Quat) {
