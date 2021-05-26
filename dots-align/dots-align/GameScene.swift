@@ -142,6 +142,10 @@ class GameScene: SKScene {
             let node = atPoint(location)
             
             if isButton(name: node.name) {
+                if t.phase == .began {
+                    Button.animateFromHitNode(node: node)
+                }
+                
                 return ButtonId(rawValue: node.name!)
             }
         }

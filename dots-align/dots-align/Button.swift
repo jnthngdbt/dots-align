@@ -43,6 +43,21 @@ class Button {
         return self.shape.frame.size
     }
     
+    static func animateFromHitNode(node: SKNode) {
+        if let buttonShapeNode = Button.getShapeNode(node: node) {
+            buttonShapeNode.run(SKAction.sequence([
+                SKAction.scale(to: 1.1, duration: 0.06),
+                SKAction.scale(to: 1.0, duration: 0.06),
+            ]))
+        }
+    }
+    
+    static func getShapeNode(node: SKNode) -> SKNode? {
+        // When tapping a button, will hit either the label or the shape.
+        // The shape node is the one that has a child (the label does not).
+        return node.children.count > 0 ? node : node.parent
+    }
+    
     deinit {
         self.shape.removeFromParent() // removes child label also
     }
