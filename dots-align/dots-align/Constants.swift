@@ -11,6 +11,21 @@ import SpriteKit
 enum IndicatorNames: Int, CaseIterable { case left, dots, bonus, score  }
 enum GameMode: Int, CaseIterable { case tutorial, level, time  }
 
+enum ButtonId: String, CaseIterable { case
+    none = "",
+    tutorialId = "tutorial",
+    startLevelGameId = "startLevelGame",
+    startTimedGameId = "startTimedGame",
+    replayGameId = "replayGame",
+    homeId = "home"
+}
+
+func isButton(name: String?) -> Bool {
+    if name == nil { return false }
+    let id = ButtonId(rawValue: name!)
+    return (id != nil) && (id != ButtonId.none)
+}
+
 class Const {
     class Dot {
         static let radiusFactor: CGFloat = 0.02
@@ -66,12 +81,6 @@ class Const {
         static let fontSizeFactor: CGFloat = 0.07
         static let widthFactor: CGFloat = 0.65
         static let heightFactor: CGFloat = 0.14
-        
-        static let tutorialId = "tutorial"
-        static let startLevelGameId = "startLevelGame"
-        static let startTimedGameId = "startTimedGame"
-        static let replayGameId = "replayGame"
-        static let homeId = "home"
     }
     
     class Animation {

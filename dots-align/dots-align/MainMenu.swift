@@ -11,7 +11,7 @@ import SpriteKit
 class MenuButton: Button {
     var spacingAfter: CGFloat = 0.0
     
-    override init(scene: GameScene, text: String, id: String = "") {
+    override init(scene: GameScene, text: String, id: ButtonId = ButtonId.none) {
         super.init(scene: scene, text: text, id: id)
         self.spacingAfter = Const.Menu.spacingFactor * scene.minSize()
     }
@@ -70,13 +70,13 @@ class MainMenu: Menu {
         
         super.init()
         
-        self.buttons.append(MenuButton(scene: scene, text: "TUTORIAL", id: Const.Button.tutorialId))
+        self.buttons.append(MenuButton(scene: scene, text: "TUTORIAL", id: ButtonId.tutorialId))
         
         let levelGameText = "PLAY " + String(Const.Game.maxLevel) + " LEVELS"
-        self.buttons.append(MenuButton(scene: scene, text: levelGameText, id: Const.Button.startLevelGameId))
+        self.buttons.append(MenuButton(scene: scene, text: levelGameText, id: ButtonId.startLevelGameId))
         
         let timeGameText = "PLAY " + String(Const.Game.maxSeconds) + " SECONDS"
-        self.buttons.append(MenuButton(scene: scene, text: timeGameText, id: Const.Button.startTimedGameId))
+        self.buttons.append(MenuButton(scene: scene, text: timeGameText, id: ButtonId.startTimedGameId))
         
         self.arrange(scene: scene)
         
@@ -157,8 +157,8 @@ class EndGameMenu: Menu {
         self.addScoreLabel(scene: scene, label: "SCORE", value: score, spacingAfterFactor: 2.0)
         self.addScoreLabel(scene: scene, label: "BEST", value: score, spacingAfterFactor: 5.0)
         
-        self.buttons.append(MenuButton(scene: scene, text: "REPLAY", id: Const.Button.replayGameId))
-        self.buttons.append(MenuButton(scene: scene, text: "HOME", id: Const.Button.homeId))
+        self.buttons.append(MenuButton(scene: scene, text: "REPLAY", id: ButtonId.replayGameId))
+        self.buttons.append(MenuButton(scene: scene, text: "HOME", id: ButtonId.homeId))
         
         self.arrange(scene: scene)
         

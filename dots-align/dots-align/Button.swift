@@ -12,7 +12,7 @@ class Button {
     let label: SKLabelNode
     let shape: SKShapeNode
     
-    init(scene: GameScene, text: String, id: String = "") {
+    init(scene: GameScene, text: String, id: ButtonId = ButtonId.none) {
         let w = Const.Button.widthFactor * scene.minSize()
         let h = Const.Button.heightFactor * scene.minSize()
         let size = CGSize(width: w, height: h)
@@ -22,13 +22,13 @@ class Button {
         self.label.fontName = Const.fontName
         self.label.fontSize = Const.Button.fontSizeFactor * scene.minSize()
         self.label.verticalAlignmentMode = .center
-        self.label.name = id
+        self.label.name = id.rawValue
         
         self.shape = SKShapeNode(rectOf: size, cornerRadius: 0.5 * size.height)
         self.shape.fillColor = Const.Button.fillColor
         self.shape.strokeColor = UIColor.clear
         self.shape.position = scene.center()
-        self.shape.name = id
+        self.shape.name = id.rawValue
         
         self.shape.addChild(self.label)
         

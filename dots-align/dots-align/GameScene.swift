@@ -34,13 +34,13 @@ class HomeButton {
         self.label.fontSize = 0.1 * scene.minSize()
         self.label.verticalAlignmentMode = .center
         self.label.horizontalAlignmentMode = .center
-        self.label.name = Const.Button.homeId
+        self.label.name = ButtonId.homeId.rawValue
         
         self.shape = SKShapeNode(circleOfRadius: 0.05 * scene.minSize())
         self.shape.fillColor = Const.Button.fillColor
         self.shape.strokeColor = UIColor.clear
         self.shape.position = CGPoint(x: Const.Indicators.sidePaddingFactor * scene.minSize(), y: 0.1 * scene.minSize())
-        self.shape.name = Const.Button.homeId
+        self.shape.name = ButtonId.homeId.rawValue
         
         self.shape.addChild(self.label)
         
@@ -60,10 +60,9 @@ class GameScene: SKScene {
     var mainMenu: MainMenu?
     var endGameMenu: EndGameMenu?
     var homeButton: HomeButton?
-    
     var gameMode = GameMode.level
-    
     var orbDiameter: CGFloat = 1.0
+    var touchBeganOnButtonId: ButtonId?
     
     func minSize() -> CGFloat {
         return min(self.size.width, self.size.height)
@@ -98,19 +97,25 @@ class GameScene: SKScene {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
+        if let buttonId = testButtonHit(touches: touches) {
+            self.manageButtonTapBegin(buttonId: buttonId)
+        }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let isButtonTapped = self.manageButtonTap(touches: touches)
-        
-        if !isButtonTapped {
+        if let buttonId = testButtonHit(touches: touches) {
+            self.manageButtonTapEnd(buttonId: buttonId)
+        } else { // no button hit
             self.game?.newLevelIfNecessary(scene: self)
             if self.game?.ended == true {
                 self.endGameAnimation()
             }
         }
+        
+        // Make sure to reset button touch state at touch end.
+        self.touchBeganOnButtonId = nil
     }
+    
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) { }
     
     override func update(_ currentTime: TimeInterval) {
@@ -131,30 +136,39 @@ class GameScene: SKScene {
         }
     }
     
-    func manageButtonTap(touches: Set<UITouch>) -> Bool {
+    func testButtonHit(touches: Set<UITouch>) -> ButtonId? {
         if let t = touches.first {
             let location = t.location(in: self)
             let node = atPoint(location)
             
-            if node.name == Const.Button.tutorialId {
-                self.startGame(mode: GameMode.tutorial)
-                return true
-            } else if node.name == Const.Button.startLevelGameId {
-                self.startGame(mode: GameMode.level)
-                return true
-            } else if node.name == Const.Button.startTimedGameId {
-                self.startGame(mode: GameMode.time)
-                return true
-            } else if node.name == Const.Button.replayGameId {
-                self.startGame(mode: self.gameMode)
-                return true
-            } else if node.name == Const.Button.homeId {
-                self.showMainMenu()
-                return true
+            if isButton(name: node.name) {
+                return ButtonId(rawValue: node.name!)
             }
         }
         
-        return false
+        return nil
+    }
+    
+    func manageButtonTapBegin(buttonId: ButtonId?) {
+        self.touchBeganOnButtonId = buttonId
+    }
+    
+    func manageButtonTapEnd(buttonId: ButtonId) {
+        if buttonId == self.touchBeganOnButtonId {
+            if buttonId == ButtonId.tutorialId {
+                self.startGame(mode: GameMode.tutorial)
+            } else if buttonId == ButtonId.startLevelGameId {
+                self.startGame(mode: GameMode.level)
+            } else if buttonId == ButtonId.startTimedGameId {
+                self.startGame(mode: GameMode.time)
+            } else if buttonId == ButtonId.replayGameId {
+                self.startGame(mode: self.gameMode)
+            } else if buttonId == ButtonId.homeId {
+                self.showMainMenu()
+            }
+        }
+        
+        self.touchBeganOnButtonId = nil
     }
     
     func startGame(mode: GameMode) {
