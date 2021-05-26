@@ -48,7 +48,10 @@ extension UIColor {
         var (h, s, v, a): (CGFloat, CGFloat, CGFloat, CGFloat) = (0, 0, 0, 0)
         guard self.getHue(&h, saturation: &s, brightness: &v, alpha: &a) else { return self }
         
-        h = min(1.0, h + hue)
+        h = h + hue
+        if h < 0.0 { h = 1.0 - h }
+        if h > 1.0 { h = h - 1.0 }
+        
         v = min(1.0, v * scaleBrightness)
 
         return UIColor(hue: h, saturation: s, brightness: v, alpha: a)
