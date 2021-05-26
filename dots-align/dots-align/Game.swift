@@ -63,8 +63,13 @@ class Game {
         if self.level.cloud.isAligned() {
             self.level.solve()
             
+            let levelScore = self.level.computeScore()
+            self.score += levelScore
+            
+            self.indicators?.update(name: IndicatorNames.score, value: self.score)
+            
             if self.mode != GameMode.tutorial {
-                self.updateLevelScoreLabel()
+                self.updateLevelScoreLabel(levelScore: levelScore)
             }
         }
     }
@@ -83,13 +88,10 @@ class Game {
             }
             
             self.level = Level(scene: scene, indicators: self.indicators, mode: self.mode)
-            self.indicators?.update(name: IndicatorNames.score, value: self.score)
         }
     }
     
-    func updateLevelScoreLabel() {
-        let levelScore = self.level.computeScore()
-        self.score += levelScore
+    func updateLevelScoreLabel(levelScore: Int) {
         self.levelScoreLabel.text = String(levelScore)
         
         let animation = SKAction.sequence([
