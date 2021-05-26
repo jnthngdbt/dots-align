@@ -26,14 +26,14 @@ func isButton(name: String?) -> Bool {
     return (id != nil) && (id != ButtonId.none)
 }
 
-let labelColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
-let accentColor = UIColor(red: 1.0, green: 0.5, blue: 0.0, alpha: 1)
+let labelColor = UIColor(white: 0.45, alpha: 1)
+let accentColor = UIColor(red: 0.54, green: 0.46, blue: 1.0, alpha: 1)
 
 class Const {
     class Dot {
         static let radiusFactor: CGFloat = 0.02
         static let colorBrightnessFactorAmplitude: CGFloat = 0.5
-        static let colorHueAmplitude: CGFloat = 0.02
+        static let colorHueAmplitude: CGFloat = 0.025
     }
     
     class Cloud {
@@ -48,7 +48,7 @@ class Const {
     }
     
     class Orb {
-        static let color = UIColor(white: 0.3, alpha: 0.55)
+        static let color = UIColor(white: 0.2, alpha: 0.55)
     }
     
     class Level {
@@ -85,7 +85,7 @@ class Const {
     }
     
     class Button {
-        static let fillColor = UIColor(white: 0.2, alpha: 1)
+        static let fillColor = UIColor(white: 0.15, alpha: 1)
         static let fontColor = accentColor
         static let fontSizeFactor: CGFloat = 0.07
         static let widthFactor: CGFloat = 0.65
