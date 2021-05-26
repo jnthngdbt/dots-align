@@ -16,13 +16,13 @@ class Dot {
     var radius: CGFloat = 0.0
     var sphereRadius: CGFloat = 0.0
 
-    init(scene: GameScene, color: UIColor, point3d: Vector3d, sphereRadius: CGFloat) {
+    init(scene: GameScene, color: UIColor, point3d: Vector3d, radius: CGFloat, sphereRadius: CGFloat) {
         self.scene = scene
         self.color = color
         self.point = simd_normalize(point3d)
         
         self.sphereRadius = sphereRadius
-        self.radius = Const.Dot.radiusFactor * self.scene.minSize()
+        self.radius = radius
         self.node = SKShapeNode.init(circleOfRadius: self.radius)
         
         self.update()
