@@ -52,9 +52,11 @@ class Dot {
     
     func updateColor() {
         
-        let amp = Const.Dot.depthColorFactorAmplitude
-        let scale = CGFloat(self.point.z) * amp + 1.0 // converts [-1, 1] z to e.g. [0.8, 1.2] for 0.2 amplitude
-        let color = self.color.scale(scale)
+        let ampB = Const.Dot.colorDepthFactorAmplitude
+        let ampH = Const.Dot.colorHueFactorAmplitude
+        let scaleB = CGFloat(self.point.z) * ampB + 1.0 // converts [-1, 1] z to e.g. [0.8, 1.2] for 0.2 amplitude
+        let scaleH = CGFloat(self.point.z) * ampH + 1.0 // converts [-1, 1] z to e.g. [0.8, 1.2] for 0.2 amplitude
+        let color = self.color.scaleHsv(scaleHue: scaleH, scaleBrightness: scaleB)
         
         self.node.strokeColor = UIColor.clear
         self.node.fillColor = color

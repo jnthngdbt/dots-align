@@ -26,19 +26,20 @@ func isButton(name: String?) -> Bool {
     return (id != nil) && (id != ButtonId.none)
 }
 
-let accentColor = UIColor(red: 1.0, green: 0.5, blue: 0.0, alpha: 1)
 let labelColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
+let accentColor = UIColor(red: 1.0, green: 0.5, blue: 0.0, alpha: 1)
 
 class Const {
     class Dot {
         static let radiusFactor: CGFloat = 0.02
-        static let depthColorFactorAmplitude: CGFloat = 0.4
+        static let colorDepthFactorAmplitude: CGFloat = 0.4
+        static let colorHueFactorAmplitude: CGFloat = 0.25
     }
     
     class Cloud {
         static let alignedOrientation = Vector3d(0, 0, 1)
         static let alignedDistThresh = 0.05
-        static let color = accentColor.scale(0.95)
+        static let color = accentColor
         static let guideDotsColor = UIColor(red: 0.8, green: 0.2, blue: 0.2, alpha: 1)
     }
     

@@ -33,7 +33,7 @@ extension UIColor {
         }
     }
     
-    func scale(_ scale: CGFloat) -> UIColor {
+    func scaleRgb(_ scale: CGFloat) -> UIColor {
         var (r, g, b, a): (CGFloat, CGFloat, CGFloat, CGFloat) = (0, 0, 0, 0)
         guard self.getRed(&r, green: &g, blue: &b, alpha: &a) else { return self }
         
@@ -42,6 +42,16 @@ extension UIColor {
         b = min(1.0, b * scale)
 
         return UIColor(red: r, green: g, blue: b, alpha: a)
+    }
+    
+    func scaleHsv(scaleHue: CGFloat, scaleBrightness: CGFloat) -> UIColor {
+        var (h, s, v, a): (CGFloat, CGFloat, CGFloat, CGFloat) = (0, 0, 0, 0)
+        guard self.getHue(&h, saturation: &s, brightness: &v, alpha: &a) else { return self }
+        
+        h = min(1.0, h * scaleHue)
+        v = min(1.0, v * scaleBrightness)
+
+        return UIColor(hue: h, saturation: s, brightness: v, alpha: a)
     }
 }
 
