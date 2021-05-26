@@ -56,6 +56,12 @@ extension UIColor {
 
         return UIColor(hue: h, saturation: s, brightness: v, alpha: a)
     }
+    
+    func setAlpha(_ alpha: CGFloat) -> UIColor {
+        var (r, g, b, a): (CGFloat, CGFloat, CGFloat, CGFloat) = (0, 0, 0, 0)
+        guard self.getRed(&r, green: &g, blue: &b, alpha: &a) else { return self }
+        return UIColor(red: r, green: g, blue: b, alpha: alpha)
+    }
 }
 
 class Utils {

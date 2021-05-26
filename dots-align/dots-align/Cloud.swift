@@ -22,8 +22,8 @@ class Cloud {
         }
         
         if Const.debug || addGuides {
-            dots.append(Dot(scene: scene, color: Const.Cloud.guideDotsColor, point3d: Const.Cloud.alignedOrientation, radius: dotRadius, sphereRadius: radius))
-            dots.append(Dot(scene: scene, color: Const.Cloud.guideDotsColor, point3d: -Const.Cloud.alignedOrientation, radius: dotRadius, sphereRadius: radius))
+            dots.append(Dot(scene: scene, color: Const.Cloud.guideDotsColor, point3d: Const.Cloud.alignedOrientation, radius: 0.5 * dotRadius, sphereRadius: radius))
+            dots.append(Dot(scene: scene, color: Const.Cloud.guideDotsColor, point3d: -Const.Cloud.alignedOrientation, radius: 0.5 * dotRadius, sphereRadius: radius))
         }
     }
     

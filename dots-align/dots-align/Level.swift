@@ -24,7 +24,8 @@ class Level {
         
         let radius = 0.5 * Const.Game.sphereDiameterFactor * scene.minSize()
         let dotRadius = Const.Dot.radiusFactor * scene.minSize()
-        self.cloud = Cloud(points: points, scene: scene, color: Const.Cloud.color, radius: radius, dotRadius: dotRadius, addGuides: mode == GameMode.tutorial)
+        let color = mode == .tutorial ? Const.Tutorial.dotsColor : Const.Cloud.color
+        self.cloud = Cloud(points: points, scene: scene, color: color, radius: radius, dotRadius: dotRadius, addGuides: mode == GameMode.tutorial)
         self.cloud.desalign()
         
         self.animateIn()

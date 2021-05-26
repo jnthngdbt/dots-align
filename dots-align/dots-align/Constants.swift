@@ -40,7 +40,11 @@ class Const {
         static let alignedOrientation = Vector3d(0, 0, 1)
         static let alignedDistThresh = 0.05
         static let color = accentColor
-        static let guideDotsColor = UIColor(red: 0.8, green: 0.2, blue: 0.2, alpha: 1)
+        static let guideDotsColor = UIColor.red
+    }
+    
+    class Tutorial {
+        static let dotsColor = accentColor
     }
     
     class Orb {
