@@ -24,6 +24,7 @@ class Orb {
 }
 
 class HomeButton {
+    // TODO: why not Button?
     let label: SKLabelNode
     let shape: SKShapeNode
     
@@ -45,7 +46,7 @@ class HomeButton {
         
         self.shape.addChild(self.label)
         
-        self.shape.zPosition = 2.0 // make to be in foreground (max z of sphere dots is 1)
+        self.shape.zPosition = Const.Button.zPosition // make to be in foreground (max z of sphere dots is 1)
         
         scene.addChild(self.shape)
     }
@@ -67,6 +68,10 @@ class GameScene: SKScene {
     
     func minSize() -> CGFloat {
         return min(self.size.width, self.size.height)
+    }
+    
+    func maxSize() -> CGFloat {
+        return max(self.size.width, self.size.height)
     }
     
     func center() -> CGPoint {

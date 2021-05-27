@@ -8,31 +8,25 @@
 import Foundation
 import SpriteKit
 
-class Button {
+class ContainedLabel {
     let label: SKLabelNode
     let shape: SKShapeNode
     
-    init(scene: GameScene, text: String, id: ButtonId = ButtonId.none) {
-        let w = Const.Button.widthFactor * scene.minSize()
-        let h = Const.Button.heightFactor * scene.minSize()
-        let size = CGSize(width: w, height: h)
-        
+    init(scene: GameScene, text: String, size: CGSize, cornerRadius: CGFloat) {
         self.label = SKLabelNode(text: text)
         self.label.fontColor = Const.Button.fontColor
-        self.label.fontName = Const.fontName
+        self.label.fontName = Const.fontNameLabel
         self.label.fontSize = Const.Button.fontSizeFactor * scene.minSize()
         self.label.verticalAlignmentMode = .center
-        self.label.name = id.rawValue
         
-        self.shape = SKShapeNode(rectOf: size, cornerRadius: 0.5 * size.height)
+        self.shape = SKShapeNode(rectOf: size, cornerRadius: cornerRadius)
         self.shape.fillColor = Const.Button.fillColor
         self.shape.strokeColor = UIColor.clear
         self.shape.position = scene.center()
-        self.shape.name = id.rawValue
         
         self.shape.addChild(self.label)
         
-        self.shape.zPosition = 2.0 // make to be in foreground (max z of sphere dots is 1)
+        self.shape.zPosition = Const.Button.zPosition // make to be in foreground (max z of sphere dots is 1)
         
         self.shape.alpha = 0.0 // start hidden to make sure to not show it before being ready
         
@@ -48,7 +42,7 @@ class Button {
     }
     
     static func animateFromHitNode(node: SKNode) {
-        if let buttonShapeNode = Button.getShapeNode(node: node) {
+        if let buttonShapeNode = ContainedLabel.getShapeNode(node: node) {
             buttonShapeNode.run(SKAction.sequence([
                 SKAction.scale(to: 1.1, duration: 0.06),
                 SKAction.scale(to: 1.0, duration: 0.06),
@@ -64,5 +58,17 @@ class Button {
     
     deinit {
         self.shape.removeFromParent() // removes child label also
+    }
+}
+
+class Button: ContainedLabel {
+    init(scene: GameScene, text: String, id: ButtonId = ButtonId.none) {
+        let w = Const.Button.widthFactor * scene.minSize()
+        let h = Const.Button.heightFactor * scene.minSize()
+        let size = CGSize(width: w, height: h)
+        
+        super.init(scene: scene, text: text, size: size, cornerRadius: 0.5 * size.height)
+        self.label.name = id.rawValue
+        self.shape.name = id.rawValue
     }
 }

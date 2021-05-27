@@ -74,8 +74,8 @@ class Indicator {
         label.fontSize = 0.04 * scene.minSize()
         data.fontSize = 0.08 * scene.minSize()
 
-        label.fontName = Const.fontName
-        data.fontName = Const.fontName
+        label.fontName = Const.fontNameLabel
+        data.fontName = Const.fontNameLabel
 
         label.fontColor = Const.Indicators.fontColor
         data.fontColor = Const.Indicators.fontColor

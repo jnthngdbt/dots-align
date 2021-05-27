@@ -90,6 +90,7 @@ class Const {
         static let fontSizeFactor: CGFloat = 0.07
         static let widthFactor: CGFloat = 0.65
         static let heightFactor: CGFloat = 0.14
+        static let zPosition: CGFloat = 5.0
     }
     
     class Animation {
@@ -105,7 +106,8 @@ class Const {
     // Default: HelveticaNeue-UltraLight.
     // Some nice: HelveticaNeue, AvenirNextCondensed, AvenirNext
     // Heavy, Bold, DemiBold, Medium, Regular, UltraLight.
-    static let fontName = "AvenirNextCondensed-Bold"
+    static let fontNameText = "AvenirNextCondensed-DemiBold"
+    static let fontNameLabel = "AvenirNextCondensed-Bold"
     static let fontNameTitle = "AvenirNextCondensed-Heavy"
     
     static let debug = false

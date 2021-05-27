@@ -12,6 +12,7 @@ class Game {
     let mode: GameMode
     var level: Level!
     var indicators: GameIndicators?
+    var tutorialInstructions: TutorialInstructions?
     var score = 0
     var left = Const.Game.maxLevel
     var ended = false
@@ -24,8 +25,10 @@ class Game {
     
         if mode == GameMode.tutorial {
             self.indicators = nil
+            self.tutorialInstructions = TutorialInstructions(scene: scene)
         } else {
             self.indicators = GameIndicators(scene: scene)
+            self.tutorialInstructions = nil
         }
         
         switch self.mode {
@@ -52,7 +55,7 @@ class Game {
         self.levelScoreLabelEndPos.y += (0.5 * Const.Game.sphereDiameterFactor + 0.05) * scene.minSize()
         self.levelScoreLabel = SKLabelNode(text: "0")
         self.levelScoreLabel.fontColor = UIColor(white: 0.6, alpha: 1)
-        self.levelScoreLabel.fontName = Const.fontName
+        self.levelScoreLabel.fontName = Const.fontNameLabel
         self.levelScoreLabel.fontSize = 0.12 * scene.minSize()
         self.levelScoreLabel.position = self.levelScoreLabelStartPos
         self.levelScoreLabel.alpha = 0 // start hidden

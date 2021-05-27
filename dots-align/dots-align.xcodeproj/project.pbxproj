@@ -16,6 +16,7 @@
 		E100A7EC263E44FC00F81153 /* dots_alignUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E100A7EB263E44FC00F81153 /* dots_alignUITests.swift */; };
 		EC6F242E265F3FF30049D3EA /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC6F242D265F3FF30049D3EA /* Launch Screen.storyboard */; };
 		EC6F2434265F457F0049D3EA /* 512.png in Resources */ = {isa = PBXBuildFile; fileRef = EC6F2433265F457F0049D3EA /* 512.png */; };
+		EC6F243626604EE90049D3EA /* TutorialInstructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6F243526604EE90049D3EA /* TutorialInstructions.swift */; };
 		EC77FD17264C7C1B00B901FD /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD16264C7C1B00B901FD /* Utils.swift */; };
 		EC77FD18264C7C1B00B901FD /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD16264C7C1B00B901FD /* Utils.swift */; };
 		EC77FD19264C7C1B00B901FD /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD16264C7C1B00B901FD /* Utils.swift */; };
@@ -76,6 +77,7 @@
 		E100A7ED263E44FC00F81153 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EC6F242D265F3FF30049D3EA /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		EC6F2433265F457F0049D3EA /* 512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 512.png; path = Assets.xcassets/AppIcon.appiconset/512.png; sourceTree = "<group>"; };
+		EC6F243526604EE90049D3EA /* TutorialInstructions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialInstructions.swift; sourceTree = "<group>"; };
 		EC77FD16264C7C1B00B901FD /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		EC77FD1A264C7CD100B901FD /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		EC77FD1E264C7D2200B901FD /* Dot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dot.swift; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 				EC77FD16264C7C1B00B901FD /* Utils.swift */,
 				EC77FD32264C7FF600B901FD /* MainMenu.swift */,
 				EC6F242D265F3FF30049D3EA /* Launch Screen.storyboard */,
+				EC6F243526604EE90049D3EA /* TutorialInstructions.swift */,
 			);
 			path = "dots-align";
 			sourceTree = "<group>";
@@ -311,6 +314,7 @@
 				E100A7CF263E44F900F81153 /* GameScene.swift in Sources */,
 				EC77FD2F264C7F3000B901FD /* Indicator.swift in Sources */,
 				E100A7D1263E44F900F81153 /* GameViewController.swift in Sources */,
+				EC6F243626604EE90049D3EA /* TutorialInstructions.swift in Sources */,
 				E100A7C9263E44F900F81153 /* AppDelegate.swift in Sources */,
 				EC812664265DDD1C00FAA61E /* Button.swift in Sources */,
 				EC77FD23264C7D7000B901FD /* Cloud.swift in Sources */,
