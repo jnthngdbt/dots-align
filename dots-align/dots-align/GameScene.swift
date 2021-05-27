@@ -28,15 +28,16 @@ class HomeButton {
     let shape: SKShapeNode
     
     init(scene: GameScene) {
-        self.label = SKLabelNode(text: "×")
+        self.label = SKLabelNode(text: "⬅︎")
         self.label.fontColor = Const.Button.fontColor
         self.label.fontName = "AvenirNextCondensed-Regular"
-        self.label.fontSize = 0.1 * scene.minSize()
+        self.label.fontSize = 0.06 * scene.minSize()
         self.label.verticalAlignmentMode = .center
         self.label.horizontalAlignmentMode = .center
         self.label.name = ButtonId.homeId.rawValue
         
-        self.shape = SKShapeNode(circleOfRadius: 0.05 * scene.minSize())
+        let radius = 0.05 * scene.minSize()
+        self.shape = SKShapeNode(rectOf: CGSize(width: 3 * radius, height: 2 * radius), cornerRadius: radius)
         self.shape.fillColor = Const.Button.fillColor
         self.shape.strokeColor = UIColor.clear
         self.shape.position = CGPoint(x: Const.Indicators.sidePaddingFactor * scene.minSize(), y: 0.1 * scene.minSize())
