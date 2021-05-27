@@ -27,13 +27,13 @@ func isButton(name: String?) -> Bool {
 }
 
 let labelColor = UIColor(white: 0.45, alpha: 1)
-let accentColor = UIColor(red: 0.54, green: 0.46, blue: 1.0, alpha: 1)
+let accentColor = UIColor(red: 0.55, green: 0.45, blue: 1.0, alpha: 1)
 
 class Const {
     class Dot {
-        static let radiusFactor: CGFloat = 0.02
+        static let radiusFactor: CGFloat = 0.022
         static let colorBrightnessFactorAmplitude: CGFloat = 0.5
-        static let colorHueAmplitude: CGFloat = 0.025
+        static let colorHueAmplitude: CGFloat = 0.03
     }
     
     class Cloud {
