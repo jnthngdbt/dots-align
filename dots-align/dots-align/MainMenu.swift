@@ -92,8 +92,8 @@ class MainMenu: Menu {
         let titlePosX = self.buttons.last!.shape.position.x
         let titlePosY = buttonTopPos.y + 0.5 * (scene.size.height - buttonTopPos.y)
         
-        self.title.fontColor = UIColor(white: 0.5, alpha: 1)
-        self.title.fontName = "AvenirNextCondensed-Heavy"
+        self.title.fontColor = labelColor
+        self.title.fontName = Const.fontNameTitle
         self.title.fontSize = 0.16 * scene.minSize()
         self.title.position = CGPoint(x: titlePosX, y: titlePosY)
         self.title.zPosition = self.buttons.last!.shape.zPosition
@@ -144,8 +144,10 @@ class EndGameMenu: Menu {
     init(scene: GameScene, score: Int) {
         super.init()
         
-        self.addScoreLabel(scene: scene, label: "SCORE", value: score, spacingAfterFactor: 2.0)
-        self.addScoreLabel(scene: scene, label: "BEST", value: score, spacingAfterFactor: 5.0)
+        self.addTitleLabel(scene: scene, label: "SCORES", spacingAfterFactor: 7.0)
+        
+        self.addScoreLabel(scene: scene, label: "THIS GAME", value: score, spacingAfterFactor: 2.0)
+        self.addScoreLabel(scene: scene, label: "YOUR BEST", value: score, spacingAfterFactor: 5.0)
         
         self.buttons.append(MenuButton(scene: scene, text: "REPLAY", id: ButtonId.replayGameId))
         self.buttons.append(MenuButton(scene: scene, text: "HOME", id: ButtonId.homeId))
@@ -167,6 +169,17 @@ class EndGameMenu: Menu {
         ])
         
         self.animateButtons(action: animation)
+    }
+    
+    func addTitleLabel(scene: GameScene, label: String, spacingAfterFactor: CGFloat = 1.0) {
+        let label = MenuButton(scene: scene, text: label)
+        label.label.fontName = Const.fontNameTitle
+        label.shape.fillColor = UIColor.clear
+        label.label.fontSize *= 3
+        label.shape.setScale(1.0)
+        label.label.fontColor = UIColor(white: 0.4, alpha: 1)
+        label.spacingAfter *= spacingAfterFactor
+        self.buttons.append(label)
     }
     
     func addScoreLabel(scene: GameScene, label: String, value: Int, spacingAfterFactor: CGFloat = 1.0) {

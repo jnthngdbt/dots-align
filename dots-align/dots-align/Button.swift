@@ -36,6 +36,10 @@ class Button {
         
         self.shape.alpha = 0.0 // start hidden to make sure to not show it before being ready
         
+        if (Const.debug) {
+            self.shape.strokeColor = UIColor.white
+        }
+        
         scene.addChild(self.shape)
     }
     

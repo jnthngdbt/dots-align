@@ -106,6 +106,7 @@ class Const {
     // Some nice: HelveticaNeue, AvenirNextCondensed, AvenirNext
     // Heavy, Bold, DemiBold, Medium, Regular, UltraLight.
     static let fontName = "AvenirNextCondensed-Bold"
+    static let fontNameTitle = "AvenirNextCondensed-Heavy"
     
     static let debug = false
 }
