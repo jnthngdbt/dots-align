@@ -30,8 +30,8 @@ class TutorialInstructions {
         
         // For the block of text, scale font also including aspect ratio.
         // Otherwise, for iPads with lower aspect ratio, the text is too big and goes too low.
-        let aspect = scene.maxSize() / scene.minSize()
-        let textFontSize = aspect * 0.03 * scene.minSize()
+        let aspectClip = min(1.8, scene.maxSize() / scene.minSize())
+        let textFontSize = aspectClip * 0.03 * scene.minSize()
         
         self.instructions = ContainedLabel(scene: scene, text: text, size: size, cornerRadius: 0)
 
