@@ -100,6 +100,8 @@ class GameScene: SKScene {
             let dx = Scalar(t.location(in: self).x - t.previousLocation(in: self).x)
             let dy = Scalar(t.location(in: self).y - t.previousLocation(in: self).y)
             let v = Vector3d(dx, dy, 0)
+
+            if (dx == 0) && (dy == 0) { return }
             
             let radius = self.game!.level.cloud.radius
             if radius > 0 {
