@@ -37,8 +37,8 @@ class TutorialInstructions {
         scene.addChild(self.title!)
         
         var text = ""
-        text += "► The goal is to align the two symmetric dot patterns orbiting the ball.\n\n"
-        text += "► In this tutorial, small red dots are added to the patterns to help you find the solution. Aligning the small red dots will align the two patterns.\n\n"
+        text += "► The goal is to align two symmetric dot patterns orbiting a ball.\n\n"
+        text += "► For this tutorial, small red dots are added to the patterns to help you find the solution. Aligning the small red dots will align the two patterns.\n\n"
         text += "► When you feel you can do it without those handy small dots, you are ready to play!\n\n"
         text += "► Tap the checkmark below to hide those instructions."
         
