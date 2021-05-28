@@ -16,10 +16,10 @@ class Level {
     var angleCumul = 0.0
     var ended = false
     
-    init(scene: GameScene, indicators: GameIndicators?, mode: GameMode) {
+    init(scene: GameScene, nbPatternPoints: Int, indicators: GameIndicators?, mode: GameMode) {
         self.indicators = indicators
         
-        self.nbPatternPoints = Utils.randomOdd(inMin:Const.Level.minNbPoints, inMax:Const.Level.maxNbPoints) // odd random integer in range
+        self.nbPatternPoints = nbPatternPoints
         let points = Cloud.generateSymmetricRandomPoints(nbPoints: nbPatternPoints)
         
         let radius = 0.5 * Const.Game.sphereDiameterFactor * scene.minSize()

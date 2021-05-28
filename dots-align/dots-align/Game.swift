@@ -38,7 +38,7 @@ class Game {
         }
         
         self.indicators?.indicators[IndicatorNames.left.rawValue].gauge?.max = CGFloat(self.left)
-        self.indicators?.indicators[IndicatorNames.dots.rawValue].gauge?.max = 2.0 * CGFloat(Const.Level.maxNbPoints)
+        self.indicators?.indicators[IndicatorNames.dots.rawValue].gauge?.max = 2.0 * CGFloat(Const.Game.maxNbPoints)
         self.indicators?.indicators[IndicatorNames.bonus.rawValue].gauge?.min = 1.0
         self.indicators?.indicators[IndicatorNames.bonus.rawValue].gauge?.max = CGFloat(Const.Level.maxMultiplier)
         self.indicators?.indicators[IndicatorNames.score.rawValue].gauge?.max = 1000 // TODO best score
@@ -48,7 +48,7 @@ class Game {
         self.indicators?.update(name: IndicatorNames.bonus, value: Const.Level.maxMultiplier)
         self.indicators?.update(name: IndicatorNames.score, value: 0)
         
-        self.level = Level(scene: scene, indicators: self.indicators, mode: mode)
+        self.level = Level(scene: scene, nbPatternPoints: Const.Game.startNbPoints, indicators: self.indicators, mode: mode)
         
         self.levelScoreLabelStartPos = scene.center()
         self.levelScoreLabelEndPos = scene.center()
@@ -90,8 +90,22 @@ class Game {
                 }
             }
             
-            self.level = Level(scene: scene, indicators: self.indicators, mode: self.mode)
+            self.level = Level(scene: scene, nbPatternPoints: self.getNextLevelNbPatternPoints(), indicators: self.indicators, mode: self.mode)
         }
+    }
+    
+    func getNextLevelNbPatternPoints() -> Int {
+        if self.mode == .tutorial {
+            return Utils.randomOdd(inMin:Const.Game.minNbPoints, inMax:Const.Game.maxNbPoints)
+        }
+            
+        var angleRatio = 1.0 - self.level.angleCumul / Const.Level.maxAngleCumul
+        angleRatio = max(0.0, angleRatio)
+        let minPoints = Scalar(Const.Game.minNbPoints)
+        let maxPoints = Scalar(Const.Game.maxNbPoints)
+        let nbPatternPoints = minPoints + angleRatio * (maxPoints - minPoints)
+            
+        return Int(nbPatternPoints)
     }
     
     func updateLevelScoreLabel(levelScore: Int) {
