@@ -8,15 +8,6 @@
 import Foundation
 import SpriteKit
 
-class MenuButton: Button {
-    var spacingAfter: CGFloat = 0.0
-    
-    override init(scene: GameScene, text: String, id: ButtonId = ButtonId.none) {
-        super.init(scene: scene, text: text, id: id)
-        self.spacingAfter = Const.Menu.spacingFactor * scene.minSize()
-    }
-}
-
 class Menu {
     var buttons = Array<MenuButton>()
     

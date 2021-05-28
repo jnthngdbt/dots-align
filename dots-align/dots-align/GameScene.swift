@@ -23,45 +23,12 @@ class Orb {
     }
 }
 
-class HomeButton {
-    // TODO: why not Button?
-    let label: SKLabelNode
-    let shape: SKShapeNode
-    
-    init(scene: GameScene) {
-        self.label = SKLabelNode(text: "⬅︎")
-        self.label.fontColor = Const.Button.fontColor
-        self.label.fontName = "AvenirNextCondensed-Regular"
-        self.label.fontSize = 0.06 * scene.minSize()
-        self.label.verticalAlignmentMode = .center
-        self.label.horizontalAlignmentMode = .center
-        self.label.name = ButtonId.homeId.rawValue
-        
-        let radius = 0.05 * scene.minSize()
-        self.shape = SKShapeNode(rectOf: CGSize(width: 3 * radius, height: 2 * radius), cornerRadius: radius)
-        self.shape.fillColor = Const.Button.fillColor
-        self.shape.strokeColor = UIColor.clear
-        self.shape.position = CGPoint(x: Const.Indicators.sidePaddingFactor * scene.minSize(), y: 0.1 * scene.minSize())
-        self.shape.name = ButtonId.homeId.rawValue
-        
-        self.shape.addChild(self.label)
-        
-        self.shape.zPosition = Const.Button.zPosition // make to be in foreground (max z of sphere dots is 1)
-        
-        scene.addChild(self.shape)
-    }
-    
-    deinit {
-        self.shape.removeFromParent() // removes child label also
-    }
-}
-
 class GameScene: SKScene {
     var game: Game?
     var orb: Orb?
     var mainMenu: MainMenu?
     var endGameMenu: EndGameMenu?
-    var homeButton: HomeButton?
+    var homeButton: FooterHomeButton?
     var gameMode = GameMode.level
     var orbDiameter: CGFloat = 1.0
     var touchBeganOnButtonId: ButtonId?
@@ -185,7 +152,7 @@ class GameScene: SKScene {
         self.gameMode = mode
         
         self.orb = Orb(scene: self)
-        self.homeButton = HomeButton(scene: self)
+        self.homeButton = FooterHomeButton(scene: self)
         self.game = Game(scene: self, mode: mode)
         self.mainMenu = nil
         self.endGameMenu = nil

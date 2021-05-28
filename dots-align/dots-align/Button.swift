@@ -62,13 +62,42 @@ class ContainedLabel {
 }
 
 class Button: ContainedLabel {
+    init(scene: GameScene, text: String, size: CGSize, id: ButtonId = ButtonId.none) {
+        super.init(scene: scene, text: text, size: size, cornerRadius: 0.5 * size.height)
+        self.label.name = id.rawValue
+        self.shape.name = id.rawValue
+    }
+}
+
+class MenuButton: Button {
+    var spacingAfter: CGFloat = 0.0
+    
     init(scene: GameScene, text: String, id: ButtonId = ButtonId.none) {
         let w = Const.Button.widthFactor * scene.minSize()
         let h = Const.Button.heightFactor * scene.minSize()
         let size = CGSize(width: w, height: h)
         
-        super.init(scene: scene, text: text, size: size, cornerRadius: 0.5 * size.height)
-        self.label.name = id.rawValue
-        self.shape.name = id.rawValue
+        super.init(scene: scene, text: text, size: size, id: id)
+        
+        self.spacingAfter = Const.Menu.spacingFactor * scene.minSize()
+    }
+}
+
+class FooterButton: Button {
+    init(scene: GameScene, text: String, id: ButtonId) {
+        let radius = 0.05 * scene.minSize()
+        let size = CGSize(width: 3 * radius, height: 2 * radius)
+        
+        super.init(scene: scene, text: text, size: size, id: id)
+        self.shape.alpha = 1.0
+        self.label.fontSize = 0.06 * scene.minSize()
+        self.shape.position = CGPoint(x: self.shape.position.x, y: 0.1 * scene.minSize())
+    }
+}
+
+class FooterHomeButton: FooterButton {
+    init(scene: GameScene) {
+        super.init(scene: scene, text: "⬅︎", id: ButtonId.homeId)
+        self.shape.position = CGPoint(x: Const.Indicators.sidePaddingFactor * scene.minSize(), y: self.shape.position.y)
     }
 }
