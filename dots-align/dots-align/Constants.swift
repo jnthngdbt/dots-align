@@ -27,7 +27,7 @@ func isButton(name: String?) -> Bool {
     return (id != nil) && (id != ButtonId.none)
 }
 
-let labelColor = UIColor(white: 0.45, alpha: 1)
+let labelColor = UIColor(white: 0.55, alpha: 1)
 let accentColor = UIColor(red: 0.55, green: 0.45, blue: 1.0, alpha: 1)
 
 class Const {
@@ -101,6 +101,7 @@ class Const {
         static let blinkSec = 0.06
         static let blinkWaitSec = 0.3
         static let scoreRiseSec = 0.2
+        static let scoreRiseWaitSec = 0.3
     }
     
     static let backgroundColor = UIColor(white: 0.0, alpha: 1)

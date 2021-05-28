@@ -54,7 +54,7 @@ class Game {
         self.levelScoreLabelEndPos = scene.center()
         self.levelScoreLabelEndPos.y += (0.5 * Const.Game.sphereDiameterFactor + 0.05) * scene.minSize()
         self.levelScoreLabel = SKLabelNode(text: "0")
-        self.levelScoreLabel.fontColor = UIColor(white: 0.6, alpha: 1)
+        self.levelScoreLabel.fontColor = labelColor
         self.levelScoreLabel.fontName = Const.fontNameLabel
         self.levelScoreLabel.fontSize = 0.12 * scene.minSize()
         self.levelScoreLabel.position = self.levelScoreLabelStartPos
@@ -115,11 +115,9 @@ class Game {
             SKAction.move(to: self.levelScoreLabelStartPos, duration: 0),
             SKAction.group([
                 SKAction.move(to: self.levelScoreLabelEndPos, duration: Const.Animation.scoreRiseSec),
-                SKAction.fadeAlpha(to: 0.6, duration: Const.Animation.scoreRiseSec)
+                SKAction.fadeAlpha(to: 1.0, duration: Const.Animation.scoreRiseSec)
             ]),
-            SKAction.fadeAlpha(to: 1.0, duration: Const.Animation.blinkSec),
-            SKAction.fadeAlpha(to: 0.6, duration: Const.Animation.blinkSec),
-            SKAction.wait(forDuration: Const.Animation.blinkWaitSec),
+            SKAction.wait(forDuration: Const.Animation.scoreRiseWaitSec),
             SKAction.fadeAlpha(to: 0.0, duration: 0.3),
         ])
         
