@@ -27,7 +27,7 @@ class Game {
             self.indicators = nil
             self.tutorialInstructions = TutorialInstructions(scene: scene)
         } else {
-            self.indicators = GameIndicators(scene: scene)
+            self.indicators = GameIndicators(scene: scene, mode: mode)
             self.tutorialInstructions = nil
         }
         
@@ -37,15 +37,15 @@ class Game {
         default: self.left = 1
         }
         
-        self.indicators?.indicators[IndicatorNames.left.rawValue].gauge?.max = CGFloat(self.left)
-        self.indicators?.indicators[IndicatorNames.dots.rawValue].gauge?.max = 2.0 * CGFloat(Const.Game.maxNbPoints)
-        self.indicators?.indicators[IndicatorNames.bonus.rawValue].gauge?.min = 1.0
-        self.indicators?.indicators[IndicatorNames.bonus.rawValue].gauge?.max = CGFloat(Const.Level.maxMultiplier)
-        self.indicators?.indicators[IndicatorNames.score.rawValue].gauge?.max = 1000 // TODO best score
+        self.indicators?.indicators[IndicatorNames.left.rawValue].gauge?.maximum = CGFloat(self.left)
+        self.indicators?.indicators[IndicatorNames.dots.rawValue].gauge?.maximum = 2.0 * CGFloat(Const.Game.maxNbPoints)
+        self.indicators?.indicators[IndicatorNames.boost.rawValue].gauge?.minimum = 1.0
+        self.indicators?.indicators[IndicatorNames.boost.rawValue].gauge?.maximum = CGFloat(Const.Level.maxMultiplier)
+        self.indicators?.indicators[IndicatorNames.score.rawValue].gauge?.maximum = 1000 // TODO best score
         
         self.indicators?.update(name: IndicatorNames.left, value: self.left)
         self.indicators?.update(name: IndicatorNames.dots, value: 0)
-        self.indicators?.update(name: IndicatorNames.bonus, value: Const.Level.maxMultiplier)
+        self.indicators?.update(name: IndicatorNames.boost, value: Const.Level.maxMultiplier)
         self.indicators?.update(name: IndicatorNames.score, value: 0)
         
         self.level = Level(scene: scene, nbPatternPoints: Const.Game.startNbPoints, indicators: self.indicators, mode: mode)
@@ -139,22 +139,30 @@ class Game {
 class GameIndicators {
     var indicators = Array<Indicator>()
     
-    init(scene: GameScene) {
+    init(scene: GameScene, mode: GameMode) {
         for i in 0..<IndicatorNames.allCases.count {
             self.indicators.append(Indicator(scene: scene, idx: i, addGauge: true))
         }
         
-        self.indicators[IndicatorNames.left.rawValue].label.text = "LEFT"
+        self.indicators[IndicatorNames.left.rawValue].label.text = self.getRemainingTitle(mode: mode)
         self.indicators[IndicatorNames.left.rawValue].data.text = "20"
         
         self.indicators[IndicatorNames.dots.rawValue].label.text = "DOTS"
         self.indicators[IndicatorNames.dots.rawValue].data.text = "0"
         
-        self.indicators[IndicatorNames.bonus.rawValue].label.text = "BONUS"
-        self.indicators[IndicatorNames.bonus.rawValue].data.text = "x0"
+        self.indicators[IndicatorNames.boost.rawValue].label.text = "BOOST"
+        self.indicators[IndicatorNames.boost.rawValue].data.text = "x0"
         
         self.indicators[IndicatorNames.score.rawValue].label.text = "SCORE"
         self.indicators[IndicatorNames.score.rawValue].data.text = "0"
+    }
+    
+    func getRemainingTitle(mode: GameMode) -> String {
+        switch mode {
+        case .level: return "LEVEL"
+        case .time: return "TIME"
+        default: return "LEFT"
+        }
     }
     
     func update(name: IndicatorNames, value: Int, gaugeValue: CGFloat? = nil, prefix: String = "", highlight: Bool = false) {

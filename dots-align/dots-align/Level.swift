@@ -31,7 +31,7 @@ class Level {
         self.animateIn()
         
         self.indicators?.update(name: IndicatorNames.dots, value: self.getTotalNbDots())
-        self.indicators?.update(name: IndicatorNames.bonus, value: Int(Const.Level.maxMultiplier), prefix: "x")
+        self.indicators?.update(name: IndicatorNames.boost, value: Int(Const.Level.maxMultiplier), prefix: "x")
     }
     
     func getTotalNbDots() -> Int {
@@ -53,7 +53,7 @@ class Level {
         self.cloud.rotate(quaternion: q)
         
         self.angleCumul += q.angle
-        self.indicators?.update(name: IndicatorNames.bonus, value: self.computeMultiplierInt(), gaugeValue: self.computeMultiplier(), prefix: "x")
+        self.indicators?.update(name: IndicatorNames.boost, value: self.computeMultiplierInt(), gaugeValue: self.computeMultiplier(), prefix: "x")
     }
     
     func solve() {

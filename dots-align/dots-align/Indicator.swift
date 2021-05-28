@@ -11,8 +11,8 @@ import SpriteKit
 class ProgressBar {
     var edge: SKShapeNode!
     var fill: SKShapeNode!
-    var min: CGFloat = 0
-    var max: CGFloat = 100
+    var minimum: CGFloat = 0
+    var maximum: CGFloat = 100
     let rect: CGRect
     
     init(scene: GameScene, rect: CGRect) {
@@ -36,7 +36,9 @@ class ProgressBar {
     }
     
     func setValue(value: CGFloat) {
-        let ratio = (value - self.min) / (self.max - self.min) // convert to [0, 1] range
+        var ratio = (value - self.minimum) / (self.maximum - self.minimum) // convert to [0, 1] range
+        ratio = max(0.0, min(1.0, ratio))
+        
         self.fill.xScale = ratio
         self.fill.position.x = rect.origin.x - 0.5 * (1.0 - ratio) * rect.width
     }

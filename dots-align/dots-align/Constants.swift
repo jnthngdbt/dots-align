@@ -8,7 +8,7 @@
 import Foundation
 import SpriteKit
 
-enum IndicatorNames: Int, CaseIterable { case left, dots, bonus, score  }
+enum IndicatorNames: Int, CaseIterable { case left, dots, boost, score  }
 enum GameMode: Int, CaseIterable { case tutorial, level, time  }
 
 enum ButtonId: String, CaseIterable { case
