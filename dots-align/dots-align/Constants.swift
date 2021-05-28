@@ -17,7 +17,8 @@ enum ButtonId: String, CaseIterable { case
     startLevelGameId = "startLevelGame",
     startTimedGameId = "startTimedGame",
     replayGameId = "replayGame",
-    homeId = "home"
+    homeId = "home",
+    tutorialInstructionsId = "tutorialInstructions"
 }
 
 func isButton(name: String?) -> Bool {

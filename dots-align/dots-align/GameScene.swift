@@ -142,6 +142,8 @@ class GameScene: SKScene {
                 self.startGame(mode: self.gameMode)
             } else if buttonId == ButtonId.homeId {
                 self.showMainMenu()
+            } else if buttonId == ButtonId.tutorialInstructionsId {
+                self.game?.tutorialInstructions?.onButtonTap(scene: self)
             }
         }
         
