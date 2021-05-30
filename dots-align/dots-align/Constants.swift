@@ -55,6 +55,8 @@ class Const {
     class Level {
         static let maxMultiplier: Int = 5
         static let maxAngleCumul = 1.5 * Scalar.pi
+        static let levelScoreFontSizeFactor: CGFloat = 0.1
+        static let levelScoreEndPosOffsetFactor: CGFloat = 0.03
     }
     
     class Game {
@@ -75,7 +77,11 @@ class Const {
     class Indicators {
         static let fontColor = labelColor
         static let fontColorHighlight = UIColor(white: 0.8, alpha: 1)
+        static let layoutSphereFactor: CGFloat = 0.86
         static let sidePaddingFactor: CGFloat = 0.14
+        static let verticalSpacingFactor: CGFloat = 0.08
+        static let gaugeWidthFactor: CGFloat = 0.1
+        static let gaugeHeightFactor: CGFloat = 0.02
     }
     
     class Menu {
