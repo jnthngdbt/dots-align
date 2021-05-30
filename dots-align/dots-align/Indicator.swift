@@ -99,11 +99,23 @@ class Indicator {
         
         let gauge = gaugeValue == nil ? CGFloat(value) : gaugeValue
         
-        self.data.text = prefix + String(value)
+        let text = prefix + String(value)
+        let isNewText = self.data.text != text
+        self.data.text = text
+        
         if highlight {
             self.data.fontColor = Const.Indicators.fontColorHighlight
         } else {
             self.data.fontColor = Const.Indicators.fontColor
+        }
+        
+        if isNewText {
+            let animation = SKAction.sequence([
+                SKAction.scale(to: 1.3, duration: Const.Animation.blinkSec),
+                SKAction.scale(to: 1.0, duration: Const.Animation.blinkSec)
+            ])
+            
+            self.data.run(animation)
         }
         
         self.gauge?.setValue(value: gauge!)

@@ -82,6 +82,7 @@ class Const {
         static let verticalSpacingFactor: CGFloat = 0.08
         static let gaugeWidthFactor: CGFloat = 0.1
         static let gaugeHeightFactor: CGFloat = 0.02
+        static let newValueAnimationScale: CGFloat = 1.3
     }
     
     class Menu {
