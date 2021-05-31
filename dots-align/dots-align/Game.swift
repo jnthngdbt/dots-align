@@ -37,6 +37,12 @@ class Game {
         default: self.left = 1
         }
         
+        self.initIndicators()
+        self.initLevelScoreLabel(scene: scene)
+        self.level = Level(scene: scene, nbPatternPoints: Const.Game.startNbPoints, indicators: self.indicators, mode: mode)
+    }
+    
+    func initIndicators() {
         self.indicators?.indicators[IndicatorNames.left.rawValue].gauge?.maximum = CGFloat(self.left)
         self.indicators?.indicators[IndicatorNames.dots.rawValue].gauge?.maximum = 2.0 * CGFloat(Const.Game.maxNbPoints)
         self.indicators?.indicators[IndicatorNames.boost.rawValue].gauge?.minimum = 1.0
@@ -47,9 +53,9 @@ class Game {
         self.indicators?.update(name: IndicatorNames.dots, value: 0)
         self.indicators?.update(name: IndicatorNames.boost, value: Const.Level.maxMultiplier)
         self.indicators?.update(name: IndicatorNames.score, value: 0)
-        
-        self.level = Level(scene: scene, nbPatternPoints: Const.Game.startNbPoints, indicators: self.indicators, mode: mode)
-        
+    }
+    
+    func initLevelScoreLabel(scene: GameScene) {
         self.levelScoreLabelStartPos = scene.center()
         self.levelScoreLabelEndPos = scene.center()
         self.levelScoreLabelEndPos.y += (0.5 * Const.Game.sphereDiameterFactor + Const.Level.levelScoreEndPosOffsetFactor) * scene.minSize()

@@ -56,7 +56,7 @@ class Const {
         static let maxMultiplier: Int = 5
         static let maxAngleCumul = 1.5 * Scalar.pi
         static let levelScoreFontSizeFactor: CGFloat = 0.1
-        static let levelScoreEndPosOffsetFactor: CGFloat = 0.03
+        static let levelScoreEndPosOffsetFactor: CGFloat = 0.035
     }
     
     class Game {
@@ -64,7 +64,7 @@ class Const {
         static let maxNbPoints = 30
         static let startNbPoints = 15
         static let maxLevel = 20
-        static let maxSeconds = 60
+        static let maxSeconds = 5
         static let countdownKey = "gameCountdown"
         static let sphereDiameterFactor: CGFloat = 0.6
     }

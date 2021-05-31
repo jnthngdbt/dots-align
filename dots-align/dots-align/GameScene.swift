@@ -161,19 +161,23 @@ class GameScene: SKScene {
         self.mainMenu = nil
         self.endGameMenu = nil
         
-        if mode == GameMode.time {
-            let countdownStep = SKAction.sequence([
-                SKAction.wait(forDuration: 1.0),
-                SKAction.run(self.game!.timeCountdown)
-            ])
+        self.startGameCountdownIfNecessary(mode: mode)
+    }
+    
+    func startGameCountdownIfNecessary(mode: GameMode) {
+        if mode != GameMode.time { return }
+        
+        let countdownStep = SKAction.sequence([
+            SKAction.wait(forDuration: 1.0),
+            SKAction.run(self.game!.timeCountdown)
+        ])
 
-            let countdown = SKAction.sequence([
-                SKAction.repeat(countdownStep, count: Const.Game.maxSeconds),
-                SKAction.run(self.endGameAnimation)
-            ])
-            
-            run(countdown, withKey: Const.Game.countdownKey)
-        }
+        let countdown = SKAction.sequence([
+            SKAction.repeat(countdownStep, count: Const.Game.maxSeconds),
+            SKAction.run(self.endGameAnimation)
+        ])
+        
+        run(countdown, withKey: Const.Game.countdownKey)
     }
     
     func endGameAnimation() {
