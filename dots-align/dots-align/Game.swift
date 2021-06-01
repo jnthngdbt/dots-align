@@ -10,10 +10,11 @@ import SpriteKit
 
 class Game {
     let mode: GameMode
+    var orb: Orb!
     var level: Level!
     var indicators: GameIndicators?
     var tutorialInstructions: TutorialInstructions?
-    var homeButton: FooterHomeButton?
+    var homeButton: FooterHomeButton!
     var score = 0
     var left = Const.Game.maxLevel
     var ended = false
@@ -33,6 +34,7 @@ class Game {
         }
         
         self.homeButton = FooterHomeButton(scene: scene)
+        self.orb = Orb(scene: scene)
         
         switch self.mode {
         case GameMode.level: self.left = Const.Game.maxLevel

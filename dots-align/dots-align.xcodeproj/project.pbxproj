@@ -14,6 +14,7 @@
 		E100A7D6263E44FC00F81153 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E100A7D5263E44FC00F81153 /* Assets.xcassets */; };
 		E100A7E1263E44FC00F81153 /* dots_alignTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E100A7E0263E44FC00F81153 /* dots_alignTests.swift */; };
 		E100A7EC263E44FC00F81153 /* dots_alignUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E100A7EB263E44FC00F81153 /* dots_alignUITests.swift */; };
+		EC0656E32666C69900F28CB1 /* Orb.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0656E22666C69900F28CB1 /* Orb.swift */; };
 		EC6F242E265F3FF30049D3EA /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC6F242D265F3FF30049D3EA /* Launch Screen.storyboard */; };
 		EC6F2434265F457F0049D3EA /* 512.png in Resources */ = {isa = PBXBuildFile; fileRef = EC6F2433265F457F0049D3EA /* 512.png */; };
 		EC6F243626604EE90049D3EA /* TutorialInstructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6F243526604EE90049D3EA /* TutorialInstructions.swift */; };
@@ -75,6 +76,7 @@
 		E100A7E7263E44FC00F81153 /* dots-alignUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "dots-alignUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E100A7EB263E44FC00F81153 /* dots_alignUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dots_alignUITests.swift; sourceTree = "<group>"; };
 		E100A7ED263E44FC00F81153 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EC0656E22666C69900F28CB1 /* Orb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orb.swift; sourceTree = "<group>"; };
 		EC6F242D265F3FF30049D3EA /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		EC6F2433265F457F0049D3EA /* 512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 512.png; path = Assets.xcassets/AppIcon.appiconset/512.png; sourceTree = "<group>"; };
 		EC6F243526604EE90049D3EA /* TutorialInstructions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialInstructions.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 				EC77FD2E264C7F3000B901FD /* Indicator.swift */,
 				E100A7D7263E44FC00F81153 /* Info.plist */,
 				E100A7D2263E44F900F81153 /* Main.storyboard */,
+				EC0656E22666C69900F28CB1 /* Orb.swift */,
 				EC77FD16264C7C1B00B901FD /* Utils.swift */,
 				EC77FD32264C7FF600B901FD /* MainMenu.swift */,
 				EC6F242D265F3FF30049D3EA /* Launch Screen.storyboard */,
@@ -315,6 +318,7 @@
 				EC77FD2F264C7F3000B901FD /* Indicator.swift in Sources */,
 				E100A7D1263E44F900F81153 /* GameViewController.swift in Sources */,
 				EC6F243626604EE90049D3EA /* TutorialInstructions.swift in Sources */,
+				EC0656E32666C69900F28CB1 /* Orb.swift in Sources */,
 				E100A7C9263E44F900F81153 /* AppDelegate.swift in Sources */,
 				EC812664265DDD1C00FAA61E /* Button.swift in Sources */,
 				EC77FD23264C7D7000B901FD /* Cloud.swift in Sources */,

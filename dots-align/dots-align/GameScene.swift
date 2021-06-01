@@ -8,24 +8,8 @@
 import SpriteKit
 import GameplayKit
 
-class Orb {
-    let node: SKShapeNode
-    init(scene: GameScene) {
-        self.node = SKShapeNode.init(circleOfRadius: 0.5 * scene.orbDiameter)
-        self.node.fillColor = Const.Orb.color
-        self.node.strokeColor = UIColor.clear
-        self.node.position = scene.center()
-        scene.addChild(self.node)
-    }
-    
-    deinit {
-        self.node.removeFromParent()
-    }
-}
-
 class GameScene: SKScene {
     var game: Game?
-    var orb: Orb?
     var mainMenu: MainMenu?
     var endGameMenu: EndGameMenu?
     var gameMode = GameMode.level
@@ -154,7 +138,6 @@ class GameScene: SKScene {
     func startGame(mode: GameMode) {
         self.gameMode = mode
         
-        self.orb = Orb(scene: self)
         self.game = Game(scene: self, mode: mode)
         self.mainMenu = nil
         self.endGameMenu = nil
@@ -183,7 +166,7 @@ class GameScene: SKScene {
         // Start hidden.
         self.game?.level.cloud.animate(action: SKAction.scale(to: 0, duration: 0.0))
         self.game?.indicators?.animate(action: SKAction.fadeAlpha(to: 0, duration: 0.0))
-        self.orb?.node.run(SKAction.scale(to: 0, duration: 0.0))
+        self.game?.orb?.node.run(SKAction.scale(to: 0, duration: 0.0))
         self.game?.homeButton?.animate(action: SKAction.scale(to: 0, duration: 0.0))
         self.game?.tutorialInstructions?.button.animate(action: SKAction.scale(to: 0, duration: 0.0))
         self.game?.tutorialInstructions?.animate(action: SKAction.fadeAlpha(to: 0, duration: 0.0))
@@ -193,7 +176,7 @@ class GameScene: SKScene {
             SKAction.wait(forDuration: 0.2),
             SKAction.fadeAlpha(to: 1, duration: Const.Animation.expandSec)
         ]))
-        self.orb?.node.run(SKAction.sequence([
+        self.game?.orb?.node.run(SKAction.sequence([
             SKAction.wait(forDuration: 0.2),
             SKAction.scale(to: 1, duration: Const.Animation.expandSec)
         ]))
@@ -225,13 +208,16 @@ class GameScene: SKScene {
             SKAction.scale(to: 0, duration: Const.Animation.collapseSec)
         ])
         
-        self.orb?.node.run(animation) {
+        if let game = self.game {
+            game.orb.node.run(animation) {
+                self.showEndGameMenu()
+            }
+        } else {
             self.showEndGameMenu()
         }
     }
     
     func showMainMenu() {
-        self.orb = nil
         self.clearGame()
         self.mainMenu = MainMenu(scene: self)
         self.endGameMenu = nil
@@ -239,7 +225,6 @@ class GameScene: SKScene {
     
     func showEndGameMenu() {
         let score = self.game?.score ?? 0
-        self.orb = nil
         self.clearGame()
         self.mainMenu = nil
         self.endGameMenu = EndGameMenu(scene: self, score: score)
