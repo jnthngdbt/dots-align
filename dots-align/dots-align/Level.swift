@@ -28,8 +28,6 @@ class Level {
         self.cloud = Cloud(points: points, scene: scene, color: color, radius: radius, dotRadius: dotRadius, addGuides: mode == GameMode.tutorial)
         self.cloud.desalign()
         
-        self.animateIn()
-        
         self.indicators?.update(name: IndicatorNames.dots, value: self.getTotalNbDots())
         self.indicators?.update(name: IndicatorNames.boost, value: Int(Const.Level.maxMultiplier), prefix: "x")
     }
@@ -69,7 +67,7 @@ class Level {
         return self.getTotalNbDots() * self.computeMultiplierInt()
     }
     
-    private func animateIn() {
+    func animateIn() {
         let animation = SKAction.sequence([
             SKAction.scale(to: 0, duration: 0.0),
             SKAction.wait(forDuration: 0.2),

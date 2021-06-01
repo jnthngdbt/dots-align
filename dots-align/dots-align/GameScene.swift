@@ -161,6 +161,7 @@ class GameScene: SKScene {
         self.mainMenu = nil
         self.endGameMenu = nil
         
+        self.startGameAnimation()
         self.startGameCountdownIfNecessary(mode: mode)
     }
     
@@ -178,6 +179,42 @@ class GameScene: SKScene {
         ])
         
         run(countdown, withKey: Const.Game.countdownKey)
+    }
+    
+    func startGameAnimation() {
+        // Start hidden.
+        self.game?.level.cloud.animate(action: SKAction.scale(to: 0, duration: 0.0))
+        self.game?.indicators?.animate(action: SKAction.fadeAlpha(to: 0, duration: 0.0))
+        self.orb?.node.run(SKAction.scale(to: 0, duration: 0.0))
+        self.homeButton?.animate(action: SKAction.scale(to: 0, duration: 0.0))
+        self.game?.tutorialInstructions?.button.animate(action: SKAction.scale(to: 0, duration: 0.0))
+        self.game?.tutorialInstructions?.animate(action: SKAction.fadeAlpha(to: 0, duration: 0.0))
+        
+        // Pop.
+        self.game?.tutorialInstructions?.animate(action: SKAction.sequence([
+            SKAction.wait(forDuration: 0.2),
+            SKAction.fadeAlpha(to: 1, duration: Const.Animation.expandSec)
+        ]))
+        self.orb?.node.run(SKAction.sequence([
+            SKAction.wait(forDuration: 0.2),
+            SKAction.scale(to: 1, duration: Const.Animation.expandSec)
+        ]))
+        self.game?.indicators?.animate(action: SKAction.sequence([
+            SKAction.wait(forDuration: 0.4),
+            SKAction.fadeAlpha(to: 1, duration: Const.Animation.expandSec)
+        ]))
+        self.homeButton?.animate(action: SKAction.sequence([
+            SKAction.wait(forDuration: 0.4),
+            SKAction.scale(to: 1, duration: Const.Animation.expandSec)
+        ]))
+        self.game?.tutorialInstructions?.button.animate(action: SKAction.sequence([
+            SKAction.wait(forDuration: 0.4),
+            SKAction.scale(to: 1, duration: Const.Animation.expandSec)
+        ]))
+        self.game?.level.cloud.animate(action: SKAction.sequence([
+            SKAction.wait(forDuration: 0.6),
+            SKAction.scale(to: 1, duration: Const.Animation.expandSec)
+        ]))
     }
     
     func endGameAnimation() {

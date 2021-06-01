@@ -156,7 +156,7 @@ class EndGameMenu: Menu {
         let animation = SKAction.sequence([
             SKAction.fadeAlpha(to: 0, duration: 0.0),
             SKAction.wait(forDuration: 0.5),
-            SKAction.fadeAlpha(to: 1, duration: 0.1)
+            SKAction.fadeAlpha(to: 1, duration: Const.Animation.expandSec)
         ])
         
         self.animateButtons(action: animation)

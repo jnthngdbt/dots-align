@@ -81,6 +81,11 @@ class TutorialInstructions {
         }
     }
     
+    func animate(action: SKAction) {
+        self.instructions?.animate(action: action)
+        self.title?.run(action)
+    }
+    
     deinit {
         self.title?.removeFromParent()
     }

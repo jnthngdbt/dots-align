@@ -97,6 +97,7 @@ class Game {
             }
             
             self.level = Level(scene: scene, nbPatternPoints: self.getNextLevelNbPatternPoints(), indicators: self.indicators, mode: self.mode)
+            self.level.animateIn()
         }
     }
     

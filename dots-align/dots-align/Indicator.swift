@@ -110,15 +110,20 @@ class Indicator {
         }
         
         if isNewText {
-            let animation = SKAction.sequence([
-                SKAction.scale(to: 1.3, duration: Const.Animation.blinkSec),
-                SKAction.scale(to: 1.0, duration: Const.Animation.blinkSec)
-            ])
-            
-            self.data.run(animation)
+            self.animateBounce()
         }
         
         self.gauge?.setValue(value: gauge!)
+    }
+    
+    func animateBounce(waitSec: TimeInterval = 0.0) {
+        let animation = SKAction.sequence([
+            SKAction.wait(forDuration: waitSec),
+            SKAction.scale(to: 1.3, duration: Const.Animation.blinkSec),
+            SKAction.scale(to: 1.0, duration: Const.Animation.blinkSec)
+        ])
+        
+        self.data.run(animation)
     }
     
     func animate(action: SKAction) {

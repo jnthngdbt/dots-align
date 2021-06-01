@@ -41,6 +41,10 @@ class ContainedLabel {
         return self.shape.frame.size
     }
     
+    func animate(action: SKAction) {
+        self.shape.run(action)
+    }
+    
     static func animateFromHitNode(node: SKNode) {
         if let buttonShapeNode = ContainedLabel.getShapeNode(node: node) {
             buttonShapeNode.run(SKAction.sequence([
