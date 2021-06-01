@@ -13,6 +13,7 @@ class Game {
     var level: Level!
     var indicators: GameIndicators?
     var tutorialInstructions: TutorialInstructions?
+    var homeButton: FooterHomeButton?
     var score = 0
     var left = Const.Game.maxLevel
     var ended = false
@@ -30,6 +31,8 @@ class Game {
             self.indicators = GameIndicators(scene: scene, mode: mode)
             self.tutorialInstructions = nil
         }
+        
+        self.homeButton = FooterHomeButton(scene: scene)
         
         switch self.mode {
         case GameMode.level: self.left = Const.Game.maxLevel

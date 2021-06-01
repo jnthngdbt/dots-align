@@ -28,7 +28,6 @@ class GameScene: SKScene {
     var orb: Orb?
     var mainMenu: MainMenu?
     var endGameMenu: EndGameMenu?
-    var homeButton: FooterHomeButton?
     var gameMode = GameMode.level
     var orbDiameter: CGFloat = 1.0
     var touchBeganOnButtonId: ButtonId?
@@ -156,7 +155,6 @@ class GameScene: SKScene {
         self.gameMode = mode
         
         self.orb = Orb(scene: self)
-        self.homeButton = FooterHomeButton(scene: self)
         self.game = Game(scene: self, mode: mode)
         self.mainMenu = nil
         self.endGameMenu = nil
@@ -186,7 +184,7 @@ class GameScene: SKScene {
         self.game?.level.cloud.animate(action: SKAction.scale(to: 0, duration: 0.0))
         self.game?.indicators?.animate(action: SKAction.fadeAlpha(to: 0, duration: 0.0))
         self.orb?.node.run(SKAction.scale(to: 0, duration: 0.0))
-        self.homeButton?.animate(action: SKAction.scale(to: 0, duration: 0.0))
+        self.game?.homeButton?.animate(action: SKAction.scale(to: 0, duration: 0.0))
         self.game?.tutorialInstructions?.button.animate(action: SKAction.scale(to: 0, duration: 0.0))
         self.game?.tutorialInstructions?.animate(action: SKAction.fadeAlpha(to: 0, duration: 0.0))
         
@@ -203,7 +201,7 @@ class GameScene: SKScene {
             SKAction.wait(forDuration: 0.4),
             SKAction.fadeAlpha(to: 1, duration: Const.Animation.expandSec)
         ]))
-        self.homeButton?.animate(action: SKAction.sequence([
+        self.game?.homeButton?.animate(action: SKAction.sequence([
             SKAction.wait(forDuration: 0.4),
             SKAction.scale(to: 1, duration: Const.Animation.expandSec)
         ]))
@@ -249,7 +247,6 @@ class GameScene: SKScene {
     
     func clearGame() {
         self.game = nil
-        self.homeButton = nil
         self.removeAction(forKey: Const.Game.countdownKey)
     }
 }
