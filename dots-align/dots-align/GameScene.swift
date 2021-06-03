@@ -10,8 +10,8 @@ import GameplayKit
 
 class GameScene: SKScene {
     var game: Game?
-    var mainMenu: MainMenu?
-    var endGameMenu: EndGameMenu?
+    var menuMain: MenuMain?
+    var menuEndGame: MenuEndGame?
     var gameMode = GameMode.level
     var orbDiameter: CGFloat = 1.0
     var touchBeganOnButtonId: ButtonId?
@@ -75,7 +75,7 @@ class GameScene: SKScene {
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) { }
     
     override func update(_ currentTime: TimeInterval) {
-        self.mainMenu?.update()
+        self.menuMain?.update()
     }
     
     func touchRotate(touches: Set<UITouch>) {
@@ -128,7 +128,7 @@ class GameScene: SKScene {
             } else if buttonId == ButtonId.homeId {
                 self.showMainMenu()
             } else if buttonId == ButtonId.tutorialInstructionsId {
-                self.game?.tutorialInstructions?.onButtonTap(scene: self)
+                self.game?.instructions?.onButtonTap(scene: self)
             }
         }
         
@@ -139,10 +139,10 @@ class GameScene: SKScene {
         self.gameMode = mode
         
         self.game = Game(scene: self, mode: mode)
-        self.mainMenu = nil
-        self.endGameMenu = nil
+        self.menuMain = nil
+        self.menuEndGame = nil
         
-        self.startGameAnimation()
+        self.game?.animateIn()
         self.startGameCountdownIfNecessary(mode: mode)
     }
     
@@ -160,42 +160,6 @@ class GameScene: SKScene {
         ])
         
         run(countdown, withKey: Const.Game.countdownKey)
-    }
-    
-    func startGameAnimation() {
-        // Start hidden.
-        self.game?.level.cloud.animate(action: SKAction.scale(to: 0, duration: 0.0))
-        self.game?.indicators?.animate(action: SKAction.fadeAlpha(to: 0, duration: 0.0))
-        self.game?.orb?.node.run(SKAction.scale(to: 0, duration: 0.0))
-        self.game?.homeButton?.animate(action: SKAction.scale(to: 0, duration: 0.0))
-        self.game?.tutorialInstructions?.button.animate(action: SKAction.scale(to: 0, duration: 0.0))
-        self.game?.tutorialInstructions?.animate(action: SKAction.fadeAlpha(to: 0, duration: 0.0))
-        
-        // Pop.
-        self.game?.tutorialInstructions?.animate(action: SKAction.sequence([
-            SKAction.wait(forDuration: 0.2),
-            SKAction.fadeAlpha(to: 1, duration: Const.Animation.expandSec)
-        ]))
-        self.game?.orb?.node.run(SKAction.sequence([
-            SKAction.wait(forDuration: 0.2),
-            SKAction.scale(to: 1, duration: Const.Animation.expandSec)
-        ]))
-        self.game?.indicators?.animate(action: SKAction.sequence([
-            SKAction.wait(forDuration: 0.4),
-            SKAction.fadeAlpha(to: 1, duration: Const.Animation.expandSec)
-        ]))
-        self.game?.homeButton?.animate(action: SKAction.sequence([
-            SKAction.wait(forDuration: 0.4),
-            SKAction.scale(to: 1, duration: Const.Animation.expandSec)
-        ]))
-        self.game?.tutorialInstructions?.button.animate(action: SKAction.sequence([
-            SKAction.wait(forDuration: 0.4),
-            SKAction.scale(to: 1, duration: Const.Animation.expandSec)
-        ]))
-        self.game?.level.cloud.animate(action: SKAction.sequence([
-            SKAction.wait(forDuration: 0.6),
-            SKAction.scale(to: 1, duration: Const.Animation.expandSec)
-        ]))
     }
     
     func endGameAnimation() {
@@ -219,15 +183,15 @@ class GameScene: SKScene {
     
     func showMainMenu() {
         self.clearGame()
-        self.mainMenu = MainMenu(scene: self)
-        self.endGameMenu = nil
+        self.menuMain = MenuMain(scene: self)
+        self.menuEndGame = nil
     }
     
     func showEndGameMenu() {
         let score = self.game?.score ?? 0
         self.clearGame()
-        self.mainMenu = nil
-        self.endGameMenu = EndGameMenu(scene: self, score: score)
+        self.menuMain = nil
+        self.menuEndGame = MenuEndGame(scene: self, score: score)
     }
     
     func clearGame() {

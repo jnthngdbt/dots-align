@@ -13,7 +13,7 @@ class Game {
     var orb: Orb!
     var level: Level!
     var indicators: GameIndicators?
-    var tutorialInstructions: TutorialInstructions?
+    var instructions: Instructions?
     var homeButton: FooterHomeButton!
     var score = 0
     var left = Const.Game.maxLevel
@@ -27,10 +27,10 @@ class Game {
     
         if mode == GameMode.tutorial {
             self.indicators = nil
-            self.tutorialInstructions = TutorialInstructions(scene: scene)
+            self.instructions = Instructions(scene: scene)
         } else {
             self.indicators = GameIndicators(scene: scene, mode: mode)
-            self.tutorialInstructions = nil
+            self.instructions = nil
         }
         
         self.homeButton = FooterHomeButton(scene: scene)
@@ -71,6 +71,42 @@ class Game {
         self.levelScoreLabel.position = self.levelScoreLabelStartPos
         self.levelScoreLabel.alpha = 0 // start hidden
         scene.addChild(self.levelScoreLabel)
+    }
+    
+    func animateIn(waitSec: TimeInterval = 0.0) {
+        // Start hidden.
+        self.level.cloud.animate(action: SKAction.scale(to: 0, duration: 0.0))
+        self.indicators?.animate(action: SKAction.fadeAlpha(to: 0, duration: 0.0))
+        self.orb?.node.run(SKAction.scale(to: 0, duration: 0.0))
+        self.homeButton?.animate(action: SKAction.scale(to: 0, duration: 0.0))
+        self.instructions?.button.animate(action: SKAction.scale(to: 0, duration: 0.0))
+        self.instructions?.animate(action: SKAction.fadeAlpha(to: 0, duration: 0.0))
+        
+        // Pop.
+        self.instructions?.animate(action: SKAction.sequence([
+            SKAction.wait(forDuration: waitSec + 0.2),
+            SKAction.fadeAlpha(to: 1, duration: Const.Animation.expandSec)
+        ]))
+        self.orb?.node.run(SKAction.sequence([
+            SKAction.wait(forDuration: waitSec + 0.2),
+            SKAction.scale(to: 1, duration: Const.Animation.expandSec)
+        ]))
+        self.indicators?.animate(action: SKAction.sequence([
+            SKAction.wait(forDuration: waitSec + 0.4),
+            SKAction.fadeAlpha(to: 1, duration: Const.Animation.expandSec)
+        ]))
+        self.homeButton?.animate(action: SKAction.sequence([
+            SKAction.wait(forDuration: waitSec + 0.4),
+            SKAction.scale(to: 1, duration: Const.Animation.expandSec)
+        ]))
+        self.instructions?.button.animate(action: SKAction.sequence([
+            SKAction.wait(forDuration: waitSec + 0.4),
+            SKAction.scale(to: 1, duration: Const.Animation.expandSec)
+        ]))
+        self.level.cloud.animate(action: SKAction.sequence([
+            SKAction.wait(forDuration: waitSec + 0.6),
+            SKAction.scale(to: 1, duration: Const.Animation.expandSec)
+        ]))
     }
     
     func checkIfLevelSolved() {
@@ -143,47 +179,5 @@ class Game {
     
     deinit {
         self.levelScoreLabel.removeFromParent()
-    }
-}
-
-class GameIndicators {
-    var indicators = Array<Indicator>()
-    
-    init(scene: GameScene, mode: GameMode) {
-        for i in 0..<IndicatorNames.allCases.count {
-            self.indicators.append(Indicator(scene: scene, idx: i, addGauge: true))
-        }
-        
-        self.indicators[IndicatorNames.left.rawValue].label.text = self.getRemainingTitle(mode: mode)
-        self.indicators[IndicatorNames.left.rawValue].data.text = "20"
-        
-        self.indicators[IndicatorNames.dots.rawValue].label.text = "DOTS"
-        self.indicators[IndicatorNames.dots.rawValue].data.text = "0"
-        
-        self.indicators[IndicatorNames.boost.rawValue].label.text = "BOOST"
-        self.indicators[IndicatorNames.boost.rawValue].data.text = "x0"
-        
-        self.indicators[IndicatorNames.score.rawValue].label.text = "SCORE"
-        self.indicators[IndicatorNames.score.rawValue].data.text = "0"
-    }
-    
-    func getRemainingTitle(mode: GameMode) -> String {
-        switch mode {
-        case .level: return "LEVEL"
-        case .time: return "TIME"
-        default: return "LEFT"
-        }
-    }
-    
-    func update(name: IndicatorNames, value: Int, gaugeValue: CGFloat? = nil, prefix: String = "", highlight: Bool = false) {
-        if indicators.count > name.rawValue {
-            indicators[name.rawValue].updateData(value: value, gaugeValue: gaugeValue, prefix: prefix, highlight: highlight)
-        }
-    }
-    
-    func animate(action: SKAction) {
-        for i in self.indicators {
-            i.animate(action: action)
-        }
     }
 }

@@ -8,21 +8,21 @@
 import Foundation
 import SpriteKit
 
-class FooterTutorialButton: FooterButton {
+class FooterInstructionsButton: FooterButton {
     init(scene: GameScene) {
         super.init(scene: scene, text: "✔︎", id: ButtonId.tutorialInstructionsId)
         self.shape.position.x = scene.size.width - Const.Indicators.sidePaddingFactor * scene.minSize()
     }
 }
 
-class TutorialInstructions {
-    var button: FooterTutorialButton
+class Instructions {
+    var button: FooterInstructionsButton
     var title: SKLabelNode?
-    var instructions: ContainedLabel?
+    var text: ContainedLabel?
     var areInstructionsShown = true
 
     init(scene: GameScene) {
-        self.button = FooterTutorialButton(scene: scene)
+        self.button = FooterInstructionsButton(scene: scene)
         self.showInstructions(scene: scene)
     }
     
@@ -49,22 +49,22 @@ class TutorialInstructions {
         let aspectClip = min(1.8, scene.maxSize() / scene.minSize())
         let textFontSize = aspectClip * 0.03 * scene.minSize()
         
-        self.instructions = ContainedLabel(scene: scene, text: text, size: size, cornerRadius: 0)
+        self.text = ContainedLabel(scene: scene, text: text, size: size, cornerRadius: 0)
 
-        self.instructions!.label.fontName = Const.fontNameText
-        self.instructions!.shape.fillColor = UIColor(white: 0.0, alpha: 0.5)
-        self.instructions!.label.fontSize = textFontSize
-        self.instructions!.label.fontColor = labelColor
-        self.instructions!.shape.position = CGPoint(x: scene.center().x, y: 0.85 * scene.size.height)
-        self.instructions!.shape.zPosition = Const.Button.zPosition - 1.0
-        self.instructions!.label.horizontalAlignmentMode = .center
-        self.instructions!.label.verticalAlignmentMode = .top
+        self.text!.label.fontName = Const.fontNameText
+        self.text!.shape.fillColor = UIColor(white: 0.0, alpha: 0.5)
+        self.text!.label.fontSize = textFontSize
+        self.text!.label.fontColor = labelColor
+        self.text!.shape.position = CGPoint(x: scene.center().x, y: 0.85 * scene.size.height)
+        self.text!.shape.zPosition = Const.Button.zPosition - 1.0
+        self.text!.label.horizontalAlignmentMode = .center
+        self.text!.label.verticalAlignmentMode = .top
 
-        self.instructions!.shape.alpha = 1.0
+        self.text!.shape.alpha = 1.0
 
-        self.instructions!.label.lineBreakMode = .byWordWrapping
-        self.instructions!.label.numberOfLines = 0
-        self.instructions!.label.preferredMaxLayoutWidth = size.width
+        self.text!.label.lineBreakMode = .byWordWrapping
+        self.text!.label.numberOfLines = 0
+        self.text!.label.preferredMaxLayoutWidth = size.width
         
         self.title!.zPosition = Const.Button.zPosition
     }
@@ -75,14 +75,14 @@ class TutorialInstructions {
         if (self.areInstructionsShown) {
             self.showInstructions(scene: scene)
         } else {
-            self.instructions = nil
+            self.text = nil
             self.title?.removeFromParent()
             self.button.label.text = "?"
         }
     }
     
     func animate(action: SKAction) {
-        self.instructions?.animate(action: action)
+        self.text?.animate(action: action)
         self.title?.run(action)
     }
     
