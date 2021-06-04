@@ -112,6 +112,7 @@ class GameScene: SKScene {
     }
     
     func manageButtonTapBegin(buttonId: ButtonId?) {
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         self.touchBeganOnButtonId = buttonId
     }
     

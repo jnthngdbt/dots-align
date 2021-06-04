@@ -60,6 +60,8 @@ class Level {
         let dir = Const.Cloud.alignedOrientation - self.cloud.orientation
         self.cloud.rotate(dir: dir)
         
+        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+        
         self.animateOut()
     }
     
