@@ -77,7 +77,7 @@ class Const {
     class Indicators {
         static let fontColor = labelColor
         static let fontColorHighlight = UIColor(white: 0.8, alpha: 1)
-        static let layoutSphereFactor: CGFloat = 0.86
+        static let layoutSphereFactor: CGFloat = 0.88
         static let sidePaddingFactor: CGFloat = 0.14
         static let verticalSpacingFactor: CGFloat = 0.08
         static let gaugeWidthFactor: CGFloat = 0.1

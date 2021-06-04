@@ -173,8 +173,8 @@ class GameScene: SKScene {
             SKAction.scale(to: 0, duration: Const.Animation.collapseSec)
         ])
         
-        if let game = self.game {
-            game.orb.node.run(animation) {
+        if self.game?.orb != nil {
+            self.game!.orb!.node.run(animation) {
                 self.showEndGameMenu()
             }
         } else {

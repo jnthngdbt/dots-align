@@ -10,7 +10,7 @@ import SpriteKit
 
 class Game {
     let mode: GameMode
-    var orb: Orb!
+    var orb: Orb?
     var level: Level!
     var indicators: GameIndicators?
     var instructions: Instructions?
