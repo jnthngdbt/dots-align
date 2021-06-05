@@ -9,7 +9,7 @@ import Foundation
 import SpriteKit
 
 class MenuMain: Menu {
-    let cloud: Cloud!
+    let cloud: Cloud?
     let title: SKLabelNode!
     
     init(scene: GameScene) {
@@ -18,7 +18,7 @@ class MenuMain: Menu {
         let dotRadius = Const.Menu.dotRadiusFactor * scene.minSize()
         let points = Cloud.generateSymmetricRandomPoints(nbPoints: Const.Menu.sphereNbDots)
         self.cloud = Cloud(points: points, scene: scene, color: Const.Menu.sphereDotsColor, radius: radius, dotRadius: dotRadius)
-        self.cloud.desalign()
+        self.cloud?.desalign()
         
         self.title = SKLabelNode(text: "ALIGN DOTS")
         
@@ -59,7 +59,7 @@ class MenuMain: Menu {
         let radPerSec = Scalar.pi / 60
         let rad = dt * radPerSec
         let q = Quat(angle: rad, axis: simd_normalize(Vector3d(-1, 1, 0)))
-        self.cloud.rotate(quaternion: q)
+        self.cloud?.rotate(quaternion: q)
     }
     
     private func animateIn() {
@@ -74,7 +74,7 @@ class MenuMain: Menu {
             SKAction.fadeAlpha(to: 1, duration: 1.0)
         ])
         
-        self.cloud.animate(action: animation)
+        self.cloud?.animate(action: animation)
     }
     
     private func animateInButtons() {
