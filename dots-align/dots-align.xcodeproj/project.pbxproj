@@ -47,6 +47,8 @@
 		EC77FD34264C7FF600B901FD /* MenuMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD32264C7FF600B901FD /* MenuMain.swift */; };
 		EC77FD35264C7FF600B901FD /* MenuMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD32264C7FF600B901FD /* MenuMain.swift */; };
 		EC812664265DDD1C00FAA61E /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC812663265DDD1C00FAA61E /* Button.swift */; };
+		ECEFA386266B08DA007F2C77 /* Database.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = ECEFA384266B08DA007F2C77 /* Database.xcdatamodeld */; };
+		ECEFA388266B14C6007F2C77 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECEFA387266B14C6007F2C77 /* DatabaseManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +99,8 @@
 		EC77FD2E264C7F3000B901FD /* Indicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Indicator.swift; sourceTree = "<group>"; };
 		EC77FD32264C7FF600B901FD /* MenuMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuMain.swift; sourceTree = "<group>"; };
 		EC812663265DDD1C00FAA61E /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
+		ECEFA385266B08DA007F2C77 /* Database.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Database.xcdatamodel; sourceTree = "<group>"; };
+		ECEFA387266B14C6007F2C77 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,6 +174,8 @@
 				EC69761C2669735900E34D6E /* ProgressBar.swift */,
 				EC0656E22666C69900F28CB1 /* Orb.swift */,
 				EC77FD16264C7C1B00B901FD /* Utils.swift */,
+				ECEFA384266B08DA007F2C77 /* Database.xcdatamodeld */,
+				ECEFA387266B14C6007F2C77 /* DatabaseManager.swift */,
 			);
 			path = "dots-align";
 			sourceTree = "<group>";
@@ -328,6 +334,7 @@
 				EC77FD2B264C7E0F00B901FD /* Game.swift in Sources */,
 				EC69761F266973E000E34D6E /* MenuEndGame.swift in Sources */,
 				E100A7CF263E44F900F81153 /* GameScene.swift in Sources */,
+				ECEFA386266B08DA007F2C77 /* Database.xcdatamodeld in Sources */,
 				EC77FD2F264C7F3000B901FD /* Indicator.swift in Sources */,
 				EC6976212669740800E34D6E /* Menu.swift in Sources */,
 				EC69761B2669713E00E34D6E /* GameIndicators.swift in Sources */,
@@ -340,6 +347,7 @@
 				EC77FD23264C7D7000B901FD /* Cloud.swift in Sources */,
 				EC77FD17264C7C1B00B901FD /* Utils.swift in Sources */,
 				EC77FD27264C7DE600B901FD /* Level.swift in Sources */,
+				ECEFA388266B14C6007F2C77 /* DatabaseManager.swift in Sources */,
 				EC77FD1F264C7D2300B901FD /* Dot.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -681,6 +689,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		ECEFA384266B08DA007F2C77 /* Database.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				ECEFA385266B08DA007F2C77 /* Database.xcdatamodel */,
+			);
+			currentVersion = ECEFA385266B08DA007F2C77 /* Database.xcdatamodel */;
+			path = Database.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = E100A7BD263E44F900F81153 /* Project object */;
 }
