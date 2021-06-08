@@ -9,6 +9,7 @@ import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene {
+    var database: DatabaseManager?
     var game: Game?
     var menuMain: MenuMain?
     var menuEndGame: MenuEndGame?
@@ -32,8 +33,8 @@ class GameScene: SKScene {
     
     // Scene will appear. Create content here. (not "touch moved")
     override func didMove(to view: SKView) {
+        self.database = DatabaseManager()
         self.backgroundColor = Const.backgroundColor
-        
         self.orbDiameter = Const.Scene.orbDiameterFactor * self.minSize()
         
         self.showMainMenu()
@@ -164,7 +165,7 @@ class GameScene: SKScene {
     }
     
     func endGameAnimation() {
-        self.game?.ended = true
+        self.game?.end(database: self.database)
         self.game?.level.cloud.animate(action: SKAction.scale(to: 0, duration: Const.Animation.collapseSec))
         self.game?.indicators?.animate(action: SKAction.scale(to: 0, duration: Const.Animation.collapseSec))
         

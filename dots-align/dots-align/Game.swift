@@ -177,6 +177,12 @@ class Game {
         self.indicators?.update(name: IndicatorNames.left, value: self.left)
     }
     
+    func end(database: DatabaseManager?) {
+        self.ended = true
+        
+        database?.addGameResult(game: self)
+    }
+    
     deinit {
         self.levelScoreLabel.removeFromParent()
     }

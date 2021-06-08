@@ -12,10 +12,17 @@ class MenuEndGame: Menu {
     init(scene: GameScene, score: Int) {
         super.init()
         
+        let bestScore = scene.database?.getBestScore()
+        let isNewBest = (bestScore == nil) || (score > (bestScore ?? score)) // FIXME: game score is already in db, add field to entity
+        
         self.addTitleLabel(scene: scene, label: "SCORES", spacingAfterFactor: 7.0)
         
-        self.addScoreLabel(scene: scene, label: "THIS GAME", value: score, spacingAfterFactor: 2.0)
-        self.addScoreLabel(scene: scene, label: "YOUR BEST", value: score, spacingAfterFactor: 5.0)
+        if isNewBest {
+            self.addScoreLabel(scene: scene, label: "NEW BEST", value: score, scale: 1.5, spacingAfterFactor: 5.0)
+        } else {
+            self.addScoreLabel(scene: scene, label: "THIS GAME", value: score, scale: 1.0, spacingAfterFactor: 2.0)
+            self.addScoreLabel(scene: scene, label: "YOUR BEST", value: bestScore ?? score, scale: 1.0, spacingAfterFactor: 5.0)
+        }
         
         self.buttons.append(MenuButton(scene: scene, text: "REPLAY", id: ButtonId.replayGameId))
         self.buttons.append(MenuButton(scene: scene, text: "HOME", id: ButtonId.homeId))
@@ -50,11 +57,11 @@ class MenuEndGame: Menu {
         self.buttons.append(label)
     }
     
-    func addScoreLabel(scene: GameScene, label: String, value: Int, spacingAfterFactor: CGFloat = 1.0) {
+    func addScoreLabel(scene: GameScene, label: String, value: Int, scale: CGFloat, spacingAfterFactor: CGFloat = 1.0) {
         let scoreLabel = MenuButton(scene: scene, text: label)
         scoreLabel.shape.fillColor = UIColor.clear
         scoreLabel.label.fontSize *= 2.25
-        scoreLabel.shape.setScale(0.4)
+        scoreLabel.shape.setScale(scale * 0.4)
         scoreLabel.label.fontColor = labelColor
         scoreLabel.spacingAfter *= 0
         self.buttons.append(scoreLabel)
@@ -62,6 +69,7 @@ class MenuEndGame: Menu {
         let scoreButton = MenuButton(scene: scene, text: String(value))
         scoreButton.shape.fillColor = UIColor.clear
         scoreButton.label.fontSize *= 2.25
+        scoreButton.shape.setScale(scale * 1.0)
         scoreButton.label.fontColor = labelColor
         scoreButton.spacingAfter *= spacingAfterFactor
         self.buttons.append(scoreButton)
