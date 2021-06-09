@@ -156,6 +156,7 @@
 				E100A7D5263E44FC00F81153 /* Assets.xcassets */,
 				EC812663265DDD1C00FAA61E /* Button.swift */,
 				EC77FD1A264C7CD100B901FD /* Constants.swift */,
+				ECEFA384266B08DA007F2C77 /* Database.xcdatamodeld */,
 				ECEFA387266B14C6007F2C77 /* DatabaseManager.swift */,
 				EC77FD1E264C7D2200B901FD /* Dot.swift */,
 				EC77FD22264C7D7000B901FD /* Cloud.swift */,
@@ -175,7 +176,6 @@
 				EC69761C2669735900E34D6E /* ProgressBar.swift */,
 				EC0656E22666C69900F28CB1 /* Orb.swift */,
 				EC77FD16264C7C1B00B901FD /* Utils.swift */,
-				ECEFA384266B08DA007F2C77 /* Database.xcdatamodeld */,
 			);
 			path = "dots-align";
 			sourceTree = "<group>";

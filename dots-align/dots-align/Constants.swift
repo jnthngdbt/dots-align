@@ -9,7 +9,7 @@ import Foundation
 import SpriteKit
 
 enum IndicatorNames: Int, CaseIterable { case left, dots, boost, score  }
-enum GameMode: Int, CaseIterable { case tutorial, level, time  }
+enum GameMode: Int, CaseIterable { case tutorial, level, time  } // keep order, saved in core data
 
 enum ButtonId: String, CaseIterable { case
     none = "",

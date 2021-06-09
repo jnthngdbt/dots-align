@@ -9,11 +9,10 @@ import Foundation
 import SpriteKit
 
 class MenuEndGame: Menu {
-    init(scene: GameScene, score: Int) {
+    init(scene: GameScene, score: Int, bestScore: Int) {
         super.init()
         
-        let bestScore = scene.database?.getBestScore()
-        let isNewBest = (bestScore == nil) || (score > (bestScore ?? score)) // FIXME: game score is already in db, add field to entity
+        let isNewBest = score > bestScore
         
         self.addTitleLabel(scene: scene, label: "SCORES", spacingAfterFactor: 7.0)
         
@@ -21,7 +20,7 @@ class MenuEndGame: Menu {
             self.addScoreLabel(scene: scene, label: "NEW BEST", value: score, scale: 1.5, spacingAfterFactor: 5.0)
         } else {
             self.addScoreLabel(scene: scene, label: "THIS GAME", value: score, scale: 1.0, spacingAfterFactor: 2.0)
-            self.addScoreLabel(scene: scene, label: "YOUR BEST", value: bestScore ?? score, scale: 1.0, spacingAfterFactor: 5.0)
+            self.addScoreLabel(scene: scene, label: "YOUR BEST", value: bestScore, scale: 1.0, spacingAfterFactor: 5.0)
         }
         
         self.buttons.append(MenuButton(scene: scene, text: "REPLAY", id: ButtonId.replayGameId))

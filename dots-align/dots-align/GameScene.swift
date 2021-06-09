@@ -165,7 +165,7 @@ class GameScene: SKScene {
     }
     
     func endGameAnimation() {
-        self.game?.end(database: self.database)
+        let gameResults = self.game!.end(database: self.database)
         self.game?.level.cloud.animate(action: SKAction.scale(to: 0, duration: Const.Animation.collapseSec))
         self.game?.indicators?.animate(action: SKAction.scale(to: 0, duration: Const.Animation.collapseSec))
         
@@ -176,10 +176,10 @@ class GameScene: SKScene {
         
         if self.game?.orb != nil {
             self.game!.orb!.node.run(animation) {
-                self.showEndGameMenu()
+                self.showEndGameMenu(gameResults: gameResults)
             }
         } else {
-            self.showEndGameMenu()
+            self.showEndGameMenu(gameResults: gameResults)
         }
     }
     
@@ -189,11 +189,12 @@ class GameScene: SKScene {
         self.menuEndGame = nil
     }
     
-    func showEndGameMenu() {
+    func showEndGameMenu(gameResults: GameEntity?) {
         let score = self.game?.score ?? 0
+        let bestScore = gameResults?.bestScore ?? 0
         self.clearGame()
         self.menuMain = nil
-        self.menuEndGame = MenuEndGame(scene: self, score: score)
+        self.menuEndGame = MenuEndGame(scene: self, score: score, bestScore: Int(bestScore))
     }
     
     func clearGame() {

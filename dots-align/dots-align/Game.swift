@@ -15,12 +15,18 @@ class Game {
     var indicators: GameIndicators?
     var instructions: Instructions?
     var homeButton: FooterHomeButton!
-    var score = 0
     var left = Const.Game.maxLevel
     var ended = false
     var levelScoreLabel: SKLabelNode!
     var levelScoreLabelStartPos: CGPoint!
     var levelScoreLabelEndPos: CGPoint!
+    
+    // Results
+    var score = 0
+    var nbCompletedLevels = 0
+    var sumNbDots = 0
+    var sumRotationRad = 0.0
+    var sumBoost = 0
     
     init(scene: GameScene, mode: GameMode) {
         self.mode = mode
@@ -114,7 +120,12 @@ class Game {
             self.level.solve()
             
             let levelScore = self.level.computeScore()
+            
             self.score += levelScore
+            self.nbCompletedLevels += 1
+            self.sumNbDots += self.level.getTotalNbDots()
+            self.sumRotationRad += self.level.angleCumul
+            self.sumBoost += self.level.computeMultiplierInt()
             
             self.indicators?.update(name: IndicatorNames.score, value: self.score)
             
@@ -177,10 +188,10 @@ class Game {
         self.indicators?.update(name: IndicatorNames.left, value: self.left)
     }
     
-    func end(database: DatabaseManager?) {
+    func end(database: DatabaseManager?) -> GameEntity? {
         self.ended = true
         
-        database?.addGameResult(game: self)
+        return database?.addGameResult(game: self)
     }
     
     deinit {
