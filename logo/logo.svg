@@ -2,7 +2,7 @@
   overflow="hidden">
   <g clip-path="url(#clip0)">
     <rect x="0" y="0" width="1000" height="1000" fill="#000000" />
-    <circle cx="400" cy="550" r="240" stroke="rgba(0,0,0,0)" stroke-width="3" fill="#48387f" />
+    <circle cx="400" cy="550" r="240" stroke="rgba(0,0,0,0)" stroke-width="3" fill="#554196" />
     <circle cx="600" cy="450" r="240" stroke="rgba(0,0,0,0)" stroke-width="3" fill="#b389fb" />
   </g>
 </svg>
