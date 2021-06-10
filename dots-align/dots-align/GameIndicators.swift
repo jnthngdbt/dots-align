@@ -11,7 +11,7 @@ import SpriteKit
 class GameIndicators {
     var indicators = Array<Indicator>()
     
-    init(scene: GameScene, mode: GameMode) {
+    init(scene: GameScene, mode: GameMode, left: Int) {
         for i in 0..<IndicatorNames.allCases.count {
             self.indicators.append(Indicator(scene: scene, idx: i, addGauge: true))
         }
@@ -27,6 +27,19 @@ class GameIndicators {
         
         self.indicators[IndicatorNames.score.rawValue].label.text = "SCORE"
         self.indicators[IndicatorNames.score.rawValue].data.text = "0"
+        
+        let scoreMax = CGFloat(DatabaseManager.getBestScore(gameMode: mode) ?? 1)
+        
+        self.indicators[IndicatorNames.left.rawValue].gauge?.maximum = CGFloat(left)
+        self.indicators[IndicatorNames.dots.rawValue].gauge?.maximum = 2.0 * CGFloat(Const.Game.maxNbPoints)
+        self.indicators[IndicatorNames.boost.rawValue].gauge?.minimum = 1.0
+        self.indicators[IndicatorNames.boost.rawValue].gauge?.maximum = CGFloat(Const.Level.maxMultiplier)
+        self.indicators[IndicatorNames.score.rawValue].gauge?.maximum = scoreMax
+        
+        self.update(name: IndicatorNames.left, value: left)
+        self.update(name: IndicatorNames.dots, value: 0)
+        self.update(name: IndicatorNames.boost, value: Const.Level.maxMultiplier)
+        self.update(name: IndicatorNames.score, value: 0)
     }
     
     func getRemainingTitle(mode: GameMode) -> String {

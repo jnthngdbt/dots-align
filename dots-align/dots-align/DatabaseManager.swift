@@ -10,20 +10,20 @@ import SpriteKit
 import CoreData
 
 class DatabaseManager {
-    var games = [GameEntity]()
-    var context: NSManagedObjectContext!
-    let appDelegate = UIApplication.shared.delegate as? AppDelegate
-    
-    init() {
-        context = appDelegate?.persistentContainer.viewContext
+    private static func getAppDelegate() -> AppDelegate? {
+        return UIApplication.shared.delegate as? AppDelegate
     }
     
-    func addGameResult(game: Game) -> GameEntity {
-        let bestScore = self.getBestScore(gameMode: game.mode)
+    private static func getContext() -> NSManagedObjectContext {
+        return (DatabaseManager.getAppDelegate()?.persistentContainer.viewContext)!
+    }
+    
+    static func addGameResult(game: Game) -> GameEntity {
+        let bestScore = DatabaseManager.getBestScore(gameMode: game.mode)
         
         let nbLevels = game.nbCompletedLevels
         
-        let gameEntry = GameEntity(context: self.context)
+        let gameEntry = GameEntity(context: DatabaseManager.getContext())
         gameEntry.score = Int32(game.score)
         gameEntry.mode = Int32(game.mode.rawValue)
         gameEntry.bestScore = Int32(bestScore ?? 0)
@@ -32,12 +32,12 @@ class DatabaseManager {
         gameEntry.avgNbDots = nbLevels > 0 ? Float(game.sumNbDots) / Float(nbLevels) : 0.0
         gameEntry.nbLevels = Int32(nbLevels)
             
-        appDelegate?.saveContext()
+        DatabaseManager.getAppDelegate()?.saveContext()
         
         return gameEntry
     }
 
-    func getBestScore(gameMode: GameMode) -> Int? {
+    static func getBestScore(gameMode: GameMode) -> Int? {
         var results = [GameEntity]()
         
         let request:NSFetchRequest<GameEntity> = GameEntity.fetchRequest()
@@ -48,7 +48,8 @@ class DatabaseManager {
         request.sortDescriptors = [sort]
             
         do {
-            try results = self.context.fetch(request)
+            let context = DatabaseManager.getContext()
+            try results = context.fetch(request)
         } catch {
             print("[ERROR] Could not fetch data from database.")
         }

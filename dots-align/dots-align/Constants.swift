@@ -63,8 +63,8 @@ class Const {
         static let minNbPoints = 4
         static let maxNbPoints = 30
         static let startNbPoints = 15
-        static let maxLevel = 20
-        static let maxSeconds = 5
+        static let maxLevel = 10
+        static let maxSeconds = 10
         static let countdownKey = "gameCountdown"
         static let sphereDiameterFactor: CGFloat = 0.6
     }
