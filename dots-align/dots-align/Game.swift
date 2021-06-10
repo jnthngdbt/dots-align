@@ -30,14 +30,6 @@ class Game {
     
     init(scene: GameScene, mode: GameMode) {
         self.mode = mode
-    
-        if mode == GameMode.tutorial {
-            self.indicators = nil
-            self.instructions = Instructions(scene: scene)
-        } else {
-            self.indicators = GameIndicators(scene: scene, mode: mode)
-            self.instructions = nil
-        }
         
         self.homeButton = FooterHomeButton(scene: scene)
         self.orb = Orb(scene: scene)
@@ -48,22 +40,16 @@ class Game {
         default: self.left = 1
         }
         
-        self.initIndicators()
+        if mode == GameMode.tutorial {
+            self.indicators = nil
+            self.instructions = Instructions(scene: scene)
+        } else {
+            self.indicators = GameIndicators(scene: scene, mode: mode, left: self.left)
+            self.instructions = nil
+        }
+        
         self.initLevelScoreLabel(scene: scene)
         self.level = Level(scene: scene, nbPatternPoints: Const.Game.startNbPoints, indicators: self.indicators, mode: mode)
-    }
-    
-    func initIndicators() {
-        self.indicators?.indicators[IndicatorNames.left.rawValue].gauge?.maximum = CGFloat(self.left)
-        self.indicators?.indicators[IndicatorNames.dots.rawValue].gauge?.maximum = 2.0 * CGFloat(Const.Game.maxNbPoints)
-        self.indicators?.indicators[IndicatorNames.boost.rawValue].gauge?.minimum = 1.0
-        self.indicators?.indicators[IndicatorNames.boost.rawValue].gauge?.maximum = CGFloat(Const.Level.maxMultiplier)
-        self.indicators?.indicators[IndicatorNames.score.rawValue].gauge?.maximum = 1000 // TODO best score
-        
-        self.indicators?.update(name: IndicatorNames.left, value: self.left)
-        self.indicators?.update(name: IndicatorNames.dots, value: 0)
-        self.indicators?.update(name: IndicatorNames.boost, value: Const.Level.maxMultiplier)
-        self.indicators?.update(name: IndicatorNames.score, value: 0)
     }
     
     func initLevelScoreLabel(scene: GameScene) {
@@ -188,10 +174,9 @@ class Game {
         self.indicators?.update(name: IndicatorNames.left, value: self.left)
     }
     
-    func end(database: DatabaseManager?) -> GameEntity? {
+    func end() -> GameEntity? {
         self.ended = true
-        
-        return database?.addGameResult(game: self)
+        return DatabaseManager.addGameResult(game: self)
     }
     
     deinit {
