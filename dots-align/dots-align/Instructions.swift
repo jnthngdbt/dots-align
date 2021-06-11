@@ -18,41 +18,46 @@ class FooterInstructionsButton: FooterButton {
 class Instructions {
     var button: FooterInstructionsButton
     var title: SKLabelNode?
+    var titleString: String
     var text: ContainedLabel?
+    var textString: String
+    var alpha: CGFloat
     var areInstructionsShown = true
 
-    init(scene: GameScene) {
+    init(scene: GameScene, title: String, text: String, alpha: CGFloat, startHidden: Bool) {
         self.button = FooterInstructionsButton(scene: scene)
-        self.showInstructions(scene: scene)
+        self.titleString = title
+        self.textString = text
+        self.alpha = alpha
+        
+        if startHidden {
+            self.hideInstructions()
+        } else {
+            self.showInstructions(scene: scene)
+        }
     }
     
     func showInstructions(scene: GameScene) {
         self.button.label.text = "✔︎"
         
-        self.title = SKLabelNode(text: "TUTORIAL")
+        self.title = SKLabelNode(text: self.titleString)
         self.title!.fontColor = labelColor
         self.title!.fontName = Const.fontNameTitle
         self.title!.fontSize = 0.11 * scene.minSize()
         self.title!.position = CGPoint(x: scene.center().x, y: 0.9 * scene.size.height)
         scene.addChild(self.title!)
         
-        var text = ""
-        text += "► The goal is to align two symmetric dot patterns orbiting a ball.\n\n"
-        text += "► For this tutorial, small red dots are added to the patterns to help you find the solution. Aligning the small red dots will align the two patterns.\n\n"
-        text += "► When you feel you can do it without those handy small dots, you are ready to play!\n\n"
-        text += "► Tap the checkmark below to hide those instructions."
-        
-        let size = CGSize(width: 0.95 * scene.size.width, height: 2.0 * scene.size.height)
+        let size = CGSize(width: 0.9 * scene.size.width, height: 2.0 * scene.size.height)
         
         // For the block of text, scale font also including aspect ratio.
         // Otherwise, for iPads with lower aspect ratio, the text is too big and goes too low.
         let aspectClip = min(1.8, scene.maxSize() / scene.minSize())
-        let textFontSize = aspectClip * 0.03 * scene.minSize()
+        let textFontSize = aspectClip * 0.032 * scene.minSize()
         
-        self.text = ContainedLabel(scene: scene, text: text, size: size, cornerRadius: 0)
+        self.text = ContainedLabel(scene: scene, text: self.textString, size: size, cornerRadius: 0)
 
         self.text!.label.fontName = Const.fontNameText
-        self.text!.shape.fillColor = UIColor(white: 0.0, alpha: 0.5)
+        self.text!.shape.fillColor = UIColor(white: 0.0, alpha: self.alpha)
         self.text!.label.fontSize = textFontSize
         self.text!.label.fontColor = labelColor
         self.text!.shape.position = CGPoint(x: scene.center().x, y: 0.85 * scene.size.height)
@@ -69,15 +74,19 @@ class Instructions {
         self.title!.zPosition = Const.Button.zPosition
     }
     
+    func hideInstructions() {
+        self.text = nil
+        self.title?.removeFromParent()
+        self.button.label.text = "?"
+    }
+    
     func onButtonTap(scene: GameScene) {
         self.areInstructionsShown = !self.areInstructionsShown
         
         if (self.areInstructionsShown) {
             self.showInstructions(scene: scene)
         } else {
-            self.text = nil
-            self.title?.removeFromParent()
-            self.button.label.text = "?"
+            self.hideInstructions()
         }
     }
     
@@ -88,5 +97,31 @@ class Instructions {
     
     deinit {
         self.title?.removeFromParent()
+    }
+}
+
+class InstructionsGetStarted: Instructions {
+    init(scene: GameScene) {
+        var text = ""
+        text += "► Find the symmetry in the pattern of dots.\n\n"
+        text += "► Rotate the dots to make the two symmetric parts overlap.\n\n"
+        text += "► Small red dots are added as guides to help you get started.\n\n"
+        text += "► When you feel you can do it without the red dots, you are ready to play!\n\n"
+        text += "► Tap the checkmark below to hide those instructions."
+        
+        super.init(scene: scene, title: "GET STARTED", text: text, alpha: 0.5, startHidden: false)
+    }
+}
+
+class InstructionsHowItWorks: Instructions {
+    init(scene: GameScene) {
+        var text = ""
+        text += "► Find the symmetry in the pattern of dots.\n\n"
+        text += "► Rotate the dots to make the two symmetric parts overlap.\n\n"
+        text += "► The level score is the number of dots multiplied by the boost level.\n\n"
+        text += "► The boost level decreases when you rotate the dots.\n\n"
+        text += "► The boost level determines the number of dots of the next level."
+        
+        super.init(scene: scene, title: "HOW IT WORKS", text: text, alpha: 0.7, startHidden: true)
     }
 }

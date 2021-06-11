@@ -24,7 +24,7 @@ class MenuMain: Menu {
         
         super.init()
         
-        self.buttons.append(MenuButton(scene: scene, text: "TUTORIAL", id: ButtonId.tutorialId))
+        self.buttons.append(MenuButton(scene: scene, text: "GET STARTED", id: ButtonId.tutorialId))
         
         let levelGameText = "PLAY " + String(Const.Game.maxLevel) + " LEVELS"
         self.buttons.append(MenuButton(scene: scene, text: levelGameText, id: ButtonId.startLevelGameId))

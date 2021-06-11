@@ -42,10 +42,10 @@ class Game {
         
         if mode == GameMode.tutorial {
             self.indicators = nil
-            self.instructions = Instructions(scene: scene)
+            self.instructions = InstructionsGetStarted(scene: scene)
         } else {
             self.indicators = GameIndicators(scene: scene, mode: mode, left: self.left)
-            self.instructions = nil
+            self.instructions = InstructionsHowItWorks(scene: scene)
         }
         
         self.initLevelScoreLabel(scene: scene)
