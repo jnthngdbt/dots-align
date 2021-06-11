@@ -39,6 +39,7 @@ class Instructions {
     
     func showInstructions(scene: GameScene) {
         self.button.label.text = "✔︎"
+        self.areInstructionsShown = true
         
         self.title = SKLabelNode(text: self.titleString)
         self.title!.fontColor = labelColor
@@ -75,9 +76,11 @@ class Instructions {
     }
     
     func hideInstructions() {
+        self.button.label.text = "?"
+        self.areInstructionsShown = false
+        
         self.text = nil
         self.title?.removeFromParent()
-        self.button.label.text = "?"
     }
     
     func onButtonTap(scene: GameScene) {
