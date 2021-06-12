@@ -125,6 +125,6 @@ class InstructionsHowItWorks: Instructions {
         text += "► The boost level decreases when you rotate the dots.\n\n"
         text += "► The boost level determines the number of dots of the next level."
         
-        super.init(scene: scene, title: "HOW IT WORKS", text: text, alpha: 0.7, startHidden: true)
+        super.init(scene: scene, title: "HOW IT WORKS", text: text, alpha: 0.8, startHidden: true)
     }
 }

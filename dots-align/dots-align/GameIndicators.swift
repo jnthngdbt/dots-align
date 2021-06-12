@@ -31,6 +31,7 @@ class GameIndicators {
         let scoreMax = CGFloat(DatabaseManager.getBestScore(gameMode: mode) ?? 1)
         
         self.indicators[IndicatorNames.left.rawValue].gauge?.maximum = CGFloat(left)
+        self.indicators[IndicatorNames.dots.rawValue].gauge?.minimum = 2.0 * CGFloat(Const.Game.minNbPoints)
         self.indicators[IndicatorNames.dots.rawValue].gauge?.maximum = 2.0 * CGFloat(Const.Game.maxNbPoints)
         self.indicators[IndicatorNames.boost.rawValue].gauge?.minimum = 1.0
         self.indicators[IndicatorNames.boost.rawValue].gauge?.maximum = CGFloat(Const.Level.maxMultiplier)
