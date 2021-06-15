@@ -111,7 +111,7 @@ class Game {
             self.nbCompletedLevels += 1
             self.sumNbDots += self.level.getTotalNbDots()
             self.sumRotationRad += self.level.angleCumul
-            self.sumBoost += self.level.computeMultiplierInt()
+            self.sumBoost += self.level.getBoostInt()
             
             self.indicators?.update(name: IndicatorNames.score, value: self.score)
             
@@ -134,6 +134,7 @@ class Game {
                 }
             }
             
+            scene.removeAction(forKey: Const.Level.boostCountdownKey)
             self.level = Level(scene: scene, nbPatternPoints: self.getNextLevelNbPatternPoints(), indicators: self.indicators, mode: self.mode)
             self.level.animateIn()
         }
@@ -144,13 +145,12 @@ class Game {
             return Utils.randomOdd(inMin:Const.Game.minNbPoints, inMax:Const.Game.maxNbPoints)
         }
             
-        var angleRatio = 1.0 - self.level.angleCumul / Const.Level.maxAngleCumul
-        angleRatio = max(0.0, angleRatio)
+        let ratio = Scalar(self.level.boost - 1.0) / Scalar(Const.Level.maxBoost - 1) // -1 since boost starts at 1
         let minPoints = Scalar(Const.Game.minNbPoints)
         let maxPoints = Scalar(Const.Game.maxNbPoints)
-        let nbPatternPoints = minPoints + angleRatio * (maxPoints - minPoints)
+        let nbPatternPoints = minPoints + ratio * (maxPoints - minPoints)
             
-        return Int(nbPatternPoints)
+        return Int(round(nbPatternPoints))
     }
     
     func updateLevelScoreLabel(levelScore: Int) {

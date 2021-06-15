@@ -34,12 +34,12 @@ class GameIndicators {
         self.indicators[IndicatorNames.dots.rawValue].gauge?.minimum = 2.0 * CGFloat(Const.Game.minNbPoints)
         self.indicators[IndicatorNames.dots.rawValue].gauge?.maximum = 2.0 * CGFloat(Const.Game.maxNbPoints)
         self.indicators[IndicatorNames.boost.rawValue].gauge?.minimum = 1.0
-        self.indicators[IndicatorNames.boost.rawValue].gauge?.maximum = CGFloat(Const.Level.maxMultiplier)
+        self.indicators[IndicatorNames.boost.rawValue].gauge?.maximum = CGFloat(Const.Level.maxBoost)
         self.indicators[IndicatorNames.score.rawValue].gauge?.maximum = scoreMax
         
         self.update(name: IndicatorNames.left, value: left)
         self.update(name: IndicatorNames.dots, value: 0)
-        self.update(name: IndicatorNames.boost, value: Const.Level.maxMultiplier)
+        self.update(name: IndicatorNames.boost, value: Const.Level.maxBoost)
         self.update(name: IndicatorNames.score, value: 0)
     }
     

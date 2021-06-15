@@ -53,10 +53,13 @@ class Const {
     }
     
     class Level {
-        static let maxMultiplier: Int = 10
-        static let maxAngleCumul = 1.5 * Scalar.pi
         static let levelScoreFontSizeFactor: CGFloat = 0.1
         static let levelScoreEndPosOffsetFactor: CGFloat = 0.035
+        static let makeBoostDecreaseWithTimeInTimeGame = true
+        static let boostCountdownSec = 6.0
+        static let boostCountdownKey = "boostCountdown"
+        static let maxBoost: Int = 4
+        static let maxAngleCumul = 1.5 * Scalar.pi
     }
     
     class Game {

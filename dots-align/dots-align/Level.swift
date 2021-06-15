@@ -11,13 +11,16 @@ import SpriteKit
 class Level {
     var cloud: Cloud!
     var indicators: GameIndicators?
+    var mode: GameMode
     
     var nbPatternPoints = 0
     var angleCumul = 0.0
     var ended = false
+    var boost: CGFloat = 1.0
     
     init(scene: GameScene, nbPatternPoints: Int, indicators: GameIndicators?, mode: GameMode) {
         self.indicators = indicators
+        self.mode = mode
         
         self.nbPatternPoints = nbPatternPoints
         let points = Cloud.generateSymmetricRandomPoints(nbPoints: nbPatternPoints)
@@ -28,22 +31,44 @@ class Level {
         self.cloud = Cloud(points: points, scene: scene, color: color, radius: radius, dotRadius: dotRadius, addGuides: mode == GameMode.tutorial)
         self.cloud.desalign()
         
+        self.boost = CGFloat(Const.Level.maxBoost)
+        
         self.indicators?.update(name: IndicatorNames.dots, value: self.getTotalNbDots())
-        self.indicators?.update(name: IndicatorNames.boost, value: Int(Const.Level.maxMultiplier), prefix: "x")
+        self.indicators?.update(name: IndicatorNames.boost, value: self.getBoostInt(), prefix: "x")
+        
+        if mode == .time && Const.Level.makeBoostDecreaseWithTimeInTimeGame {
+            self.startBoostCountdown(scene: scene, maxBoost: Const.Level.maxBoost)
+        }
+    }
+    
+    func startBoostCountdown(scene: GameScene, maxBoost: Int) {
+        let boostCountdownWait: TimeInterval = Const.Level.boostCountdownSec / TimeInterval(maxBoost)
+        
+        let countdownStep = SKAction.sequence([
+            SKAction.wait(forDuration: boostCountdownWait),
+            SKAction.run({
+                self.boost -= 1.0
+                self.indicators?.update(name: IndicatorNames.boost, value: self.getBoostInt(), gaugeValue: self.boost, prefix: "x")
+            })
+        ])
+
+        let countdown = SKAction.repeat(countdownStep, count: maxBoost - 1)
+
+        scene.run(countdown, withKey: Const.Level.boostCountdownKey)
     }
     
     func getTotalNbDots() -> Int {
         return 2 * self.nbPatternPoints
     }
     
-    func computeMultiplier() -> CGFloat {
-        let steps = Const.Level.maxAngleCumul / Scalar(Const.Level.maxMultiplier - 1)
-        let multiplier = Scalar(Const.Level.maxMultiplier) - self.angleCumul / steps
-        return CGFloat(max(1.0, multiplier))
+    func updateBoostFromRotation() {
+        let steps = Const.Level.maxAngleCumul / Scalar(Const.Level.maxBoost - 1)
+        let multiplier = Scalar(Const.Level.maxBoost) - self.angleCumul / steps
+        self.boost = CGFloat(max(1.0, multiplier))
     }
     
-    func computeMultiplierInt() -> Int {
-        return Int(ceil(self.computeMultiplier()))
+    func getBoostInt() -> Int {
+        return Int(ceil(self.boost))
     }
     
     func rotate(dir: Vector3d, speed: Scalar = 1) {
@@ -51,7 +76,11 @@ class Level {
         self.cloud.rotate(quaternion: q)
         
         self.angleCumul += q.angle
-        self.indicators?.update(name: IndicatorNames.boost, value: self.computeMultiplierInt(), gaugeValue: self.computeMultiplier(), prefix: "x")
+        
+        if self.mode == .level || ((self.mode == .time) && !Const.Level.makeBoostDecreaseWithTimeInTimeGame) {
+            self.updateBoostFromRotation()
+            self.indicators?.update(name: IndicatorNames.boost, value: self.getBoostInt(), gaugeValue: self.boost, prefix: "x")
+        }
     }
     
     func solve() {
@@ -66,7 +95,7 @@ class Level {
     }
     
     func computeScore() -> Int {
-        return self.getTotalNbDots() * self.computeMultiplierInt()
+        return self.getTotalNbDots() * self.getBoostInt()
     }
     
     func animateIn() {

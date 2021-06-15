@@ -49,6 +49,9 @@ class GameScene: SKScene {
         
         self.touchRotate(touches: touches)
         self.game!.checkIfLevelSolved()
+        if self.game!.level.ended {
+            self.removeAction(forKey: Const.Level.boostCountdownKey) // otherwise it continues poping between levels
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -164,6 +167,9 @@ class GameScene: SKScene {
     
     func endGameAnimation() {
         let gameResults = self.game!.end()
+        
+        self.removeAction(forKey: Const.Level.boostCountdownKey) // otherwise it continues poping after animated out
+        
         self.game?.level.cloud.animate(action: SKAction.scale(to: 0, duration: Const.Animation.collapseSec))
         self.game?.indicators?.animate(action: SKAction.scale(to: 0, duration: Const.Animation.collapseSec))
         
@@ -198,5 +204,6 @@ class GameScene: SKScene {
     func clearGame() {
         self.game = nil
         self.removeAction(forKey: Const.Game.countdownKey)
+        self.removeAction(forKey: Const.Level.boostCountdownKey) // otherwise, game stays in bg when clicking home button
     }
 }
