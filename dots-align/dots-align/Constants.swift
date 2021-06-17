@@ -42,6 +42,7 @@ class Const {
         static let alignedDistThresh = 0.05
         static let color = accentColor
         static let guideDotsColor = UIColor.red
+        static let derpDotsProb = 0.2
     }
     
     class Tutorial {

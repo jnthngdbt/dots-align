@@ -10,15 +10,26 @@ import SpriteKit
 
 class Cloud {
     var dots = Array<Dot>()
+    var derps = Array<Dot>()
     var orientation = Vector3d(0, 0, 1)
     var alignedDist = 0.0
     let radius: CGFloat
     
-    init(points: Array<Vector3d>, scene: GameScene, color: UIColor, radius: CGFloat, dotRadius: CGFloat, addGuides: Bool = false) {
+    init(nbPoints: Int, scene: GameScene, color: UIColor, radius: CGFloat, dotRadius: CGFloat, addGuides: Bool = false, derpRatio: Scalar = 0.0) {
         self.radius = radius
+        
+        let nbPointsDerps = Int(round(derpRatio * Scalar(nbPoints)))
+        let nbPointsNormal = nbPoints - nbPointsDerps
+        
+        let points = Cloud.generateSymmetricRandomPoints(nbPoints: nbPointsNormal)
+        let pointsDerps = Cloud.generateSymmetricRandomPoints(nbPoints: nbPointsDerps)
         
         for p in points {
             dots.append(Dot(scene: scene, color: color, point3d: p, radius: dotRadius, sphereRadius: radius))
+        }
+        
+        for p in pointsDerps {
+            derps.append(Dot(scene: scene, color: color, point3d: p, radius: 0.5 * dotRadius, sphereRadius: radius))
         }
         
         if Const.debug || addGuides {
@@ -30,16 +41,18 @@ class Cloud {
     class func generateSymmetricRandomPoints(nbPoints: Int) -> Array<Vector3d> {
         var points = Array<Vector3d>()
         
-        for _ in 1...nbPoints {
-            // Uniform distribution in 3d is a cube.
-            // No spherical symmetry, but creates interesting patterns mapped on a sphere.
-            // For spherical symmetry, use normal distribution
-            let x = Utils.randomCoordinateNonZero()
-            let y = Utils.randomCoordinateNonZero()
-            let z = Utils.randomCoordinateNonZero()
-            
-            points.append(simd_normalize(Vector3d(x, y, z)))
-            points.append(simd_normalize(Vector3d(x, y, -z)))
+        if nbPoints > 0 {
+            for _ in 1...nbPoints {
+                // Uniform distribution in 3d is a cube.
+                // No spherical symmetry, but creates interesting patterns mapped on a sphere.
+                // For spherical symmetry, use normal distribution
+                let x = Utils.randomCoordinateNonZero()
+                let y = Utils.randomCoordinateNonZero()
+                let z = Utils.randomCoordinateNonZero()
+                
+                points.append(simd_normalize(Vector3d(x, y, z)))
+                points.append(simd_normalize(Vector3d(x, y, -z)))
+            }
         }
         
         return points
@@ -61,6 +74,11 @@ class Cloud {
         
         for dot in self.dots {
             dot.rotate(quaternion: quaternion)
+        }
+        
+        let quaternionDerp = simd_quatd(angle: quaternion.angle, axis: simd_cross(quaternion.axis, Vector3d(0, 0, -1)))
+        for derp in self.derps {
+            derp.rotate(quaternion: quaternionDerp)
         }
     }
     
@@ -84,6 +102,10 @@ class Cloud {
         for dot in self.dots {
             dot.animate(action: action)
         }
+        
+        for derp in self.derps {
+            derp.animate(action: action)
+        }
     }
     
     func clear() {
@@ -94,6 +116,11 @@ class Cloud {
             dot.node.removeFromParent()
         }
         
+        for derp in self.derps {
+            derp.node.removeFromParent()
+        }
+        
         self.dots.removeAll()
+        self.derps.removeAll()
     }
 }

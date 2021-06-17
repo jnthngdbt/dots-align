@@ -16,8 +16,7 @@ class MenuMain: Menu {
         // Set cloud.
         let radius = 0.5 * Const.Menu.sphereDiameterFactor * scene.minSize()
         let dotRadius = Const.Menu.dotRadiusFactor * scene.minSize()
-        let points = Cloud.generateSymmetricRandomPoints(nbPoints: Const.Menu.sphereNbDots)
-        self.cloud = Cloud(points: points, scene: scene, color: Const.Menu.sphereDotsColor, radius: radius, dotRadius: dotRadius)
+        self.cloud = Cloud(nbPoints: Const.Menu.sphereNbDots, scene: scene, color: Const.Menu.sphereDotsColor, radius: radius, dotRadius: dotRadius)
         self.cloud?.desalign()
         
         self.title = SKLabelNode(text: "ALIGN DOTS")

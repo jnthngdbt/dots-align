@@ -23,12 +23,13 @@ class Level {
         self.mode = mode
         
         self.nbPatternPoints = nbPatternPoints
-        let points = Cloud.generateSymmetricRandomPoints(nbPoints: nbPatternPoints)
         
         let radius = 0.5 * Const.Game.sphereDiameterFactor * scene.minSize()
         let dotRadius = Const.Dot.radiusFactor * scene.minSize()
         let color = mode == .tutorial ? Const.Tutorial.dotsColor : Const.Cloud.color
-        self.cloud = Cloud(points: points, scene: scene, color: color, radius: radius, dotRadius: dotRadius, addGuides: mode == GameMode.tutorial)
+        let mustDerp = Scalar.random(in: 0...1) < Const.Cloud.derpDotsProb
+        
+        self.cloud = Cloud(nbPoints: nbPatternPoints, scene: scene, color: color, radius: radius, dotRadius: dotRadius, addGuides: mode == GameMode.tutorial, derpRatio: mustDerp ? 0.5 : 0.0)
         self.cloud.desalign()
         
         self.boost = CGFloat(Const.Level.maxBoost)
