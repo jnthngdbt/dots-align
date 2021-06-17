@@ -13,7 +13,6 @@ class GameScene: SKScene {
     var menuMain: MenuMain?
     var menuEndGame: MenuEndGame?
     var gameMode = GameMode.level
-    var orbDiameter: CGFloat = 1.0
     var touchBeganOnButtonId: ButtonId?
     
     func minSize() -> CGFloat {
@@ -33,7 +32,6 @@ class GameScene: SKScene {
     // Scene will appear. Create content here. (not "touch moved")
     override func didMove(to view: SKView) {
         self.backgroundColor = Const.backgroundColor
-        self.orbDiameter = Const.Scene.orbDiameterFactor * self.minSize()
         
         self.showMainMenu()
     }

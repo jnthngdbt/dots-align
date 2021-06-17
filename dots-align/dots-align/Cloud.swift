@@ -15,7 +15,7 @@ class Cloud {
     var alignedDist = 0.0
     let radius: CGFloat
     
-    init(nbPoints: Int, scene: GameScene, color: UIColor, radius: CGFloat, dotRadius: CGFloat, addGuides: Bool = false, derpRatio: Scalar = 0.0) {
+    init(nbPoints: Int, scene: GameScene, color: UIColor, radius: CGFloat, dotRadius: CGFloat, addGuides: Bool = false, derpRatio: Scalar = 0.0, mustShadow: Bool = false) {
         self.radius = radius
         
         let nbPointsDerps = Int(round(derpRatio * Scalar(nbPoints)))
@@ -25,11 +25,11 @@ class Cloud {
         let pointsDerps = Cloud.generateSymmetricRandomPoints(nbPoints: nbPointsDerps)
         
         for p in points {
-            dots.append(Dot(scene: scene, color: color, point3d: p, radius: dotRadius, sphereRadius: radius))
+            dots.append(Dot(scene: scene, color: color, point3d: p, radius: dotRadius, sphereRadius: radius, mustShadow: mustShadow))
         }
         
         for p in pointsDerps {
-            derps.append(Dot(scene: scene, color: color, point3d: p, radius: 0.5 * dotRadius, sphereRadius: radius))
+            derps.append(Dot(scene: scene, color: color, point3d: p, radius: 0.5 * dotRadius, sphereRadius: radius, mustShadow: mustShadow))
         }
         
         if Const.debug || addGuides {

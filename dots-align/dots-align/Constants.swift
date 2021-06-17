@@ -34,7 +34,9 @@ class Const {
     class Dot {
         static let radiusFactor: CGFloat = 0.022
         static let colorBrightnessFactorAmplitude: CGFloat = 0.5
+        static let colorBrightnessFactorAmplitudeShadow: CGFloat = 1.5
         static let colorHueAmplitude: CGFloat = 0.03
+        static let dotShadowProb = 0.2
     }
     
     class Cloud {
@@ -51,6 +53,7 @@ class Const {
     
     class Orb {
         static let color = UIColor(white: 0.2, alpha: 0.55)
+        static let diameterFactor: CGFloat = 0.5
     }
     
     class Level {
@@ -75,7 +78,6 @@ class Const {
     
     class Scene {
         static let orbitingSpeed = 2.0
-        static let orbDiameterFactor: CGFloat = 0.5
     }
     
     class Indicators {

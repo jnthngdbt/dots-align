@@ -15,14 +15,16 @@ class Dot {
     let color: UIColor
     var radius: CGFloat = 0.0
     var sphereRadius: CGFloat = 0.0
+    let mustShadow: Bool
 
-    init(scene: GameScene, color: UIColor, point3d: Vector3d, radius: CGFloat, sphereRadius: CGFloat) {
+    init(scene: GameScene, color: UIColor, point3d: Vector3d, radius: CGFloat, sphereRadius: CGFloat, mustShadow: Bool = false) {
         self.scene = scene
         self.color = color
         self.point = simd_normalize(point3d)
         
         self.sphereRadius = sphereRadius
         self.radius = radius
+        self.mustShadow = mustShadow
         self.node = SKShapeNode.init(circleOfRadius: self.radius)
         
         self.update()
@@ -51,8 +53,9 @@ class Dot {
     }
     
     func updateColor() {
+        let ampB = self.mustShadow ? Const.Dot.colorBrightnessFactorAmplitudeShadow : Const.Dot.colorBrightnessFactorAmplitude
         let z = CGFloat(self.point.z)
-        let b = 1.0 - (1.0 - 0.5 * (z + 1.0)) * Const.Dot.colorBrightnessFactorAmplitude // converts [-1, 1] to [1-a, 1] factor
+        let b = max(0.0, 1.0 - (1.0 - 0.5 * (z + 1.0)) * ampB) // converts [-1, 1] to [1-a, 1] factor
         let h = z * Const.Dot.colorHueAmplitude // converts [-1, 1] to [-a, a] offset
         let color = self.color.offsetHue(h, scaleBrightness: b)
         
