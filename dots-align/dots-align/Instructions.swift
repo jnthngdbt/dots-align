@@ -122,7 +122,7 @@ class InstructionsHowItWorks: Instructions {
         text += "► Find the symmetry in the pattern of dots.\n\n"
         text += "► Rotate the dots to make the two symmetric parts overlap.\n\n"
         text += "► The level score is the number of dots multiplied by the boost level.\n\n"
-        text += "► The boost level decreases when you rotate the dots.\n\n"
+        text += "► The boost level decreases with time or when you rotate the dots, depending on game mode.\n\n"
         text += "► The boost level determines the number of dots of the next level."
         
         super.init(scene: scene, title: "HOW IT WORKS", text: text, alpha: 0.8, startHidden: true)
