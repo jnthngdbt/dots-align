@@ -117,6 +117,12 @@ class Const {
         static let scoreRiseWaitSec = 0.3
     }
     
+    class Debug {
+        static let showBtnEdges = false
+        static let showGuideDots = false
+        static let showStats = false
+    }
+    
     static let backgroundColor = UIColor(white: 0.0, alpha: 1)
     
     // Default: HelveticaNeue-UltraLight.
@@ -125,6 +131,4 @@ class Const {
     static let fontNameText = "AvenirNextCondensed-DemiBold"
     static let fontNameLabel = "AvenirNextCondensed-Bold"
     static let fontNameTitle = "AvenirNextCondensed-Heavy"
-    
-    static let debug = false
 }

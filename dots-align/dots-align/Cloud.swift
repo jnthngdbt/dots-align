@@ -32,7 +32,7 @@ class Cloud {
             derps.append(Dot(scene: scene, color: color, point3d: p, radius: 0.5 * dotRadius, sphereRadius: radius, mustShadow: mustShadow))
         }
         
-        if Const.debug || addGuides {
+        if Const.Debug.showGuideDots || addGuides {
             dots.append(Dot(scene: scene, color: Const.Cloud.guideDotsColor, point3d: Const.Cloud.alignedOrientation, radius: 0.5 * dotRadius, sphereRadius: radius))
             dots.append(Dot(scene: scene, color: Const.Cloud.guideDotsColor, point3d: -Const.Cloud.alignedOrientation, radius: 0.5 * dotRadius, sphereRadius: radius))
         }

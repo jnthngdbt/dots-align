@@ -30,7 +30,7 @@ class ContainedLabel {
         
         self.shape.alpha = 0.0 // start hidden to make sure to not show it before being ready
         
-        if (Const.debug) {
+        if (Const.Debug.showBtnEdges) {
             self.shape.strokeColor = UIColor.white
         }
         
