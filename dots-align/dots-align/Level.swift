@@ -27,10 +27,11 @@ class Level {
         let radius = 0.5 * Const.Game.sphereDiameterFactor * scene.minSize()
         let dotRadius = Const.Dot.radiusFactor * scene.minSize()
         let color = mode == .tutorial ? Const.Tutorial.dotsColor : Const.Cloud.color
-        let mustDerp = Scalar.random(in: 0...1) < Const.Cloud.derpDotsProb
-        let mustShadow = Scalar.random(in: 0...1) < Const.Dot.dotShadowProb
+        let isTypeDerp = Scalar.random(in: 0...1) < Const.Cloud.typeDerpProb
+        let isTypeDerpHard = Scalar.random(in: 0...1) < Const.Cloud.typeDerpHardProb
+        let isTypeShadow = Scalar.random(in: 0...1) < Const.Cloud.typeShadowProb
         
-        self.cloud = Cloud(nbPoints: nbPatternPoints, scene: scene, color: color, radius: radius, dotRadius: dotRadius, addGuides: mode == GameMode.tutorial, derpRatio: mustDerp ? 0.5 : 0.0, mustShadow: mustShadow)
+        self.cloud = Cloud(nbPoints: nbPatternPoints, scene: scene, color: color, radius: radius, dotRadius: dotRadius, addGuides: mode == GameMode.tutorial, isTypeDerp: isTypeDerp, isTypeDerpHard: isTypeDerpHard, isTypeShadow: isTypeShadow)
         self.cloud.desalign()
         
         self.boost = CGFloat(Const.Level.maxBoost)

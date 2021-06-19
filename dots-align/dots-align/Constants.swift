@@ -36,7 +36,6 @@ class Const {
         static let colorBrightnessFactorAmplitude: CGFloat = 0.5
         static let colorBrightnessFactorAmplitudeShadow: CGFloat = 1.5
         static let colorHueAmplitude: CGFloat = 0.03
-        static let dotShadowProb = 0.2
     }
     
     class Cloud {
@@ -44,7 +43,9 @@ class Const {
         static let alignedDistThresh = 0.05
         static let color = accentColor
         static let guideDotsColor = UIColor.red
-        static let derpDotsProb = 0.2
+        static let typeDerpProb = 0.4
+        static let typeDerpHardProb = 0.4
+        static let typeShadowProb = 0.4
     }
     
     class Tutorial {
