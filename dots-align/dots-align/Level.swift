@@ -45,18 +45,19 @@ class Level {
     }
     
     func startBoostCountdown(scene: GameScene, maxBoost: Int) {
-        let boostCountdownWait: TimeInterval = Const.Level.boostCountdownSec / TimeInterval(maxBoost)
+        let boostStep = CGFloat(maxBoost - 1) / CGFloat(Const.Level.boostCountdownNbSteps)
+        let waitSec = Const.Level.boostCountdownSec / Scalar(Const.Level.boostCountdownNbSteps)
         
         let countdownStep = SKAction.sequence([
-            SKAction.wait(forDuration: boostCountdownWait),
+            SKAction.wait(forDuration: waitSec),
             SKAction.run({
-                self.boost -= 1.0
+                self.boost -= boostStep
+                print(self.boost)
                 self.indicators?.update(name: IndicatorNames.boost, value: self.getBoostInt(), gaugeValue: self.boost, prefix: "x")
             })
         ])
-
-        let countdown = SKAction.repeat(countdownStep, count: maxBoost - 1)
-
+        
+        let countdown = SKAction.repeat(countdownStep, count: Const.Level.boostCountdownNbSteps)
         scene.run(countdown, withKey: Const.Level.boostCountdownKey)
     }
     
@@ -71,7 +72,9 @@ class Level {
     }
     
     func getBoostInt() -> Int {
-        return Int(ceil(self.boost))
+        // Ugly hack to deal with numerical precision.
+        let isIntPlusEps = self.boost.truncatingRemainder(dividingBy: 1) < 1e-6
+        return isIntPlusEps ? Int(self.boost) : Int(ceil(self.boost))
     }
     
     func rotate(dir: Vector3d, speed: Scalar = 1) {

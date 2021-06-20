@@ -44,7 +44,7 @@ class Const {
         static let color = accentColor
         static let guideDotsColor = UIColor.red
         static let typeDerpProb = 0.4
-        static let typeDerpHardProb = 0.4
+        static let typeDerpHardProb = 0.2
         static let typeShadowProb = 0.4
     }
     
@@ -62,6 +62,7 @@ class Const {
         static let levelScoreEndPosOffsetFactor: CGFloat = 0.035
         static let makeBoostDecreaseWithTimeInTimeGame = true
         static let boostCountdownSec = 6.0
+        static let boostCountdownNbSteps = 20
         static let boostCountdownKey = "boostCountdown"
         static let maxBoost: Int = 4
         static let maxAngleCumul = 1.5 * Scalar.pi
