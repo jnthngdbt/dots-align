@@ -18,7 +18,7 @@ class Level {
     var ended = false
     var boost: CGFloat = 1.0
     
-    init(scene: GameScene, nbPatternPoints: Int, indicators: GameIndicators?, mode: GameMode) {
+    init(scene: GameScene, nbPatternPoints: Int, indicators: GameIndicators?, mode: GameMode, type: GameType) {
         self.indicators = indicators
         self.mode = mode
         
@@ -28,9 +28,9 @@ class Level {
         let dotRadius = Const.Level.dotRadiusFactor * scene.minSize()
         let color = mode == .tutorial ? Const.Tutorial.dotsColor : Const.Cloud.color
         
-        let isTypeSatellite = Scalar.random(in: 0...1) < Const.GameType.typeSatelliteProb
-        let isTypeShadow = Scalar.random(in: 0...1) < Const.GameType.typeShadowProb
-        let isTypeMorph = Scalar.random(in: 0...1) < Const.GameType.typeMorphProb
+//        let isTypeSatellite = Scalar.random(in: 0...1) < Const.GameType.typeSatelliteProb
+//        let isTypeShadow = Scalar.random(in: 0...1) < Const.GameType.typeShadowProb
+//        let isTypeMorph = Scalar.random(in: 0...1) < Const.GameType.typeMorphProb
         
         self.cloud = Cloud(
             nbPoints: nbPatternPoints,
@@ -39,9 +39,9 @@ class Level {
             radius: radius,
             dotRadius: dotRadius,
             addGuides: mode == GameMode.tutorial,
-            isTypeSatellite: isTypeSatellite,
-            isTypeShadow: isTypeShadow,
-            isTypeMorph: isTypeMorph)
+            isTypeSatellite: type == .satellite,
+            isTypeShadow: type == .shadow,
+            isTypeMorph: type == .morph)
         
         self.cloud.desalign()
         
@@ -63,7 +63,6 @@ class Level {
             SKAction.wait(forDuration: waitSec),
             SKAction.run({
                 self.boost -= boostStep
-                print(self.boost)
                 self.indicators?.update(name: IndicatorNames.boost, value: self.getBoostInt(), gaugeValue: self.boost, prefix: "x")
             })
         ])

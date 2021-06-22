@@ -16,7 +16,7 @@ class ContainedLabel {
         self.label = SKLabelNode(text: text)
         self.label.fontColor = Const.Button.fontColor
         self.label.fontName = Const.fontNameLabel
-        self.label.fontSize = Const.Button.fontSizeFactor * scene.minSize()
+        self.label.fontSize = Const.Button.Menu.fontSizeFactor * scene.minSize()
         self.label.verticalAlignmentMode = .center
         
         self.shape = SKShapeNode(rectOf: size, cornerRadius: cornerRadius)
@@ -77,8 +77,8 @@ class MenuButton: Button {
     var spacingAfter: CGFloat = 0.0
     
     init(scene: GameScene, text: String, id: ButtonId = ButtonId.none) {
-        let w = Const.Button.widthFactor * scene.minSize()
-        let h = Const.Button.heightFactor * scene.minSize()
+        let w = Const.Button.Menu.widthFactor * scene.minSize()
+        let h = Const.Button.Menu.heightFactor * scene.minSize()
         let size = CGSize(width: w, height: h)
         
         super.init(scene: scene, text: text, size: size, id: id)
@@ -88,13 +88,14 @@ class MenuButton: Button {
 }
 
 class FooterButton: Button {
-    init(scene: GameScene, text: String, id: ButtonId) {
-        let radius = 0.05 * scene.minSize()
-        let size = CGSize(width: 3 * radius, height: 2 * radius)
+    init(scene: GameScene, text: String, id: ButtonId, widthScaleFactor: CGFloat = 1.0) {
+        let w = widthScaleFactor * Const.Button.Footer.widthFactor * scene.minSize()
+        let h = Const.Button.Footer.heightFactor * scene.minSize()
+        let size = CGSize(width: w, height: h)
         
         super.init(scene: scene, text: text, size: size, id: id)
         self.shape.alpha = 1.0
-        self.label.fontSize = 0.06 * scene.minSize()
+        self.label.fontSize = Const.Button.Footer.fontSizeFactor * scene.minSize()
         self.shape.position = CGPoint(x: self.shape.position.x, y: 0.1 * scene.minSize())
     }
 }

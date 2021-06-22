@@ -13,7 +13,7 @@ class MenuChooseGame {
     let cloud: Cloud?
     let orb: Orb?
     let description: SKLabelNode
-    let button: Button
+    let startButton: FooterButton
     var homeButton: FooterHomeButton!
     var cloudType: GameType!
     
@@ -31,12 +31,11 @@ class MenuChooseGame {
         self.title = SKLabelNode(text: "SELECT TYPE")
         self.description = SKLabelNode(text: "SATELLITE // x6 BOOST")
         self.homeButton = FooterHomeButton(scene: scene)
-        
-        let buttonSize = CGSize(width: Const.Button.widthFactor * scene.minSize(), height: Const.Button.heightFactor * scene.minSize())
-        self.button = Button(scene: scene, text: "START", size: buttonSize)
+        self.startButton = FooterButton(scene: scene, text: "START", id: .chooseGameStart, widthScaleFactor: Const.MenuChooseGame.startButtonWidthScaleFactor)
         
         self.setTitle(scene: scene)
         self.setDescription(scene: scene)
+        self.setStartButton(scene: scene)
         
         self.animateIn()
     }
@@ -47,6 +46,7 @@ class MenuChooseGame {
         case .satellite: return "SATELLITE"
         case .shadow: return "SHADOW"
         case .morph: return "MORPH"
+        case .random: return "RANDOM"
         }
     }
     
@@ -78,6 +78,12 @@ class MenuChooseGame {
         scene.addChild(self.description)
     }
     
+    func setStartButton(scene: GameScene) {
+        let leftFooterPaddingFactor = Const.Indicators.sidePaddingFactor - 0.5 * Const.Button.Footer.widthFactor
+        let buttonWidth = Const.Button.Footer.widthFactor * Const.MenuChooseGame.startButtonWidthScaleFactor
+        self.startButton.shape.position.x = scene.size.width - (leftFooterPaddingFactor + 0.5 * buttonWidth) * scene.minSize()
+    }
+    
     func rotate(dir: Vector3d, speed: Scalar = 1) {
         if self.cloud == nil { return }
         
@@ -93,6 +99,11 @@ class MenuChooseGame {
         self.animateInCloud()
         
         self.description.run(SKAction.sequence([
+            SKAction.wait(forDuration: 0.2),
+            SKAction.fadeAlpha(to: 1, duration: Const.Animation.expandSec)
+        ]))
+        
+        self.startButton.animate(action: SKAction.sequence([
             SKAction.wait(forDuration: 0.2),
             SKAction.fadeAlpha(to: 1, duration: Const.Animation.expandSec)
         ]))

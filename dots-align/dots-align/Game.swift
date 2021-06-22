@@ -10,6 +10,7 @@ import SpriteKit
 
 class Game {
     let mode: GameMode
+    let type: GameType
     var orb: Orb?
     var level: Level!
     var indicators: GameIndicators?
@@ -28,8 +29,9 @@ class Game {
     var sumRotationRad = 0.0
     var sumBoost = 0
     
-    init(scene: GameScene, mode: GameMode) {
+    init(scene: GameScene, mode: GameMode, type: GameType) {
         self.mode = mode
+        self.type = type
         
         self.homeButton = FooterHomeButton(scene: scene)
         self.orb = Orb(scene: scene)
@@ -49,7 +51,7 @@ class Game {
         }
         
         self.initLevelScoreLabel(scene: scene)
-        self.level = Level(scene: scene, nbPatternPoints: Const.Game.startNbPoints, indicators: self.indicators, mode: mode)
+        self.level = Level(scene: scene, nbPatternPoints: Const.Game.startNbPoints, indicators: self.indicators, mode: mode, type: type)
     }
     
     func initLevelScoreLabel(scene: GameScene) {
@@ -135,7 +137,7 @@ class Game {
             }
             
             scene.removeAction(forKey: Const.Level.boostCountdownKey)
-            self.level = Level(scene: scene, nbPatternPoints: self.getNextLevelNbPatternPoints(), indicators: self.indicators, mode: self.mode)
+            self.level = Level(scene: scene, nbPatternPoints: self.getNextLevelNbPatternPoints(), indicators: self.indicators, mode: self.mode, type: self.type)
             self.level.animateIn()
         }
     }

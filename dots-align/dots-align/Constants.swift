@@ -10,7 +10,7 @@ import SpriteKit
 
 enum IndicatorNames: Int, CaseIterable { case left, dots, boost, score  }
 enum GameMode: Int, CaseIterable { case tutorial, level, time  } // keep order, saved in core data
-enum GameType: Int, CaseIterable { case normal, satellite, shadow, morph } // keep order, saved in core data
+enum GameType: Int, CaseIterable { case normal, satellite, shadow, morph, random = 10000 } // keep order, saved in core data
 
 enum ButtonId: String, CaseIterable { case
     none = "",
@@ -19,7 +19,8 @@ enum ButtonId: String, CaseIterable { case
     startTimedGameId = "startTimedGame",
     replayGameId = "replayGame",
     homeId = "home",
-    tutorialInstructionsId = "tutorialInstructions"
+    tutorialInstructionsId = "tutorialInstructions",
+    chooseGameStart = "chooseGameStart"
 }
 
 func isButton(name: String?) -> Bool {
@@ -108,15 +109,25 @@ class Const {
     class MenuChooseGame {
         static let sphereDiameterFactor: CGFloat = 0.6
         static let dotRadiusFactor: CGFloat = 0.022
+        static let startButtonWidthScaleFactor: CGFloat = 2.0
     }
     
     class Button {
         static let fillColor = UIColor(white: 0.15, alpha: 1)
         static let fontColor = accentColor
-        static let fontSizeFactor: CGFloat = 0.07
-        static let widthFactor: CGFloat = 0.65
-        static let heightFactor: CGFloat = 0.14
         static let zPosition: CGFloat = 5.0
+        
+        class Menu {
+            static let fontSizeFactor: CGFloat = 0.07
+            static let widthFactor: CGFloat = 0.65
+            static let heightFactor: CGFloat = 0.14
+        }
+        
+        class Footer {
+            static let fontSizeFactor: CGFloat = 0.06
+            static let widthFactor: CGFloat = 0.15
+            static let heightFactor: CGFloat = 0.1
+        }
     }
     
     class Animation {

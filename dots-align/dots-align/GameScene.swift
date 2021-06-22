@@ -14,6 +14,7 @@ class GameScene: SKScene {
     var menuEndGame: MenuEndGame?
     var menuChooseGame: MenuChooseGame?
     var gameMode = GameMode.level
+    var gameType = GameType.normal
     var touchBeganOnButtonId: ButtonId?
     
     func minSize() -> CGFloat {
@@ -119,25 +120,30 @@ class GameScene: SKScene {
             if buttonId == ButtonId.tutorialId {
                 self.startGame(mode: GameMode.tutorial)
             } else if buttonId == ButtonId.startLevelGameId {
-                self.startGame(mode: GameMode.level)
+                self.showMenuChooseGame(mode: GameMode.level, type: self.gameType)
             } else if buttonId == ButtonId.startTimedGameId {
-                self.showMenuChooseGame()
+                self.showMenuChooseGame(mode: GameMode.time, type: self.gameType)
             } else if buttonId == ButtonId.replayGameId {
-                self.startGame(mode: self.gameMode)
+                self.startGame(mode: self.gameMode, type: self.gameType)
             } else if buttonId == ButtonId.homeId {
                 self.showMainMenu()
             } else if buttonId == ButtonId.tutorialInstructionsId {
                 self.game?.instructions?.onButtonTap(scene: self)
+            } else if buttonId == ButtonId.chooseGameStart {
+                if self.menuChooseGame != nil {
+                    self.startGame(mode: self.gameMode, type: self.menuChooseGame!.cloudType)
+                }
             }
         }
         
         self.touchBeganOnButtonId = nil
     }
     
-    func startGame(mode: GameMode) {
+    func startGame(mode: GameMode, type: GameType = .normal) {
         self.gameMode = mode
+        self.gameType = type
         
-        self.game = Game(scene: self, mode: mode)
+        self.game = Game(scene: self, mode: mode, type: type)
         self.menuMain = nil
         self.menuEndGame = nil
         self.menuChooseGame = nil
@@ -191,7 +197,9 @@ class GameScene: SKScene {
         self.menuChooseGame = nil
     }
     
-    func showMenuChooseGame() {
+    func showMenuChooseGame(mode: GameMode, type: GameType) {
+        self.gameMode = mode
+        self.gameType = type
         self.clearGame()
         self.menuMain = nil
         self.menuEndGame = nil
