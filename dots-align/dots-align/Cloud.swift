@@ -15,10 +15,23 @@ class Cloud {
     var alignedDist = 0.0
     let radius: CGFloat
     
-    init(nbPoints: Int, scene: GameScene, color: UIColor, radius: CGFloat, dotRadius: CGFloat, addGuides: Bool = false, isTypeDerp: Bool = false, isTypeDerpHard: Bool = false, isTypeShadow: Bool = false) {
+    convenience init(nbPoints: Int, scene: GameScene, color: UIColor, radius: CGFloat, dotRadius: CGFloat, addGuides: Bool = false, type: GameType = .normal) {
+        self.init(
+            nbPoints: nbPoints,
+            scene: scene,
+            color: color,
+            radius: radius,
+            dotRadius: dotRadius,
+            addGuides: addGuides,
+            isTypeSatellite: type == .satellite,
+            isTypeShadow: type == .shadow,
+            isTypeMorph: type == .morph)
+    }
+    
+    init(nbPoints: Int, scene: GameScene, color: UIColor, radius: CGFloat, dotRadius: CGFloat, addGuides: Bool = false, isTypeSatellite: Bool = false, isTypeShadow: Bool = false, isTypeMorph: Bool = false) {
         self.radius = radius
         
-        let mustDerp = isTypeDerp || isTypeDerpHard
+        let mustDerp = isTypeSatellite || isTypeMorph
         let points = Cloud.generateSymmetricRandomPoints(nbPoints: mustDerp ? nbPoints / 2 : nbPoints)
         
         for p in points {
@@ -27,7 +40,7 @@ class Cloud {
         
         if (mustDerp) {
             let pointsDerps = Cloud.generateSymmetricRandomPoints(nbPoints: nbPoints - nbPoints / 2)
-            let dotSizeRatio: CGFloat = isTypeDerpHard ? 1.0 : 0.5
+            let dotSizeRatio: CGFloat = isTypeMorph ? 1.0 : 0.5
             
             for p in pointsDerps {
                 derps.append(Dot(scene: scene, color: color, point3d: p, radius: dotSizeRatio * dotRadius, sphereRadius: radius, mustShadow: isTypeShadow))

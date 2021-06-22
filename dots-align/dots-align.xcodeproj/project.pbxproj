@@ -46,6 +46,7 @@
 		EC77FD33264C7FF600B901FD /* MenuMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD32264C7FF600B901FD /* MenuMain.swift */; };
 		EC77FD34264C7FF600B901FD /* MenuMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD32264C7FF600B901FD /* MenuMain.swift */; };
 		EC77FD35264C7FF600B901FD /* MenuMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD32264C7FF600B901FD /* MenuMain.swift */; };
+		EC7E8C02267EDC77001A81F6 /* MenuChooseGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7E8C01267EDC77001A81F6 /* MenuChooseGame.swift */; };
 		EC812664265DDD1C00FAA61E /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC812663265DDD1C00FAA61E /* Button.swift */; };
 		ECEFA386266B08DA007F2C77 /* Database.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = ECEFA384266B08DA007F2C77 /* Database.xcdatamodeld */; };
 		ECEFA388266B14C6007F2C77 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECEFA387266B14C6007F2C77 /* DatabaseManager.swift */; };
@@ -98,6 +99,7 @@
 		EC77FD2A264C7E0F00B901FD /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		EC77FD2E264C7F3000B901FD /* Indicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Indicator.swift; sourceTree = "<group>"; };
 		EC77FD32264C7FF600B901FD /* MenuMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuMain.swift; sourceTree = "<group>"; };
+		EC7E8C01267EDC77001A81F6 /* MenuChooseGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuChooseGame.swift; sourceTree = "<group>"; };
 		EC812663265DDD1C00FAA61E /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		ECEFA385266B08DA007F2C77 /* Database.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Database.xcdatamodel; sourceTree = "<group>"; };
 		ECEFA387266B14C6007F2C77 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 				EC6F242D265F3FF30049D3EA /* Launch Screen.storyboard */,
 				E100A7D2263E44F900F81153 /* Main.storyboard */,
 				EC6976202669740800E34D6E /* Menu.swift */,
+				EC7E8C01267EDC77001A81F6 /* MenuChooseGame.swift */,
 				EC69761E266973E000E34D6E /* MenuEndGame.swift */,
 				EC77FD32264C7FF600B901FD /* MenuMain.swift */,
 				EC69761C2669735900E34D6E /* ProgressBar.swift */,
@@ -345,6 +348,7 @@
 				E100A7C9263E44F900F81153 /* AppDelegate.swift in Sources */,
 				EC812664265DDD1C00FAA61E /* Button.swift in Sources */,
 				EC77FD23264C7D7000B901FD /* Cloud.swift in Sources */,
+				EC7E8C02267EDC77001A81F6 /* MenuChooseGame.swift in Sources */,
 				EC77FD17264C7C1B00B901FD /* Utils.swift in Sources */,
 				EC77FD27264C7DE600B901FD /* Level.swift in Sources */,
 				ECEFA388266B14C6007F2C77 /* DatabaseManager.swift in Sources */,

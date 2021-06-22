@@ -55,7 +55,7 @@ class Game {
     func initLevelScoreLabel(scene: GameScene) {
         self.levelScoreLabelStartPos = scene.center()
         self.levelScoreLabelEndPos = scene.center()
-        self.levelScoreLabelEndPos.y += (0.5 * Const.Game.sphereDiameterFactor + Const.Level.levelScoreEndPosOffsetFactor) * scene.minSize()
+        self.levelScoreLabelEndPos.y += (0.5 * Const.Level.sphereDiameterFactor + Const.Level.levelScoreEndPosOffsetFactor) * scene.minSize()
         self.levelScoreLabel = SKLabelNode(text: "0")
         self.levelScoreLabel.fontColor = labelColor
         self.levelScoreLabel.fontName = Const.fontNameLabel

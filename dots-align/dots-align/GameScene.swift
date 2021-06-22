@@ -12,6 +12,7 @@ class GameScene: SKScene {
     var game: Game?
     var menuMain: MenuMain?
     var menuEndGame: MenuEndGame?
+    var menuChooseGame: MenuChooseGame?
     var gameMode = GameMode.level
     var touchBeganOnButtonId: ButtonId?
     
@@ -37,18 +38,18 @@ class GameScene: SKScene {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if (self.game == nil) {
-            return
-        }
-        
-        if self.game!.level.ended || self.game!.ended {
-            return
-        }
-        
-        self.touchRotate(touches: touches)
-        self.game!.checkIfLevelSolved()
-        if self.game!.level.ended {
-            self.removeAction(forKey: Const.Level.boostCountdownKey) // otherwise it continues poping between levels
+        if (self.game != nil) {
+            if self.game!.level.ended || self.game!.ended {
+                return
+            }
+            
+            self.touchRotate(touches: touches)
+            self.game!.checkIfLevelSolved()
+            if self.game!.level.ended {
+                self.removeAction(forKey: Const.Level.boostCountdownKey) // otherwise it continues poping between levels
+            }
+        } else if (self.menuChooseGame != nil) {
+            self.touchRotate(touches: touches)
         }
     }
     
@@ -86,11 +87,8 @@ class GameScene: SKScene {
 
             if (dx == 0) && (dy == 0) { return }
             
-            let radius = self.game!.level.cloud.radius
-            if radius > 0 {
-                let dir = v / Scalar(radius)
-                self.game!.level.rotate(dir: dir, speed: Const.Scene.orbitingSpeed)
-            }
+            self.game?.level.rotate(dir: v, speed: Const.Scene.orbitingSpeed)
+            self.menuChooseGame?.rotate(dir: v, speed: Const.Scene.orbitingSpeed)
         }
     }
     
@@ -123,7 +121,7 @@ class GameScene: SKScene {
             } else if buttonId == ButtonId.startLevelGameId {
                 self.startGame(mode: GameMode.level)
             } else if buttonId == ButtonId.startTimedGameId {
-                self.startGame(mode: GameMode.time)
+                self.showMenuChooseGame()
             } else if buttonId == ButtonId.replayGameId {
                 self.startGame(mode: self.gameMode)
             } else if buttonId == ButtonId.homeId {
@@ -142,6 +140,7 @@ class GameScene: SKScene {
         self.game = Game(scene: self, mode: mode)
         self.menuMain = nil
         self.menuEndGame = nil
+        self.menuChooseGame = nil
         
         self.game?.animateIn()
         self.startGameCountdownIfNecessary(mode: mode)
@@ -189,6 +188,14 @@ class GameScene: SKScene {
         self.clearGame()
         self.menuMain = MenuMain(scene: self)
         self.menuEndGame = nil
+        self.menuChooseGame = nil
+    }
+    
+    func showMenuChooseGame() {
+        self.clearGame()
+        self.menuMain = nil
+        self.menuEndGame = nil
+        self.menuChooseGame = MenuChooseGame(scene: self)
     }
     
     func showEndGameMenu(gameResults: GameEntity?) {
@@ -197,6 +204,7 @@ class GameScene: SKScene {
         self.clearGame()
         self.menuMain = nil
         self.menuEndGame = MenuEndGame(scene: self, score: score, bestScore: Int(bestScore))
+        self.menuChooseGame = nil
     }
     
     func clearGame() {

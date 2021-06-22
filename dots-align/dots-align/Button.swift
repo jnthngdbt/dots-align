@@ -83,7 +83,7 @@ class MenuButton: Button {
         
         super.init(scene: scene, text: text, size: size, id: id)
         
-        self.spacingAfter = Const.Menu.spacingFactor * scene.minSize()
+        self.spacingAfter = Const.MenuMain.spacingFactor * scene.minSize()
     }
 }
 

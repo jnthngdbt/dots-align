@@ -24,14 +24,25 @@ class Level {
         
         self.nbPatternPoints = nbPatternPoints
         
-        let radius = 0.5 * Const.Game.sphereDiameterFactor * scene.minSize()
-        let dotRadius = Const.Dot.radiusFactor * scene.minSize()
+        let radius = 0.5 * Const.Level.sphereDiameterFactor * scene.minSize()
+        let dotRadius = Const.Level.dotRadiusFactor * scene.minSize()
         let color = mode == .tutorial ? Const.Tutorial.dotsColor : Const.Cloud.color
-        let isTypeDerp = Scalar.random(in: 0...1) < Const.Cloud.typeDerpProb
-        let isTypeDerpHard = Scalar.random(in: 0...1) < Const.Cloud.typeDerpHardProb
-        let isTypeShadow = Scalar.random(in: 0...1) < Const.Cloud.typeShadowProb
         
-        self.cloud = Cloud(nbPoints: nbPatternPoints, scene: scene, color: color, radius: radius, dotRadius: dotRadius, addGuides: mode == GameMode.tutorial, isTypeDerp: isTypeDerp, isTypeDerpHard: isTypeDerpHard, isTypeShadow: isTypeShadow)
+        let isTypeSatellite = Scalar.random(in: 0...1) < Const.GameType.typeSatelliteProb
+        let isTypeShadow = Scalar.random(in: 0...1) < Const.GameType.typeShadowProb
+        let isTypeMorph = Scalar.random(in: 0...1) < Const.GameType.typeMorphProb
+        
+        self.cloud = Cloud(
+            nbPoints: nbPatternPoints,
+            scene: scene,
+            color: color,
+            radius: radius,
+            dotRadius: dotRadius,
+            addGuides: mode == GameMode.tutorial,
+            isTypeSatellite: isTypeSatellite,
+            isTypeShadow: isTypeShadow,
+            isTypeMorph: isTypeMorph)
+        
         self.cloud.desalign()
         
         self.boost = CGFloat(Const.Level.maxBoost)
@@ -78,7 +89,11 @@ class Level {
     }
     
     func rotate(dir: Vector3d, speed: Scalar = 1) {
-        let q = Utils.quaternionFromDir(dir: dir, speed: speed)
+        let radius = self.cloud.radius
+        if radius <= 0 { return }
+        let dirNorm = dir / Scalar(radius)
+            
+        let q = Utils.quaternionFromDir(dir: dirNorm, speed: speed)
         self.cloud.rotate(quaternion: q)
         
         self.angleCumul += q.angle

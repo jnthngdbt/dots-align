@@ -10,6 +10,7 @@ import SpriteKit
 
 enum IndicatorNames: Int, CaseIterable { case left, dots, boost, score  }
 enum GameMode: Int, CaseIterable { case tutorial, level, time  } // keep order, saved in core data
+enum GameType: Int, CaseIterable { case normal, satellite, shadow, morph } // keep order, saved in core data
 
 enum ButtonId: String, CaseIterable { case
     none = "",
@@ -32,7 +33,6 @@ let accentColor = UIColor(red: 0.55, green: 0.45, blue: 1.0, alpha: 1)
 
 class Const {
     class Dot {
-        static let radiusFactor: CGFloat = 0.022
         static let colorBrightnessFactorAmplitude: CGFloat = 0.5
         static let colorBrightnessFactorAmplitudeShadow: CGFloat = 1.5
         static let colorHueAmplitude: CGFloat = 0.03
@@ -43,9 +43,6 @@ class Const {
         static let alignedDistThresh = 0.05
         static let color = accentColor
         static let guideDotsColor = UIColor.red
-        static let typeDerpProb = 0.4
-        static let typeDerpHardProb = 0.2
-        static let typeShadowProb = 0.4
     }
     
     class Tutorial {
@@ -58,6 +55,8 @@ class Const {
     }
     
     class Level {
+        static let sphereDiameterFactor: CGFloat = 0.6
+        static let dotRadiusFactor: CGFloat = 0.022
         static let levelScoreFontSizeFactor: CGFloat = 0.1
         static let levelScoreEndPosOffsetFactor: CGFloat = 0.035
         static let makeBoostDecreaseWithTimeInTimeGame = true
@@ -75,7 +74,12 @@ class Const {
         static let maxLevel = 10
         static let maxSeconds = 30
         static let countdownKey = "gameCountdown"
-        static let sphereDiameterFactor: CGFloat = 0.6
+    }
+    
+    class GameType {
+        static let typeSatelliteProb = 0.4
+        static let typeShadowProb = 0.4
+        static let typeMorphProb = 0.2
     }
     
     class Scene {
@@ -93,12 +97,17 @@ class Const {
         static let newValueAnimationScale: CGFloat = 1.3
     }
     
-    class Menu {
+    class MenuMain {
         static let spacingFactor: CGFloat = 0.025
         static let sphereDiameterFactor: CGFloat = 2.0
         static let sphereNbDots = 220
         static let sphereDotsColor = UIColor(white: 0.3, alpha: 1)
-        static let dotRadiusFactor: CGFloat = 0.005
+        static let dotRadiusFactor: CGFloat = 0.003
+    }
+    
+    class MenuChooseGame {
+        static let sphereDiameterFactor: CGFloat = 0.6
+        static let dotRadiusFactor: CGFloat = 0.022
     }
     
     class Button {
