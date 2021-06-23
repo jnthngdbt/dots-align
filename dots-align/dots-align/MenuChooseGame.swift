@@ -18,13 +18,12 @@ class MenuChooseGame {
     var cloudType: GameType!
     
     init(scene: GameScene) {
-        // Set cloud.
-        let radius = 0.5 * Const.MenuChooseGame.sphereDiameterFactor * scene.minSize()
+        let cloudRadius = 0.5 * Const.MenuChooseGame.sphereDiameterFactor * scene.minSize()
         let dotRadius = Const.MenuChooseGame.dotRadiusFactor * scene.minSize()
         
         self.cloudType = .shadow
         
-        self.cloud = Cloud(nbPoints: 20, scene: scene, color: accentColor, radius: radius, dotRadius: dotRadius, type: self.cloudType)
+        self.cloud = Cloud(nbPoints: 20, scene: scene, color: accentColor, radius: cloudRadius, dotRadius: dotRadius, type: self.cloudType)
         self.cloud?.desalign()
         
         self.orb = Orb(scene: scene)
@@ -33,8 +32,10 @@ class MenuChooseGame {
         self.homeButton = FooterHomeButton(scene: scene)
         self.startButton = FooterButton(scene: scene, text: "START", id: .chooseGameStart, widthScaleFactor: Const.MenuChooseGame.startButtonWidthScaleFactor)
         
-        self.setTitle(scene: scene)
-        self.setDescription(scene: scene)
+        let topSpaceLeft = 0.5 * scene.size.height - cloudRadius
+        
+        self.setTitle(scene: scene, posY: scene.center().y + cloudRadius + 0.65 * topSpaceLeft)
+        self.setDescription(scene: scene, posY: scene.center().y + cloudRadius + 0.3 * topSpaceLeft)
         self.setStartButton(scene: scene)
         
         self.animateIn()
@@ -50,11 +51,7 @@ class MenuChooseGame {
         }
     }
     
-    func setTitle(scene: GameScene) {
-        let sphereRadius = 0.5 * Const.MenuChooseGame.sphereDiameterFactor * scene.minSize()
-        let spaceLeft = 0.5 * scene.size.height - sphereRadius
-        let posY = scene.center().y + sphereRadius + 0.5 * spaceLeft
-        
+    func setTitle(scene: GameScene, posY: CGFloat) {
         self.title.fontColor = labelColor
         self.title.fontName = Const.fontNameTitle
         self.title.fontSize = 0.15 * scene.minSize()
@@ -64,11 +61,11 @@ class MenuChooseGame {
         scene.addChild(self.title)
     }
     
-    func setDescription(scene: GameScene) {
-        self.description.fontColor = labelColor
+    func setDescription(scene: GameScene, posY: CGFloat) {
+        self.description.fontColor = accentColor.offsetHue(0, scaleBrightness: 0.7)
         self.description.fontName = Const.fontNameTitle
         self.description.fontSize = 0.07 * scene.minSize()
-        self.description.position = CGPoint(x: scene.center().x, y: 0.2 * scene.size.height)
+        self.description.position = CGPoint(x: scene.center().x, y: posY)
         self.description.zPosition = Const.Button.zPosition
         self.description.text = self.getGameTypeString(type: self.cloudType) + " // x6 BOOST"
         self.description.verticalAlignmentMode = .center
