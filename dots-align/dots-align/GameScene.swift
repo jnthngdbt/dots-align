@@ -133,6 +133,10 @@ class GameScene: SKScene {
                 if self.menuChooseGame != nil {
                     self.startGame(mode: self.gameMode, type: self.menuChooseGame!.cloudType)
                 }
+            } else if buttonId == ButtonId.chooseGameNavLeft {
+                self.menuChooseGame?.onLeftTap(scene: self)
+            } else if buttonId == ButtonId.chooseGameNavRight {
+                self.menuChooseGame?.onRightTap(scene: self)
             }
         }
         

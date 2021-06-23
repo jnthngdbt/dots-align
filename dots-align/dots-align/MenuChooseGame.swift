@@ -10,33 +10,46 @@ import SpriteKit
 
 class MenuChooseGame {
     let title: SKLabelNode!
-    let cloud: Cloud?
+    var cloud: Cloud?
     let orb: Orb?
     let description: SKLabelNode
     let startButton: FooterButton
     var homeButton: FooterHomeButton!
     var cloudType: GameType!
+    var left: Button
+    var right: Button
+    
+    let cloudDiameter: CGFloat
+    let cloudRadius: CGFloat
+    let dotRadius: CGFloat
     
     init(scene: GameScene) {
-        let cloudRadius = 0.5 * Const.MenuChooseGame.sphereDiameterFactor * scene.minSize()
-        let dotRadius = Const.MenuChooseGame.dotRadiusFactor * scene.minSize()
+        self.cloudDiameter = Const.MenuChooseGame.sphereDiameterFactor * scene.minSize()
+        self.cloudRadius = 0.5 * cloudDiameter
+        self.dotRadius = Const.MenuChooseGame.dotRadiusFactor * scene.minSize()
         
-        self.cloudType = .shadow
+        self.cloudType = .normal
         
-        self.cloud = Cloud(nbPoints: 20, scene: scene, color: accentColor, radius: cloudRadius, dotRadius: dotRadius, type: self.cloudType)
+        self.cloud = Cloud(nbPoints: Const.MenuChooseGame.nbDots, scene: scene, color: accentColor, radius: self.cloudRadius, dotRadius: self.dotRadius, type: self.cloudType)
         self.cloud?.desalign()
+        
+        let navButtonWidthSpace = 0.5 * (scene.size.width - self.cloudDiameter)
+        let navButtonSize = CGSize(width: 0.8 * navButtonWidthSpace, height: 0.98 * self.cloudDiameter)
         
         self.orb = Orb(scene: scene)
         self.title = SKLabelNode(text: "SELECT TYPE")
         self.description = SKLabelNode(text: "SATELLITE // x6 BOOST")
         self.homeButton = FooterHomeButton(scene: scene)
         self.startButton = FooterButton(scene: scene, text: "START", id: .chooseGameStart, widthScaleFactor: Const.MenuChooseGame.startButtonWidthScaleFactor)
+        self.left = Button(scene: scene, text: "◁", size: navButtonSize, id: .chooseGameNavLeft)
+        self.right = Button(scene: scene, text: "▷", size: navButtonSize, id: .chooseGameNavRight)
         
         let topSpaceLeft = 0.5 * scene.size.height - cloudRadius
         
         self.setTitle(scene: scene, posY: scene.center().y + cloudRadius + 0.65 * topSpaceLeft)
         self.setDescription(scene: scene, posY: scene.center().y + cloudRadius + 0.3 * topSpaceLeft)
         self.setStartButton(scene: scene)
+        self.setNavButtons(scene: scene)
         
         self.animateIn()
     }
@@ -47,7 +60,6 @@ class MenuChooseGame {
         case .satellite: return "SATELLITE"
         case .shadow: return "SHADOW"
         case .morph: return "MORPH"
-        case .random: return "RANDOM"
         }
     }
     
@@ -75,6 +87,34 @@ class MenuChooseGame {
         scene.addChild(self.description)
     }
     
+    func updateDescription() {
+        self.description.text = self.getGameTypeString(type: self.cloudType) + " // x6 BOOST"
+    }
+    
+    func setNavButtons(scene: GameScene) {
+        let width = self.left.size().width
+        self.left.shape.position = CGPoint(x: 0.5 * width, y: scene.center().y)
+        self.right.shape.position = CGPoint(x: scene.size.width - 0.5 * width, y: scene.center().y)
+        
+        self.left.shape.fillColor = UIColor.clear
+        self.right.shape.fillColor = UIColor.clear
+        
+        self.updateNavButtons()
+    }
+    
+    func updateNavButtons() {
+        self.left.shape.alpha = self.mustShowLeftNavButton() ? 1 : 0
+        self.right.shape.alpha = self.mustShowRightNavButton() ? 1 : 0
+    }
+    
+    func mustShowLeftNavButton() -> Bool {
+        return self.cloudType.rawValue > 0
+    }
+    
+    func mustShowRightNavButton() -> Bool {
+        return self.cloudType.rawValue < GameType.allCases.count - 1
+    }
+    
     func setStartButton(scene: GameScene) {
         let leftFooterPaddingFactor = Const.Indicators.sidePaddingFactor - 0.5 * Const.Button.Footer.widthFactor
         let buttonWidth = Const.Button.Footer.widthFactor * Const.MenuChooseGame.startButtonWidthScaleFactor
@@ -92,6 +132,25 @@ class MenuChooseGame {
         self.cloud!.rotate(quaternion: q)
     }
     
+    func onLeftTap(scene: GameScene) {
+        self.newCloud(scene: scene, type: GameType(rawValue: self.cloudType.rawValue - 1))
+    }
+    
+    func onRightTap(scene: GameScene) {
+        self.newCloud(scene: scene, type: GameType(rawValue: self.cloudType.rawValue + 1))
+    }
+    
+    private func newCloud(scene: GameScene, type: GameType?) {
+        if type == nil { return }
+        self.cloudType = type
+        
+        self.cloud = Cloud(nbPoints: Const.MenuChooseGame.nbDots, scene: scene, color: accentColor, radius: self.cloudRadius, dotRadius: self.dotRadius, type: self.cloudType)
+        self.cloud?.desalign()
+        
+        self.updateDescription()
+        self.updateNavButtons()
+    }
+    
     private func animateIn() {
         self.animateInCloud()
         
@@ -100,10 +159,14 @@ class MenuChooseGame {
             SKAction.fadeAlpha(to: 1, duration: Const.Animation.expandSec)
         ]))
         
-        self.startButton.animate(action: SKAction.sequence([
+        let buttonsAnimation = SKAction.sequence([
             SKAction.wait(forDuration: 0.2),
             SKAction.fadeAlpha(to: 1, duration: Const.Animation.expandSec)
-        ]))
+        ])
+        
+        self.startButton.animate(action: buttonsAnimation)
+        if (self.mustShowLeftNavButton()) { self.left.animate(action: buttonsAnimation) }
+        if (self.mustShowRightNavButton()) { self.right.animate(action: buttonsAnimation) }
     }
     
     private func animateInCloud() {

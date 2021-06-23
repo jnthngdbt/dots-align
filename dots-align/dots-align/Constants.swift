@@ -10,7 +10,7 @@ import SpriteKit
 
 enum IndicatorNames: Int, CaseIterable { case left, dots, boost, score  }
 enum GameMode: Int, CaseIterable { case tutorial, level, time  } // keep order, saved in core data
-enum GameType: Int, CaseIterable { case normal, satellite, shadow, morph, random = 10000 } // keep order, saved in core data
+enum GameType: Int, CaseIterable { case normal, satellite, shadow, morph } // keep order, saved in core data
 
 enum ButtonId: String, CaseIterable { case
     none = "",
@@ -20,7 +20,9 @@ enum ButtonId: String, CaseIterable { case
     replayGameId = "replayGame",
     homeId = "home",
     tutorialInstructionsId = "tutorialInstructions",
-    chooseGameStart = "chooseGameStart"
+    chooseGameStart = "chooseGameStart",
+    chooseGameNavLeft = "chooseGameNavLeft",
+    chooseGameNavRight = "chooseGameNavRight"
 }
 
 func isButton(name: String?) -> Bool {
@@ -107,6 +109,7 @@ class Const {
     }
     
     class MenuChooseGame {
+        static let nbDots = 20
         static let sphereDiameterFactor: CGFloat = 0.6
         static let dotRadiusFactor: CGFloat = 0.022
         static let startButtonWidthScaleFactor: CGFloat = 2.0
