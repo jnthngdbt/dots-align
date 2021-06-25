@@ -16,6 +16,7 @@ class Level {
     var nbPatternPoints = 0
     var angleCumul = 0.0
     var ended = false
+    let maxBoost: Int
     var boost: CGFloat = 1.0
     
     init(scene: GameScene, nbPatternPoints: Int, indicators: GameIndicators?, mode: GameMode, type: GameType) {
@@ -45,13 +46,14 @@ class Level {
         
         self.cloud.desalign()
         
-        self.boost = CGFloat(Const.Level.maxBoost)
+        self.maxBoost = getMaxBoost(type: type)
+        self.boost = CGFloat(self.maxBoost)
         
         self.indicators?.update(name: IndicatorNames.dots, value: self.getTotalNbDots())
         self.indicators?.update(name: IndicatorNames.boost, value: self.getBoostInt(), prefix: "x")
         
         if mode == .time && Const.Level.makeBoostDecreaseWithTimeInTimeGame {
-            self.startBoostCountdown(scene: scene, maxBoost: Const.Level.maxBoost)
+            self.startBoostCountdown(scene: scene, maxBoost: self.maxBoost)
         }
     }
     
@@ -76,8 +78,8 @@ class Level {
     }
     
     func updateBoostFromRotation() {
-        let steps = Const.Level.maxAngleCumul / Scalar(Const.Level.maxBoost - 1)
-        let multiplier = Scalar(Const.Level.maxBoost) - self.angleCumul / steps
+        let steps = Const.Level.maxAngleCumul / Scalar(self.maxBoost - 1)
+        let multiplier = Scalar(self.maxBoost) - self.angleCumul / steps
         self.boost = CGFloat(max(1.0, multiplier))
     }
     

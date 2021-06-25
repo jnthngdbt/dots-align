@@ -46,7 +46,7 @@ class Game {
             self.indicators = nil
             self.instructions = InstructionsGetStarted(scene: scene)
         } else {
-            self.indicators = GameIndicators(scene: scene, mode: mode, left: self.left)
+            self.indicators = GameIndicators(scene: scene, mode: mode, type: type, left: self.left)
             self.instructions = InstructionsHowItWorks(scene: scene)
         }
         
@@ -147,7 +147,7 @@ class Game {
             return Utils.randomOdd(inMin:Const.Game.minNbPoints, inMax:Const.Game.maxNbPoints)
         }
             
-        let ratio = Scalar(self.level.boost - 1.0) / Scalar(Const.Level.maxBoost - 1) // -1 since boost starts at 1
+        let ratio = Scalar(self.level.boost - 1.0) / Scalar(self.level.maxBoost - 1) // -1 since boost starts at 1
         let minPoints = Scalar(Const.Game.minNbPoints)
         let maxPoints = Scalar(Const.Game.maxNbPoints)
         let nbPatternPoints = minPoints + ratio * (maxPoints - minPoints)

@@ -79,16 +79,19 @@ class MenuChooseGame {
         self.description.fontSize = 0.07 * scene.minSize()
         self.description.position = CGPoint(x: scene.center().x, y: posY)
         self.description.zPosition = Const.Button.zPosition
-        self.description.text = self.getGameTypeString(type: self.cloudType) + " // x6 BOOST"
         self.description.verticalAlignmentMode = .center
         self.description.horizontalAlignmentMode = .center
         self.description.lineBreakMode = .byWordWrapping
         self.description.numberOfLines = 0
         scene.addChild(self.description)
+        
+        self.updateDescription()
     }
     
     func updateDescription() {
-        self.description.text = self.getGameTypeString(type: self.cloudType) + " // x6 BOOST"
+        let typeStr = self.getGameTypeString(type: self.cloudType)
+        let boostStr = String(getMaxBoost(type: self.cloudType))
+        self.description.text = typeStr + " // x" + boostStr + " BOOST"
     }
     
     func setNavButtons(scene: GameScene) {

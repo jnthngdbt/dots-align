@@ -11,7 +11,7 @@ import SpriteKit
 class GameIndicators {
     var indicators = Array<Indicator>()
     
-    init(scene: GameScene, mode: GameMode, left: Int) {
+    init(scene: GameScene, mode: GameMode, type: GameType, left: Int) {
         for i in 0..<IndicatorNames.allCases.count {
             self.indicators.append(Indicator(scene: scene, idx: i, addGauge: true))
         }
@@ -34,12 +34,12 @@ class GameIndicators {
         self.indicators[IndicatorNames.dots.rawValue].gauge?.minimum = 2.0 * CGFloat(Const.Game.minNbPoints)
         self.indicators[IndicatorNames.dots.rawValue].gauge?.maximum = 2.0 * CGFloat(Const.Game.maxNbPoints)
         self.indicators[IndicatorNames.boost.rawValue].gauge?.minimum = 1.0
-        self.indicators[IndicatorNames.boost.rawValue].gauge?.maximum = CGFloat(Const.Level.maxBoost)
+        self.indicators[IndicatorNames.boost.rawValue].gauge?.maximum = CGFloat(getMaxBoost(type: type))
         self.indicators[IndicatorNames.score.rawValue].gauge?.maximum = scoreMax
         
         self.update(name: IndicatorNames.left, value: left)
         self.update(name: IndicatorNames.dots, value: 0)
-        self.update(name: IndicatorNames.boost, value: Const.Level.maxBoost)
+        self.update(name: IndicatorNames.boost, value: getMaxBoost(type: type))
         self.update(name: IndicatorNames.score, value: 0)
     }
     

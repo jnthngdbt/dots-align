@@ -66,7 +66,6 @@ class Const {
         static let boostCountdownSec = 6.0
         static let boostCountdownNbSteps = 20
         static let boostCountdownKey = "boostCountdown"
-        static let maxBoost: Int = 4
         static let maxAngleCumul = 1.5 * Scalar.pi
     }
     
@@ -156,4 +155,14 @@ class Const {
     static let fontNameText = "AvenirNextCondensed-DemiBold"
     static let fontNameLabel = "AvenirNextCondensed-Bold"
     static let fontNameTitle = "AvenirNextCondensed-Heavy"
+
+}
+
+func getMaxBoost(type: GameType) -> Int {
+    switch type {
+    case .normal: return 4
+    case .satellite: return 6
+    case .shadow: return 8
+    case .morph: return 10
+    }
 }
