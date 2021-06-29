@@ -37,7 +37,7 @@ class MenuChooseGame {
         let navButtonSize = CGSize(width: 0.8 * navButtonWidthSpace, height: 0.98 * self.cloudDiameter)
         
         self.orb = Orb(scene: scene)
-        self.title = SKLabelNode(text: "SELECT TYPE")
+        self.title = SKLabelNode(text: "SELECT GAME")
         self.description = SKLabelNode(text: "SATELLITE // x6 BOOST")
         self.homeButton = FooterHomeButton(scene: scene)
         self.startButton = FooterButton(scene: scene, text: "START", id: .chooseGameStart, widthScaleFactor: Const.MenuChooseGame.startButtonWidthScaleFactor)
@@ -163,8 +163,10 @@ class MenuChooseGame {
         ]))
         
         let buttonsAnimation = SKAction.sequence([
+            SKAction.scale(to: 0, duration: 0),
+            SKAction.fadeAlpha(to: 1, duration: 0),
             SKAction.wait(forDuration: 0.2),
-            SKAction.fadeAlpha(to: 1, duration: Const.Animation.expandSec)
+            SKAction.scale(to: 1, duration: Const.Animation.expandSec)
         ])
         
         self.startButton.animate(action: buttonsAnimation)

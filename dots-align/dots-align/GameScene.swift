@@ -154,6 +154,8 @@ class GameScene: SKScene {
         
         self.game?.animateIn()
         self.startGameCountdownIfNecessary(mode: mode)
+        
+        Music.instance.play(song: "Game")
     }
     
     func startGameCountdownIfNecessary(mode: GameMode) {
@@ -199,6 +201,8 @@ class GameScene: SKScene {
         self.menuMain = MenuMain(scene: self)
         self.menuEndGame = nil
         self.menuChooseGame = nil
+        
+        Music.instance.play(song: "Menu")
     }
     
     func showMenuChooseGame(mode: GameMode, type: GameType) {
