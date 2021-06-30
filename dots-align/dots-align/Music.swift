@@ -10,7 +10,8 @@ import AVFoundation
 
 class Music {
     static let instance = Music() // singleton
-    var audioPlayerSong: AVAudioPlayer?
+    var audioPlayerMenu: AVAudioPlayer?
+    var audioPlayerGame: AVAudioPlayer?
     var audioPlayerBeep: AVAudioPlayer?
     var songPlaying: String = ""
     
@@ -19,15 +20,14 @@ class Music {
             return // same song, let it continue
         }
         
-        let url = NSURL(fileURLWithPath: Bundle.main.path(forResource: name, ofType: "m4a")!)
-        do {
-            audioPlayerSong = try AVAudioPlayer(contentsOf:url as URL)
-            audioPlayerSong!.numberOfLoops = -1
-            audioPlayerSong!.prepareToPlay()
-            audioPlayerSong!.play()
-            self.songPlaying = name
-        } catch {
-            print("Cannot play the file")
+        // Using multiple players in order to crossfade and avoid glitch.
+        self.stop(self.audioPlayerMenu)
+        self.stop(self.audioPlayerGame)
+        
+        if name == Const.Music.game {
+            self.audioPlayerGame = self.initPlayer(name)
+        } else if name == Const.Music.menu {
+            self.audioPlayerMenu = self.initPlayer(name)
         }
     }
     
@@ -40,5 +40,28 @@ class Music {
         } catch {
             print("Cannot play the file")
         }
+    }
+    
+    func stop(_ player: AVAudioPlayer?, fadeDuration: TimeInterval = 0.2) {
+        player?.setVolume(0, fadeDuration: fadeDuration)
+        // Not stopping the player, as it overrides the fadeout.
+    }
+    
+    private func initPlayer(_ name: String) -> AVAudioPlayer? {
+        var player: AVAudioPlayer? = nil
+        
+        do {
+            let url = NSURL(fileURLWithPath: Bundle.main.path(forResource: name, ofType: "m4a")!)
+            player = try AVAudioPlayer(contentsOf:url as URL)
+            player!.numberOfLoops = -1
+            player!.prepareToPlay()
+            player!.play()
+            
+            self.songPlaying = name
+        } catch {
+            print("Cannot play the file")
+        }
+        
+        return player
     }
 }
