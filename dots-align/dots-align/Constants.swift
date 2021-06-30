@@ -141,6 +141,11 @@ class Const {
         static let scoreRiseWaitSec = 0.3
     }
     
+    class Music {
+        static let game = "Game"
+        static let menu = "Menu"
+    }
+    
     class Debug {
         static let showBtnEdges = false
         static let showGuideDots = false
