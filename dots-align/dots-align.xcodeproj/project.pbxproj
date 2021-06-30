@@ -11,6 +11,13 @@
 		AB86CD20268AC55B00448D04 /* Menu.m4a in Resources */ = {isa = PBXBuildFile; fileRef = AB86CD1E268AC55B00448D04 /* Menu.m4a */; };
 		AB86CD21268AC55B00448D04 /* Game.m4a in Resources */ = {isa = PBXBuildFile; fileRef = AB86CD1F268AC55B00448D04 /* Game.m4a */; };
 		AB86CD23268CFBD900448D04 /* Beep.0.wav in Resources */ = {isa = PBXBuildFile; fileRef = AB86CD22268CFBD900448D04 /* Beep.0.wav */; };
+		AB86CD2D268D081E00448D04 /* Beep.6.wav in Resources */ = {isa = PBXBuildFile; fileRef = AB86CD26268D081D00448D04 /* Beep.6.wav */; };
+		AB86CD2E268D081E00448D04 /* Beep.5.wav in Resources */ = {isa = PBXBuildFile; fileRef = AB86CD27268D081D00448D04 /* Beep.5.wav */; };
+		AB86CD2F268D081E00448D04 /* Beep.2.wav in Resources */ = {isa = PBXBuildFile; fileRef = AB86CD28268D081D00448D04 /* Beep.2.wav */; };
+		AB86CD30268D081E00448D04 /* Beep.4.wav in Resources */ = {isa = PBXBuildFile; fileRef = AB86CD29268D081E00448D04 /* Beep.4.wav */; };
+		AB86CD31268D081E00448D04 /* Beep.3.wav in Resources */ = {isa = PBXBuildFile; fileRef = AB86CD2A268D081E00448D04 /* Beep.3.wav */; };
+		AB86CD32268D081E00448D04 /* Beep.1.wav in Resources */ = {isa = PBXBuildFile; fileRef = AB86CD2B268D081E00448D04 /* Beep.1.wav */; };
+		AB86CD33268D081E00448D04 /* Beep.7.wav in Resources */ = {isa = PBXBuildFile; fileRef = AB86CD2C268D081E00448D04 /* Beep.7.wav */; };
 		E100A7C9263E44F900F81153 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E100A7C8263E44F900F81153 /* AppDelegate.swift */; };
 		E100A7CF263E44F900F81153 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = E100A7CE263E44F900F81153 /* GameScene.swift */; };
 		E100A7D1263E44F900F81153 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E100A7D0263E44F900F81153 /* GameViewController.swift */; };
@@ -78,6 +85,13 @@
 		AB86CD1E268AC55B00448D04 /* Menu.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; name = Menu.m4a; path = ../../music/Menu.m4a; sourceTree = "<group>"; };
 		AB86CD1F268AC55B00448D04 /* Game.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; name = Game.m4a; path = ../../music/Game.m4a; sourceTree = "<group>"; };
 		AB86CD22268CFBD900448D04 /* Beep.0.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.0.wav; path = ../../music/Beep.0.wav; sourceTree = "<group>"; };
+		AB86CD26268D081D00448D04 /* Beep.6.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.6.wav; path = ../../music/Beep.6.wav; sourceTree = "<group>"; };
+		AB86CD27268D081D00448D04 /* Beep.5.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.5.wav; path = ../../music/Beep.5.wav; sourceTree = "<group>"; };
+		AB86CD28268D081D00448D04 /* Beep.2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.2.wav; path = ../../music/Beep.2.wav; sourceTree = "<group>"; };
+		AB86CD29268D081E00448D04 /* Beep.4.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.4.wav; path = ../../music/Beep.4.wav; sourceTree = "<group>"; };
+		AB86CD2A268D081E00448D04 /* Beep.3.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.3.wav; path = ../../music/Beep.3.wav; sourceTree = "<group>"; };
+		AB86CD2B268D081E00448D04 /* Beep.1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.1.wav; path = ../../music/Beep.1.wav; sourceTree = "<group>"; };
+		AB86CD2C268D081E00448D04 /* Beep.7.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.7.wav; path = ../../music/Beep.7.wav; sourceTree = "<group>"; };
 		E100A7C5263E44F900F81153 /* dots-align.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "dots-align.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E100A7C8263E44F900F81153 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E100A7CE263E44F900F81153 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -161,6 +175,13 @@
 		E100A7C7263E44F900F81153 /* dots-align */ = {
 			isa = PBXGroup;
 			children = (
+				AB86CD2B268D081E00448D04 /* Beep.1.wav */,
+				AB86CD28268D081D00448D04 /* Beep.2.wav */,
+				AB86CD2A268D081E00448D04 /* Beep.3.wav */,
+				AB86CD29268D081E00448D04 /* Beep.4.wav */,
+				AB86CD27268D081D00448D04 /* Beep.5.wav */,
+				AB86CD26268D081D00448D04 /* Beep.6.wav */,
+				AB86CD2C268D081E00448D04 /* Beep.7.wav */,
 				AB86CD22268CFBD900448D04 /* Beep.0.wav */,
 				AB86CD1F268AC55B00448D04 /* Game.m4a */,
 				AB86CD1E268AC55B00448D04 /* Menu.m4a */,
@@ -316,12 +337,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB86CD30268D081E00448D04 /* Beep.4.wav in Resources */,
+				AB86CD31268D081E00448D04 /* Beep.3.wav in Resources */,
 				EC6F242E265F3FF30049D3EA /* Launch Screen.storyboard in Resources */,
+				AB86CD32268D081E00448D04 /* Beep.1.wav in Resources */,
 				E100A7D4263E44F900F81153 /* Main.storyboard in Resources */,
 				AB86CD21268AC55B00448D04 /* Game.m4a in Resources */,
 				EC6F2434265F457F0049D3EA /* 512.png in Resources */,
 				AB86CD23268CFBD900448D04 /* Beep.0.wav in Resources */,
 				E100A7D6263E44FC00F81153 /* Assets.xcassets in Resources */,
+				AB86CD2F268D081E00448D04 /* Beep.2.wav in Resources */,
+				AB86CD2E268D081E00448D04 /* Beep.5.wav in Resources */,
+				AB86CD33268D081E00448D04 /* Beep.7.wav in Resources */,
+				AB86CD2D268D081E00448D04 /* Beep.6.wav in Resources */,
 				AB86CD20268AC55B00448D04 /* Menu.m4a in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
