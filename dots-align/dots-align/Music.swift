@@ -10,33 +10,35 @@ import AVFoundation
 
 class Music {
     static let instance = Music() // singleton
-    var audioPlayer: AVAudioPlayer?
+    var audioPlayerSong: AVAudioPlayer?
+    var audioPlayerBeep: AVAudioPlayer?
     var songPlaying: String = ""
     
-    func play(song: String) {
-        if song == self.songPlaying {
+    func playSong(_ name: String) {
+        if name == self.songPlaying {
             return // same song, let it continue
         }
         
-        if (audioPlayer != nil) {
-            self.stop()
-        }
-        
-        let aSound = NSURL(fileURLWithPath: Bundle.main.path(forResource: song, ofType: "m4a")!)
+        let url = NSURL(fileURLWithPath: Bundle.main.path(forResource: name, ofType: "m4a")!)
         do {
-            audioPlayer = try AVAudioPlayer(contentsOf:aSound as URL)
-            audioPlayer!.numberOfLoops = -1
-            audioPlayer!.prepareToPlay()
-            audioPlayer!.play()
-            self.songPlaying = song
+            audioPlayerSong = try AVAudioPlayer(contentsOf:url as URL)
+            audioPlayerSong!.numberOfLoops = -1
+            audioPlayerSong!.prepareToPlay()
+            audioPlayerSong!.play()
+            self.songPlaying = name
         } catch {
             print("Cannot play the file")
         }
     }
     
-    func stop(fadeDuration: TimeInterval = 0.5) {
-        audioPlayer!.setVolume(0, fadeDuration: fadeDuration)
-        audioPlayer!.stop()
-        self.songPlaying = ""
+    func playBeep(_ name: String) {
+        let url = NSURL(fileURLWithPath: Bundle.main.path(forResource: name, ofType: "wav")!)
+        do {
+            audioPlayerBeep = try AVAudioPlayer(contentsOf:url as URL)
+            audioPlayerBeep!.prepareToPlay()
+            audioPlayerBeep!.play()
+        } catch {
+            print("Cannot play the file")
+        }
     }
 }

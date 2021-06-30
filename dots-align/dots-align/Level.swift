@@ -113,6 +113,7 @@ class Level {
         
         UIImpactFeedbackGenerator(style: .soft).impactOccurred()
         
+        Music.instance.playBeep("Beep.0")
         self.animateOut()
     }
     

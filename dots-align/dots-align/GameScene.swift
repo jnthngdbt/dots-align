@@ -155,7 +155,7 @@ class GameScene: SKScene {
         self.game?.animateIn()
         self.startGameCountdownIfNecessary(mode: mode)
         
-        Music.instance.play(song: mode == .tutorial ? Const.Music.menu : Const.Music.game)
+        Music.instance.playSong(mode == .tutorial ? Const.Music.menu : Const.Music.game)
     }
     
     func startGameCountdownIfNecessary(mode: GameMode) {
@@ -202,7 +202,7 @@ class GameScene: SKScene {
         self.menuEndGame = nil
         self.menuChooseGame = nil
         
-        Music.instance.play(song: Const.Music.menu)
+        Music.instance.playSong(Const.Music.menu)
     }
     
     func showMenuChooseGame(mode: GameMode, type: GameType) {
@@ -213,7 +213,7 @@ class GameScene: SKScene {
         self.menuEndGame = nil
         self.menuChooseGame = MenuChooseGame(scene: self)
         
-        Music.instance.play(song: Const.Music.menu)
+        Music.instance.playSong(Const.Music.menu)
     }
     
     func showEndGameMenu(gameResults: GameEntity?) {
@@ -224,7 +224,7 @@ class GameScene: SKScene {
         self.menuEndGame = MenuEndGame(scene: self, score: score, bestScore: Int(bestScore))
         self.menuChooseGame = nil
         
-        Music.instance.play(song: Const.Music.game)
+        Music.instance.playSong(Const.Music.game)
     }
     
     func clearGame() {
