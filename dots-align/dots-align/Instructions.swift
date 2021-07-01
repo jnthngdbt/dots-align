@@ -108,8 +108,7 @@ class InstructionsGetStarted: Instructions {
         var text = ""
         text += "► Find the symmetry in the pattern of dots.\n\n"
         text += "► Rotate the dots to make the two symmetric parts overlap.\n\n"
-        text += "► Small red dots are added as guides to help you get started.\n\n"
-        text += "► When you feel you can do it without the red dots, you are ready to play!\n\n"
+        text += "► Small red dots are added here as guides to help you get started. They won't be there during the game.\n\n"
         text += "► Tap the checkmark below to hide those instructions."
         
         super.init(scene: scene, title: "GET STARTED", text: text, alpha: 0.5, startHidden: false)
