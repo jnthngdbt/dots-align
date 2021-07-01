@@ -10,41 +10,17 @@ import SpriteKit
 
 class Cloud {
     var dots = Array<Dot>()
-    var derps = Array<Dot>()
     var orientation = Vector3d(0, 0, 1)
     var alignedDist = 0.0
     let radius: CGFloat
     
-    convenience init(nbPoints: Int, scene: GameScene, color: UIColor, radius: CGFloat, dotRadius: CGFloat, addGuides: Bool = false, type: GameType = .normal) {
-        self.init(
-            nbPoints: nbPoints,
-            scene: scene,
-            color: color,
-            radius: radius,
-            dotRadius: dotRadius,
-            addGuides: addGuides,
-            isTypeSatellite: type == .satellite,
-            isTypeShadow: type == .shadow,
-            isTypeMorph: type == .morph)
-    }
-    
-    init(nbPoints: Int, scene: GameScene, color: UIColor, radius: CGFloat, dotRadius: CGFloat, addGuides: Bool = false, isTypeSatellite: Bool = false, isTypeShadow: Bool = false, isTypeMorph: Bool = false) {
+    init(nbPoints: Int, scene: GameScene, color: UIColor, radius: CGFloat, dotRadius: CGFloat, addGuides: Bool = false, mustShadow: Bool = false) {
         self.radius = radius
         
-        let mustDerp = isTypeSatellite || isTypeMorph
-        let points = Cloud.generateSymmetricRandomPoints(nbPoints: mustDerp ? nbPoints / 2 : nbPoints)
+        let points = Cloud.generateSymmetricRandomPoints(nbPoints: nbPoints)
         
         for p in points {
-            dots.append(Dot(scene: scene, color: color, point3d: p, radius: dotRadius, sphereRadius: radius, mustShadow: isTypeShadow))
-        }
-        
-        if (mustDerp) {
-            let pointsDerps = Cloud.generateSymmetricRandomPoints(nbPoints: nbPoints - nbPoints / 2)
-            let dotSizeRatio: CGFloat = isTypeMorph ? 1.0 : 0.5
-            
-            for p in pointsDerps {
-                derps.append(Dot(scene: scene, color: color, point3d: p, radius: dotSizeRatio * dotRadius, sphereRadius: radius, mustShadow: isTypeShadow))
-            }
+            dots.append(Dot(scene: scene, color: color, point3d: p, radius: dotRadius, sphereRadius: radius, mustShadow: mustShadow))
         }
         
         if Const.Debug.showGuideDots || addGuides {
@@ -90,11 +66,6 @@ class Cloud {
         for dot in self.dots {
             dot.rotate(quaternion: quaternion)
         }
-        
-        let quaternionDerp = simd_quatd(angle: quaternion.angle, axis: simd_cross(quaternion.axis, Vector3d(0, 0, -1)))
-        for derp in self.derps {
-            derp.rotate(quaternion: quaternionDerp)
-        }
     }
     
     func desalign() {
@@ -117,10 +88,6 @@ class Cloud {
         for dot in self.dots {
             dot.animate(action: action)
         }
-        
-        for derp in self.derps {
-            derp.animate(action: action)
-        }
     }
     
     func clear() {
@@ -131,11 +98,6 @@ class Cloud {
             dot.node.removeFromParent()
         }
         
-        for derp in self.derps {
-            derp.node.removeFromParent()
-        }
-        
         self.dots.removeAll()
-        self.derps.removeAll()
     }
 }

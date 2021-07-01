@@ -97,5 +97,18 @@ class Utils {
         
         return Quat(angle: 0, axis: Vector3d(0, 0, 1)) // no effect
     }
+    
+    class func makeCloud(type: GameType, nbPoints: Int, scene: GameScene, color: UIColor, radius: CGFloat, dotRadius: CGFloat, addGuides: Bool = false, mustShadow: Bool = false) -> Cloud {
+        switch type {
+        case .normal:
+            return Cloud(nbPoints: nbPoints, scene: scene, color: color, radius: radius, dotRadius: dotRadius, addGuides: addGuides, mustShadow: mustShadow)
+        case .satellite:
+            return CloudSatellite(nbPoints: nbPoints, scene: scene, color: color, radius: radius, dotRadius: dotRadius, addGuides: addGuides)
+        case .shadow:
+            return CloudShadow(nbPoints: nbPoints, scene: scene, color: color, radius: radius, dotRadius: dotRadius, addGuides: addGuides)
+        case .morph:
+            return CloudTransit(nbPoints: nbPoints, scene: scene, color: color, radius: radius, dotRadius: dotRadius, addGuides: addGuides)
+        }
+    }
 }
 

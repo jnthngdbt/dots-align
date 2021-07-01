@@ -29,20 +29,14 @@ class Level {
         let dotRadius = Const.Level.dotRadiusFactor * scene.minSize()
         let color = mode == .tutorial ? Const.Tutorial.dotsColor : Const.Cloud.color
         
-//        let isTypeSatellite = Scalar.random(in: 0...1) < Const.GameType.typeSatelliteProb
-//        let isTypeShadow = Scalar.random(in: 0...1) < Const.GameType.typeShadowProb
-//        let isTypeMorph = Scalar.random(in: 0...1) < Const.GameType.typeMorphProb
-        
-        self.cloud = Cloud(
+        self.cloud = Utils.makeCloud(
+            type: type,
             nbPoints: nbPatternPoints,
             scene: scene,
             color: color,
             radius: radius,
             dotRadius: dotRadius,
-            addGuides: mode == GameMode.tutorial,
-            isTypeSatellite: type == .satellite,
-            isTypeShadow: type == .shadow,
-            isTypeMorph: type == .morph)
+            addGuides: mode == GameMode.tutorial)
         
         self.cloud.desalign()
         

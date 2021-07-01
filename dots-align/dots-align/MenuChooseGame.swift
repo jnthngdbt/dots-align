@@ -30,7 +30,7 @@ class MenuChooseGame {
         
         self.cloudType = .normal
         
-        self.cloud = Cloud(nbPoints: Const.MenuChooseGame.nbDots, scene: scene, color: accentColor, radius: self.cloudRadius, dotRadius: self.dotRadius, type: self.cloudType)
+        self.cloud = Utils.makeCloud(type: self.cloudType, nbPoints: Const.MenuChooseGame.nbDots, scene: scene, color: accentColor, radius: self.cloudRadius, dotRadius: self.dotRadius)
         self.cloud?.desalign()
         
         let navButtonWidthSpace = 0.5 * (scene.size.width - self.cloudDiameter)
@@ -147,7 +147,7 @@ class MenuChooseGame {
         if type == nil { return }
         self.cloudType = type
         
-        self.cloud = Cloud(nbPoints: Const.MenuChooseGame.nbDots, scene: scene, color: accentColor, radius: self.cloudRadius, dotRadius: self.dotRadius, type: self.cloudType)
+        self.cloud = Utils.makeCloud(type: self.cloudType, nbPoints: Const.MenuChooseGame.nbDots, scene: scene, color: accentColor, radius: self.cloudRadius, dotRadius: self.dotRadius)
         self.cloud?.desalign()
         
         self.updateDescription()
