@@ -96,7 +96,7 @@ class FooterButton: Button {
         super.init(scene: scene, text: text, size: size, id: id)
         self.shape.alpha = 1.0
         self.label.fontSize = Const.Button.Footer.fontSizeFactor * scene.minSize()
-        self.shape.position = CGPoint(x: self.shape.position.x, y: 0.1 * scene.minSize())
+        self.shape.position = CGPoint(x: self.shape.position.x, y: 0.1 * scene.minSize() + Const.Ads.bannerSize.size.height)
     }
 }
 

@@ -8,9 +8,12 @@
 import UIKit
 import SpriteKit
 import GameplayKit
+import GoogleMobileAds
 
 class GameViewController: UIViewController {
 
+    var bannerView: GADBannerView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -27,7 +30,38 @@ class GameViewController: UIViewController {
                 view.showsNodeCount = true
             }
         }
+        
+        bannerView = GADBannerView(adSize: Const.Ads.bannerSize)
+        bannerView.adUnitID = Const.Ads.adUnitIdBannerTest
+        bannerView.rootViewController = self
+        addBannerViewToView(bannerView)
+        bannerView.load(GADRequest())
     }
+    
+    func addBannerViewToView(_ bannerView: GADBannerView) {
+        bannerView.backgroundColor = UIColor.clear
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bannerView)
+        
+        view.addConstraints([
+            NSLayoutConstraint(
+                item: bannerView,
+                attribute: .bottom,
+                relatedBy: .equal,
+                toItem: view.safeAreaLayoutGuide,
+                attribute: .bottom,
+                multiplier: 1,
+                constant: 0),
+             NSLayoutConstraint(
+                item: bannerView,
+                attribute: .centerX,
+                relatedBy: .equal,
+                toItem: view,
+                attribute: .centerX,
+                multiplier: 1,
+                constant: 0)
+          ])
+       }
 
     override var shouldAutorotate: Bool {
         return false

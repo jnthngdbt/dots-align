@@ -7,6 +7,7 @@
 
 import Foundation
 import SpriteKit
+import GoogleMobileAds
 
 enum IndicatorNames: Int, CaseIterable { case left, dots, boost, score  }
 enum GameMode: Int, CaseIterable { case tutorial, level, time  } // keep order, saved in core data
@@ -35,6 +36,12 @@ let labelColor = UIColor(white: 0.55, alpha: 1)
 let accentColor = UIColor(red: 0.55, green: 0.45, blue: 1.0, alpha: 1)
 
 class Const {
+    class Ads {
+        static let bannerSize = kGADAdSizeBanner
+        static let adUnitIdBannerTest = "ca-app-pub-3940256099942544/2934735716"
+        static let adUnitIdBannerProd = "ca-app-pub-5717735254954222/5157693143"
+    }
+    
     class Dot {
         static let colorBrightnessFactorAmplitude: CGFloat = 0.5
         static let colorBrightnessFactorAmplitudeShadow: CGFloat = 1.5
