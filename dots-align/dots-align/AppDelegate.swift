@@ -8,6 +8,8 @@
 import CoreData
 import UIKit
 
+import GoogleMobileAds
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -16,6 +18,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        // https://developers.google.com/admob/ios/quick-start?hl=en-GB#swift
+        // If you are using mediation, you may wish to wait until the completion handler is called before loading ads, as this will ensure that all mediation adapters are initialized.
+        GADMobileAds.sharedInstance().start(completionHandler: nil)
+        
         return true
     }
 
