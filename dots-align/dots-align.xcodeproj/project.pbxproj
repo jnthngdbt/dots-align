@@ -29,6 +29,7 @@
 		E100A7D6263E44FC00F81153 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E100A7D5263E44FC00F81153 /* Assets.xcassets */; };
 		E100A7E1263E44FC00F81153 /* dots_alignTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E100A7E0263E44FC00F81153 /* dots_alignTests.swift */; };
 		E100A7EC263E44FC00F81153 /* dots_alignUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E100A7EB263E44FC00F81153 /* dots_alignUITests.swift */; };
+		E376E93786A91B98D5ECAB07 /* libPods-dots-align-pod-dots-align.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 317DC0512EA41069469A4487 /* libPods-dots-align-pod-dots-align.a */; };
 		EC0656E32666C69900F28CB1 /* Orb.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0656E22666C69900F28CB1 /* Orb.swift */; };
 		EC69761B2669713E00E34D6E /* GameIndicators.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC69761A2669713E00E34D6E /* GameIndicators.swift */; };
 		EC69761D2669735900E34D6E /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC69761C2669735900E34D6E /* ProgressBar.swift */; };
@@ -85,6 +86,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1087D8DDCCC8A02EECA9AE75 /* Pods-dots-align-pod-dots-align.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dots-align-pod-dots-align.debug.xcconfig"; path = "Target Support Files/Pods-dots-align-pod-dots-align/Pods-dots-align-pod-dots-align.debug.xcconfig"; sourceTree = "<group>"; };
+		317DC0512EA41069469A4487 /* libPods-dots-align-pod-dots-align.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-dots-align-pod-dots-align.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3AF33B1CC4E0778AB225EF2D /* Pods-dots-align-pod-dots-align.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dots-align-pod-dots-align.release.xcconfig"; path = "Target Support Files/Pods-dots-align-pod-dots-align/Pods-dots-align-pod-dots-align.release.xcconfig"; sourceTree = "<group>"; };
 		AB86CD182687A89B00448D04 /* Music.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Music.swift; sourceTree = "<group>"; };
 		AB86CD1E268AC55B00448D04 /* Menu.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; name = Menu.m4a; path = ../../music/Menu.m4a; sourceTree = "<group>"; };
 		AB86CD1F268AC55B00448D04 /* Game.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; name = Game.m4a; path = ../../music/Game.m4a; sourceTree = "<group>"; };
@@ -140,6 +144,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E376E93786A91B98D5ECAB07 /* libPods-dots-align-pod-dots-align.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -160,6 +165,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4EF006339C793AA9A6ECF886 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1087D8DDCCC8A02EECA9AE75 /* Pods-dots-align-pod-dots-align.debug.xcconfig */,
+				3AF33B1CC4E0778AB225EF2D /* Pods-dots-align-pod-dots-align.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		65FB5C4CD21A72B8557E9048 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				317DC0512EA41069469A4487 /* libPods-dots-align-pod-dots-align.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E100A7BC263E44F900F81153 = {
 			isa = PBXGroup;
 			children = (
@@ -167,6 +190,8 @@
 				E100A7DF263E44FC00F81153 /* dots-alignTests */,
 				E100A7EA263E44FC00F81153 /* dots-alignUITests */,
 				E100A7C6263E44F900F81153 /* Products */,
+				4EF006339C793AA9A6ECF886 /* Pods */,
+				65FB5C4CD21A72B8557E9048 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -253,6 +278,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E100A7F0263E44FC00F81153 /* Build configuration list for PBXNativeTarget "dots-align" */;
 			buildPhases = (
+				A1FC05CDE91E86640ED5FDB8 /* [CP] Check Pods Manifest.lock */,
 				E100A7C1263E44F900F81153 /* Sources */,
 				E100A7C2263E44F900F81153 /* Frameworks */,
 				E100A7C3263E44F900F81153 /* Resources */,
@@ -381,6 +407,31 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A1FC05CDE91E86640ED5FDB8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-dots-align-pod-dots-align-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E100A7C1263E44F900F81153 /* Sources */ = {
@@ -593,6 +644,7 @@
 		};
 		E100A7F1263E44FC00F81153 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1087D8DDCCC8A02EECA9AE75 /* Pods-dots-align-pod-dots-align.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -612,6 +664,7 @@
 		};
 		E100A7F2263E44FC00F81153 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3AF33B1CC4E0778AB225EF2D /* Pods-dots-align-pod-dots-align.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

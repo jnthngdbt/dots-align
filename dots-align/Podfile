@@ -1,0 +1,6 @@
+abstract_target 'dots-align-pod' do
+    pod 'Google-Mobile-Ads-SDK'
+
+    project 'dots-align.xcodeproj'
+    target 'dots-align'
+end
