@@ -31,6 +31,16 @@ class GameScene: SKScene {
         return CGPoint(x: 0.5 * w, y: 0.5 * h)
     }
     
+    func getSafeAreaBottomPadding() -> CGFloat {
+        if #available(iOS 13.0, *) {
+            let window = UIApplication.shared.windows[0]
+            return window.safeAreaInsets.bottom
+        } else {
+            let window = UIApplication.shared.keyWindow
+            return window?.safeAreaInsets.bottom ?? 0
+        }
+    }
+    
     // Scene will appear. Create content here. (not "touch moved")
     override func didMove(to view: SKView) {
         self.backgroundColor = Const.backgroundColor

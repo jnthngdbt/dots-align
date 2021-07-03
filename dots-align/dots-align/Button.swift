@@ -92,11 +92,12 @@ class FooterButton: Button {
         let w = widthScaleFactor * Const.Button.Footer.widthFactor * scene.minSize()
         let h = Const.Button.Footer.heightFactor * scene.minSize()
         let size = CGSize(width: w, height: h)
+        let posY = scene.getSafeAreaBottomPadding() + 0.1 * scene.minSize() + Const.Ads.bannerSize.size.height
         
         super.init(scene: scene, text: text, size: size, id: id)
         self.shape.alpha = 1.0
         self.label.fontSize = Const.Button.Footer.fontSizeFactor * scene.minSize()
-        self.shape.position = CGPoint(x: self.shape.position.x, y: 0.1 * scene.minSize() + Const.Ads.bannerSize.size.height)
+        self.shape.position = CGPoint(x: self.shape.position.x, y: posY)
     }
 }
 
