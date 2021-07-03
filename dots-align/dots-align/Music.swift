@@ -21,8 +21,8 @@ class Music {
         }
         
         // Using multiple players in order to crossfade and avoid glitch.
-        self.stop(self.audioPlayerMenu)
-        self.stop(self.audioPlayerGame)
+        self.stopPlayer(self.audioPlayerMenu)
+        self.stopPlayer(self.audioPlayerGame)
         
         if name == Const.Music.game {
             self.audioPlayerGame = self.initPlayer(name)
@@ -42,9 +42,14 @@ class Music {
         }
     }
     
-    func stop(_ player: AVAudioPlayer?, fadeDuration: TimeInterval = 0.2) {
+    func stopPlayer(_ player: AVAudioPlayer?, fadeDuration: TimeInterval = 0.2) {
         player?.setVolume(0, fadeDuration: fadeDuration)
         // Not stopping the player, as it overrides the fadeout.
+    }
+    
+    func stop(fadeDuration: TimeInterval = 0.2) {
+        self.stopPlayer(self.audioPlayerMenu, fadeDuration: fadeDuration)
+        self.stopPlayer(self.audioPlayerGame, fadeDuration: fadeDuration)
     }
     
     private func initPlayer(_ name: String) -> AVAudioPlayer? {

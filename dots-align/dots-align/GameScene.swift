@@ -16,6 +16,7 @@ class GameScene: SKScene {
     var gameMode = GameMode.level
     var gameType = GameType.normal
     var touchBeganOnButtonId: ButtonId?
+    var showInterstitialAdCallback: (() -> Void)?
     
     func minSize() -> CGFloat {
         return min(self.size.width, self.size.height)
@@ -166,6 +167,8 @@ class GameScene: SKScene {
         self.startGameCountdownIfNecessary(mode: mode)
         
         Music.instance.playSong(mode == .tutorial ? Const.Music.menu : Const.Music.game)
+        
+        self.showInterstitialAd() // TBM
     }
     
     func startGameCountdownIfNecessary(mode: GameMode) {
@@ -241,5 +244,10 @@ class GameScene: SKScene {
         self.game = nil
         self.removeAction(forKey: Const.Game.countdownKey)
         self.removeAction(forKey: Const.Level.boostCountdownKey) // otherwise, game stays in bg when clicking home button
+    }
+    
+    func showInterstitialAd() {
+        // Music.instance.stop() // TODO: must stop music, but not now, since no mechanic yet to restart it
+        self.showInterstitialAdCallback?()
     }
 }
