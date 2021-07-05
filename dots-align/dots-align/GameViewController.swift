@@ -20,7 +20,7 @@ class GameViewController: UIViewController, GADFullScreenContentDelegate {
         
         if let view = self.view as! SKView? {
             let scene = GameScene(size: CGSize(width: self.view.bounds.width, height: self.view.bounds.height))
-            scene.showInterstitialAdCallback = self.showInterstitialAd
+            scene.adsDelegate = self
             
             scene.scaleMode = .aspectFit
             
