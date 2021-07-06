@@ -50,6 +50,7 @@ class Music {
     func stop(fadeDuration: TimeInterval = 0.2) {
         self.stopPlayer(self.audioPlayerMenu, fadeDuration: fadeDuration)
         self.stopPlayer(self.audioPlayerGame, fadeDuration: fadeDuration)
+        self.songPlaying = ""
     }
     
     private func initPlayer(_ name: String) -> AVAudioPlayer? {
