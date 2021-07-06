@@ -9,6 +9,7 @@ import Foundation
 import SpriteKit
 
 typealias Scalar = Double
+typealias Vector2d = SIMD3<Scalar>
 typealias Vector3d = SIMD3<Scalar>
 typealias Quat = simd_quatd
 

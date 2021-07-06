@@ -72,11 +72,12 @@ class Cloud {
         let eps = 2 * Const.Cloud.alignedDistThresh // make sure to not start aligned
         let x = Utils.randomCoordinateNonZero(eps: eps)
         let y = Utils.randomCoordinateNonZero(eps: eps)
-        let z = 1.0
-        let p = simd_normalize(Vector3d(x,y,z))
-        
+        self.desalign(x: x, y: y)
+    }
+    
+    func desalign(x: Scalar, y: Scalar) {
+        let p = simd_normalize(Vector3d(x, y, 1)) // project on unit sphere from z = 1 plane
         let dir = p - Const.Cloud.alignedOrientation
-        
         self.rotate(dir: dir)
     }
     
