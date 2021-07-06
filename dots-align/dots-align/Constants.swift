@@ -20,6 +20,7 @@ enum ButtonId: String, CaseIterable { case
     startTimedGameId = "startTimedGame",
     replayGameId = "replayGame",
     homeId = "home",
+    endGameHomeId = "endGameHomeId",
     tutorialInstructionsId = "tutorialInstructions",
     chooseGameStart = "chooseGameStart",
     chooseGameNavLeft = "chooseGameNavLeft",
@@ -42,6 +43,7 @@ class Const {
         static let adUnitIdBannerProd = "ca-app-pub-5717735254954222/5157693143"
         static let adUnitIdInterstitialTest = "ca-app-pub-3940256099942544/4411468910"
         static let adUnitIdInterstitialProd = "ca-app-pub-5717735254954222/7972053580"
+        static let nbGamesForInterstitialAd = 3
     }
     
     class Dot {

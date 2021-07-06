@@ -17,6 +17,7 @@ class GameScene: SKScene {
     var gameType = GameType.normal
     var touchBeganOnButtonId: ButtonId?
     var adsDelegate: GameViewController?
+    var gameCountForInterstitialAd = 0
     
     func minSize() -> CGFloat {
         return min(self.size.width, self.size.height)
@@ -128,25 +129,41 @@ class GameScene: SKScene {
     
     func manageButtonTapEnd(buttonId: ButtonId) {
         if buttonId == self.touchBeganOnButtonId {
+            
             if buttonId == ButtonId.tutorialId {
                 self.startGame(mode: GameMode.tutorial)
-            } else if buttonId == ButtonId.startLevelGameId {
+            }
+            else if buttonId == ButtonId.startLevelGameId {
                 self.showMenuChooseGame(mode: GameMode.level, type: self.gameType)
-            } else if buttonId == ButtonId.startTimedGameId {
+            }
+            else if buttonId == ButtonId.startTimedGameId {
                 self.showMenuChooseGame(mode: GameMode.time, type: self.gameType)
-            } else if buttonId == ButtonId.replayGameId {
-                self.startGame(mode: self.gameMode, type: self.gameType)
-            } else if buttonId == ButtonId.homeId {
+            }
+            else if buttonId == ButtonId.replayGameId {
+                self.showInterstitialAdIfNecessary({
+                    self.startGame(mode: self.gameMode, type: self.gameType)
+                })
+            }
+            else if buttonId == ButtonId.homeId {
                 self.showMainMenu()
-            } else if buttonId == ButtonId.tutorialInstructionsId {
+            }
+            else if buttonId == ButtonId.endGameHomeId {
+                self.showMainMenu()
+            }
+            else if buttonId == ButtonId.tutorialInstructionsId {
                 self.game?.instructions?.onButtonTap(scene: self)
-            } else if buttonId == ButtonId.chooseGameStart {
+            }
+            else if buttonId == ButtonId.chooseGameStart {
                 if self.menuChooseGame != nil {
-                    self.startGame(mode: self.gameMode, type: self.menuChooseGame!.cloudType)
+                    self.showInterstitialAdIfNecessary({
+                        self.startGame(mode: self.gameMode, type: self.menuChooseGame!.cloudType)
+                    })
                 }
-            } else if buttonId == ButtonId.chooseGameNavLeft {
+            }
+            else if buttonId == ButtonId.chooseGameNavLeft {
                 self.menuChooseGame?.onLeftTap(scene: self)
-            } else if buttonId == ButtonId.chooseGameNavRight {
+            }
+            else if buttonId == ButtonId.chooseGameNavRight {
                 self.menuChooseGame?.onRightTap(scene: self)
             }
         }
@@ -167,8 +184,6 @@ class GameScene: SKScene {
         self.startGameCountdownIfNecessary(mode: mode)
         
         Music.instance.playSong(mode == .tutorial ? Const.Music.menu : Const.Music.game)
-        
-        self.showInterstitialAd() // TBM
     }
     
     func startGameCountdownIfNecessary(mode: GameMode) {
@@ -230,6 +245,8 @@ class GameScene: SKScene {
     }
     
     func showEndGameMenu(gameResults: GameEntity?) {
+        self.gameCountForInterstitialAd += 1 // only consider completed games for interstitial ads, I'm a good guy
+        
         let score = self.game?.score ?? 0
         let bestScore = gameResults?.bestScore ?? 0
         self.clearGame()
@@ -246,10 +263,15 @@ class GameScene: SKScene {
         self.removeAction(forKey: Const.Level.boostCountdownKey) // otherwise, game stays in bg when clicking home button
     }
     
-    func showInterstitialAd() {
-        if self.adsDelegate != nil {
-            // Music.instance.stop() // TODO: must stop music, but not now, since no mechanic yet to restart it
-            self.adsDelegate?.showInterstitialAd()
+    func showInterstitialAdIfNecessary(_ completionHandler: (() -> Void)? = nil) {
+        if self.gameCountForInterstitialAd < Const.Ads.nbGamesForInterstitialAd {
+            completionHandler?() // no ad, just execute callback directly
+        } else { // show ad
+            self.gameCountForInterstitialAd = 0
+            if self.adsDelegate != nil {
+                Music.instance.stop()
+                self.adsDelegate?.showInterstitialAd(completionHandler)
+            }
         }
     }
 }

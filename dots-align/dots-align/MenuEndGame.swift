@@ -24,7 +24,7 @@ class MenuEndGame: Menu {
         }
         
         self.buttons.append(MenuButton(scene: scene, text: "REPLAY", id: ButtonId.replayGameId))
-        self.buttons.append(MenuButton(scene: scene, text: "HOME", id: ButtonId.homeId))
+        self.buttons.append(MenuButton(scene: scene, text: "HOME", id: ButtonId.endGameHomeId))
         
         self.arrange(scene: scene)
         

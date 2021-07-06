@@ -14,6 +14,7 @@ class GameViewController: UIViewController, GADFullScreenContentDelegate {
 
     var bannerView: GADBannerView!
     var interstitial: GADInterstitialAd?
+    var interstitialAdCompletionHandler: (() -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,8 +84,9 @@ class GameViewController: UIViewController, GADFullScreenContentDelegate {
         )
     }
     
-    func showInterstitialAd() {
+    func showInterstitialAd(_ completionHandler: (() -> Void)? = nil) {
         if interstitial != nil {
+            self.interstitialAdCompletionHandler = completionHandler
             interstitial?.present(fromRootViewController: self)
         } else {
             print("Ad wasn't ready")
@@ -103,6 +105,7 @@ class GameViewController: UIViewController, GADFullScreenContentDelegate {
         // From https://developers.google.com/admob/ios/interstitial#swift
         // GADInterstitialAd is a one-time-use object. This means that once an interstitial ad is shown, it cannot be shown again. A best practice is to load another interstitial ad in the adDidDismissFullScreenContent: method on GADFullScreenContentDelegate so that the next interstitial ad starts loading as soon as the previous one is dismissed.
         self.loadInterstitialAd()
+        self.interstitialAdCompletionHandler?()
     }
     
     override var shouldAutorotate: Bool {
