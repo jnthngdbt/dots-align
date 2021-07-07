@@ -117,7 +117,7 @@ class Level {
     func playBeep() {
         let boostFrac = (self.boost - 1) / (CGFloat(self.maxBoost) - 1) // boost goes from 1 to max
         let nbBeeps = Const.Music.beeps.count
-        let beepIdxRaw = Int((boostFrac * CGFloat(nbBeeps - 1)).rounded())
+        let beepIdxRaw = Int((boostFrac * CGFloat(nbBeeps))) // nbBeeps - 1 + 1
         let beepIdx = min(nbBeeps - 1, max(0, beepIdxRaw))
         let beepName = Const.Music.beeps[beepIdx]
         Music.instance.playBeep(beepName)
