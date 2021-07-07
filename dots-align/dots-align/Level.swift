@@ -107,8 +107,20 @@ class Level {
         
         UIImpactFeedbackGenerator(style: .soft).impactOccurred()
         
-        Music.instance.playBeep("Beep.0")
+        if self.mode != .tutorial {
+            self.playBeep()
+        }
+        
         self.animateOut()
+    }
+    
+    func playBeep() {
+        let boostFrac = (self.boost - 1) / (CGFloat(self.maxBoost) - 1) // boost goes from 1 to max
+        let nbBeeps = Const.Music.beeps.count
+        let beepIdxRaw = Int((boostFrac * CGFloat(nbBeeps - 1)).rounded())
+        let beepIdx = min(nbBeeps - 1, max(0, beepIdxRaw))
+        let beepName = Const.Music.beeps[beepIdx]
+        Music.instance.playBeep(beepName)
     }
     
     func computeScore() -> Int {

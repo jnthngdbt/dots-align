@@ -10,18 +10,18 @@
 		AB86CD192687A89C00448D04 /* Music.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB86CD182687A89B00448D04 /* Music.swift */; };
 		AB86CD20268AC55B00448D04 /* Menu.m4a in Resources */ = {isa = PBXBuildFile; fileRef = AB86CD1E268AC55B00448D04 /* Menu.m4a */; };
 		AB86CD21268AC55B00448D04 /* Game.m4a in Resources */ = {isa = PBXBuildFile; fileRef = AB86CD1F268AC55B00448D04 /* Game.m4a */; };
-		AB86CD23268CFBD900448D04 /* Beep.0.wav in Resources */ = {isa = PBXBuildFile; fileRef = AB86CD22268CFBD900448D04 /* Beep.0.wav */; };
-		AB86CD2D268D081E00448D04 /* Beep.6.wav in Resources */ = {isa = PBXBuildFile; fileRef = AB86CD26268D081D00448D04 /* Beep.6.wav */; };
-		AB86CD2E268D081E00448D04 /* Beep.5.wav in Resources */ = {isa = PBXBuildFile; fileRef = AB86CD27268D081D00448D04 /* Beep.5.wav */; };
-		AB86CD2F268D081E00448D04 /* Beep.2.wav in Resources */ = {isa = PBXBuildFile; fileRef = AB86CD28268D081D00448D04 /* Beep.2.wav */; };
-		AB86CD30268D081E00448D04 /* Beep.4.wav in Resources */ = {isa = PBXBuildFile; fileRef = AB86CD29268D081E00448D04 /* Beep.4.wav */; };
-		AB86CD31268D081E00448D04 /* Beep.3.wav in Resources */ = {isa = PBXBuildFile; fileRef = AB86CD2A268D081E00448D04 /* Beep.3.wav */; };
-		AB86CD32268D081E00448D04 /* Beep.1.wav in Resources */ = {isa = PBXBuildFile; fileRef = AB86CD2B268D081E00448D04 /* Beep.1.wav */; };
-		AB86CD33268D081E00448D04 /* Beep.7.wav in Resources */ = {isa = PBXBuildFile; fileRef = AB86CD2C268D081E00448D04 /* Beep.7.wav */; };
 		AB86CD35268D199900448D04 /* CloudSatellite.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB86CD34268D199900448D04 /* CloudSatellite.swift */; };
 		AB86CD37268D210400448D04 /* CloudWithDerps.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB86CD36268D210400448D04 /* CloudWithDerps.swift */; };
 		AB86CD39268E045B00448D04 /* CloudTransit.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB86CD38268E045B00448D04 /* CloudTransit.swift */; };
 		AB86CD3B268E0BF500448D04 /* CloudShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB86CD3A268E0BF500448D04 /* CloudShadow.swift */; };
+		ABFAE9C4269553CB00C200B2 /* Beep.C2.wav in Resources */ = {isa = PBXBuildFile; fileRef = ABFAE9BC269553CB00C200B2 /* Beep.C2.wav */; };
+		ABFAE9C5269553CB00C200B2 /* Beep.A2.wav in Resources */ = {isa = PBXBuildFile; fileRef = ABFAE9BD269553CB00C200B2 /* Beep.A2.wav */; };
+		ABFAE9C6269553CB00C200B2 /* Beep.E2.wav in Resources */ = {isa = PBXBuildFile; fileRef = ABFAE9BE269553CB00C200B2 /* Beep.E2.wav */; };
+		ABFAE9C7269553CB00C200B2 /* Beep.B2.wav in Resources */ = {isa = PBXBuildFile; fileRef = ABFAE9BF269553CB00C200B2 /* Beep.B2.wav */; };
+		ABFAE9C8269553CB00C200B2 /* Beep.F2.wav in Resources */ = {isa = PBXBuildFile; fileRef = ABFAE9C0269553CB00C200B2 /* Beep.F2.wav */; };
+		ABFAE9C9269553CB00C200B2 /* Beep.G2.wav in Resources */ = {isa = PBXBuildFile; fileRef = ABFAE9C1269553CB00C200B2 /* Beep.G2.wav */; };
+		ABFAE9CA269553CB00C200B2 /* Beep.C3.wav in Resources */ = {isa = PBXBuildFile; fileRef = ABFAE9C2269553CB00C200B2 /* Beep.C3.wav */; };
+		ABFAE9CB269553CB00C200B2 /* Beep.D2.wav in Resources */ = {isa = PBXBuildFile; fileRef = ABFAE9C3269553CB00C200B2 /* Beep.D2.wav */; };
 		E100A7C9263E44F900F81153 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E100A7C8263E44F900F81153 /* AppDelegate.swift */; };
 		E100A7CF263E44F900F81153 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = E100A7CE263E44F900F81153 /* GameScene.swift */; };
 		E100A7D1263E44F900F81153 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E100A7D0263E44F900F81153 /* GameViewController.swift */; };
@@ -92,18 +92,18 @@
 		AB86CD182687A89B00448D04 /* Music.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Music.swift; sourceTree = "<group>"; };
 		AB86CD1E268AC55B00448D04 /* Menu.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; name = Menu.m4a; path = ../../music/Menu.m4a; sourceTree = "<group>"; };
 		AB86CD1F268AC55B00448D04 /* Game.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; name = Game.m4a; path = ../../music/Game.m4a; sourceTree = "<group>"; };
-		AB86CD22268CFBD900448D04 /* Beep.0.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.0.wav; path = ../../music/Beep.0.wav; sourceTree = "<group>"; };
-		AB86CD26268D081D00448D04 /* Beep.6.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.6.wav; path = ../../music/Beep.6.wav; sourceTree = "<group>"; };
-		AB86CD27268D081D00448D04 /* Beep.5.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.5.wav; path = ../../music/Beep.5.wav; sourceTree = "<group>"; };
-		AB86CD28268D081D00448D04 /* Beep.2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.2.wav; path = ../../music/Beep.2.wav; sourceTree = "<group>"; };
-		AB86CD29268D081E00448D04 /* Beep.4.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.4.wav; path = ../../music/Beep.4.wav; sourceTree = "<group>"; };
-		AB86CD2A268D081E00448D04 /* Beep.3.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.3.wav; path = ../../music/Beep.3.wav; sourceTree = "<group>"; };
-		AB86CD2B268D081E00448D04 /* Beep.1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.1.wav; path = ../../music/Beep.1.wav; sourceTree = "<group>"; };
-		AB86CD2C268D081E00448D04 /* Beep.7.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.7.wav; path = ../../music/Beep.7.wav; sourceTree = "<group>"; };
 		AB86CD34268D199900448D04 /* CloudSatellite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudSatellite.swift; sourceTree = "<group>"; };
 		AB86CD36268D210400448D04 /* CloudWithDerps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudWithDerps.swift; sourceTree = "<group>"; };
 		AB86CD38268E045B00448D04 /* CloudTransit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudTransit.swift; sourceTree = "<group>"; };
 		AB86CD3A268E0BF500448D04 /* CloudShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudShadow.swift; sourceTree = "<group>"; };
+		ABFAE9BC269553CB00C200B2 /* Beep.C2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.C2.wav; path = ../../music/Beep.C2.wav; sourceTree = "<group>"; };
+		ABFAE9BD269553CB00C200B2 /* Beep.A2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.A2.wav; path = ../../music/Beep.A2.wav; sourceTree = "<group>"; };
+		ABFAE9BE269553CB00C200B2 /* Beep.E2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.E2.wav; path = ../../music/Beep.E2.wav; sourceTree = "<group>"; };
+		ABFAE9BF269553CB00C200B2 /* Beep.B2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.B2.wav; path = ../../music/Beep.B2.wav; sourceTree = "<group>"; };
+		ABFAE9C0269553CB00C200B2 /* Beep.F2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.F2.wav; path = ../../music/Beep.F2.wav; sourceTree = "<group>"; };
+		ABFAE9C1269553CB00C200B2 /* Beep.G2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.G2.wav; path = ../../music/Beep.G2.wav; sourceTree = "<group>"; };
+		ABFAE9C2269553CB00C200B2 /* Beep.C3.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.C3.wav; path = ../../music/Beep.C3.wav; sourceTree = "<group>"; };
+		ABFAE9C3269553CB00C200B2 /* Beep.D2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.D2.wav; path = ../../music/Beep.D2.wav; sourceTree = "<group>"; };
 		E100A7C5263E44F900F81153 /* dots-align.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "dots-align.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E100A7C8263E44F900F81153 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E100A7CE263E44F900F81153 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -171,7 +171,6 @@
 				1087D8DDCCC8A02EECA9AE75 /* Pods-dots-align-pod-dots-align.debug.xcconfig */,
 				3AF33B1CC4E0778AB225EF2D /* Pods-dots-align-pod-dots-align.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -208,14 +207,14 @@
 		E100A7C7263E44F900F81153 /* dots-align */ = {
 			isa = PBXGroup;
 			children = (
-				AB86CD2B268D081E00448D04 /* Beep.1.wav */,
-				AB86CD28268D081D00448D04 /* Beep.2.wav */,
-				AB86CD2A268D081E00448D04 /* Beep.3.wav */,
-				AB86CD29268D081E00448D04 /* Beep.4.wav */,
-				AB86CD27268D081D00448D04 /* Beep.5.wav */,
-				AB86CD26268D081D00448D04 /* Beep.6.wav */,
-				AB86CD2C268D081E00448D04 /* Beep.7.wav */,
-				AB86CD22268CFBD900448D04 /* Beep.0.wav */,
+				ABFAE9BD269553CB00C200B2 /* Beep.A2.wav */,
+				ABFAE9BF269553CB00C200B2 /* Beep.B2.wav */,
+				ABFAE9BC269553CB00C200B2 /* Beep.C2.wav */,
+				ABFAE9C2269553CB00C200B2 /* Beep.C3.wav */,
+				ABFAE9C3269553CB00C200B2 /* Beep.D2.wav */,
+				ABFAE9BE269553CB00C200B2 /* Beep.E2.wav */,
+				ABFAE9C0269553CB00C200B2 /* Beep.F2.wav */,
+				ABFAE9C1269553CB00C200B2 /* Beep.G2.wav */,
 				AB86CD1F268AC55B00448D04 /* Game.m4a */,
 				AB86CD1E268AC55B00448D04 /* Menu.m4a */,
 				EC6F2433265F457F0049D3EA /* 512.png */,
@@ -375,20 +374,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AB86CD30268D081E00448D04 /* Beep.4.wav in Resources */,
-				AB86CD31268D081E00448D04 /* Beep.3.wav in Resources */,
 				EC6F242E265F3FF30049D3EA /* Launch Screen.storyboard in Resources */,
-				AB86CD32268D081E00448D04 /* Beep.1.wav in Resources */,
 				E100A7D4263E44F900F81153 /* Main.storyboard in Resources */,
 				AB86CD21268AC55B00448D04 /* Game.m4a in Resources */,
 				EC6F2434265F457F0049D3EA /* 512.png in Resources */,
-				AB86CD23268CFBD900448D04 /* Beep.0.wav in Resources */,
+				ABFAE9CA269553CB00C200B2 /* Beep.C3.wav in Resources */,
+				ABFAE9C5269553CB00C200B2 /* Beep.A2.wav in Resources */,
+				ABFAE9C8269553CB00C200B2 /* Beep.F2.wav in Resources */,
+				ABFAE9CB269553CB00C200B2 /* Beep.D2.wav in Resources */,
+				ABFAE9C9269553CB00C200B2 /* Beep.G2.wav in Resources */,
 				E100A7D6263E44FC00F81153 /* Assets.xcassets in Resources */,
-				AB86CD2F268D081E00448D04 /* Beep.2.wav in Resources */,
-				AB86CD2E268D081E00448D04 /* Beep.5.wav in Resources */,
-				AB86CD33268D081E00448D04 /* Beep.7.wav in Resources */,
-				AB86CD2D268D081E00448D04 /* Beep.6.wav in Resources */,
+				ABFAE9C6269553CB00C200B2 /* Beep.E2.wav in Resources */,
 				AB86CD20268AC55B00448D04 /* Menu.m4a in Resources */,
+				ABFAE9C4269553CB00C200B2 /* Beep.C2.wav in Resources */,
+				ABFAE9C7269553CB00C200B2 /* Beep.B2.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

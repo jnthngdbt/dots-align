@@ -32,13 +32,15 @@ class Music {
     }
     
     func playBeep(_ name: String) {
-        let url = NSURL(fileURLWithPath: Bundle.main.path(forResource: name, ofType: "wav")!)
-        do {
-            audioPlayerBeep = try AVAudioPlayer(contentsOf:url as URL)
-            audioPlayerBeep!.prepareToPlay()
-            audioPlayerBeep!.play()
-        } catch {
-            print("Cannot play the file")
+        if let path = Bundle.main.path(forResource: name, ofType: "wav") {
+            let url = NSURL(fileURLWithPath: path)
+            do {
+                audioPlayerBeep = try AVAudioPlayer(contentsOf:url as URL)
+                audioPlayerBeep!.prepareToPlay()
+                audioPlayerBeep!.play()
+            } catch {
+                print("Cannot play the file")
+            }
         }
     }
     

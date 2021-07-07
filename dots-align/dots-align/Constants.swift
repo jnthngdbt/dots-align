@@ -155,6 +155,7 @@ class Const {
     class Music {
         static let game = "Game"
         static let menu = "Menu"
+        static let beeps = ["Beep.C2", "Beep.G2", "Beep.C3"] // ["Beep.C2", "Beep.F2", "Beep.G2", "Beep.A2", "Beep.C3"]
     }
     
     class Debug {
