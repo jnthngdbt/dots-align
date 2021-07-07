@@ -72,8 +72,7 @@ class Level {
     }
     
     func updateBoostFromRotation() {
-        let steps = Const.Level.maxAngleCumul / Scalar(self.maxBoost - 1)
-        let multiplier = Scalar(self.maxBoost) - self.angleCumul / steps
+        let multiplier = Scalar(self.maxBoost) - self.angleCumul * Const.Level.boostPerAngle
         self.boost = CGFloat(max(1.0, multiplier))
     }
     

@@ -77,7 +77,7 @@ class Const {
         static let boostCountdownSec = 6.0
         static let boostCountdownNbSteps = 20
         static let boostCountdownKey = "boostCountdown"
-        static let maxAngleCumul = 1.5 * Scalar.pi
+        static let boostPerAngle = 1 / (0.45 * Scalar.pi)
     }
     
     class Game {
