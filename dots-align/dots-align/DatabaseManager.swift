@@ -26,6 +26,7 @@ class DatabaseManager {
         let gameEntry = GameEntity(context: DatabaseManager.getContext())
         gameEntry.score = Int32(game.score)
         gameEntry.mode = Int32(game.mode.rawValue)
+        gameEntry.type = Int32(game.type.rawValue)
         gameEntry.bestScore = Int32(bestScore ?? 0)
         gameEntry.avgBoost = nbLevels > 0 ? Float(game.sumBoost) / Float(nbLevels) : 0.0
         gameEntry.avgRotation = nbLevels > 0 ? Float(game.sumRotationRad) / Float(nbLevels) : 0.0
