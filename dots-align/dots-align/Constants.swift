@@ -18,6 +18,7 @@ enum ButtonId: String, CaseIterable { case
     tutorialId = "tutorial",
     startLevelGameId = "startLevelGame",
     startTimedGameId = "startTimedGame",
+    scoreBoard = "scoreBoard",
     replayGameId = "replayGame",
     homeId = "home",
     endGameHomeId = "endGameHomeId",
@@ -144,6 +145,7 @@ class Const {
         static let blinkWaitSec = 0.3
         static let scoreRiseSec = 0.2
         static let scoreRiseWaitSec = 0.3
+        static let titleAppearWait = 0.1
     }
     
     class Music {

@@ -70,6 +70,8 @@ class MenuChooseGame {
         self.title.position = CGPoint(x: scene.center().x, y: posY)
         self.title.zPosition = Const.Button.zPosition
         self.title.verticalAlignmentMode = .center
+        self.title.setScale(0)
+        self.title.alpha = 1
         scene.addChild(self.title)
     }
     
@@ -83,6 +85,8 @@ class MenuChooseGame {
         self.description.horizontalAlignmentMode = .center
         self.description.lineBreakMode = .byWordWrapping
         self.description.numberOfLines = 0
+        self.description.setScale(0)
+        self.description.alpha = 1
         scene.addChild(self.description)
         
         self.updateDescription()
@@ -155,12 +159,13 @@ class MenuChooseGame {
     }
     
     private func animateIn() {
-        self.animateInCloud()
+        let titleAnimation = SKAction.sequence([
+            SKAction.wait(forDuration: Const.Animation.titleAppearWait),
+            SKAction.scale(to: 1, duration: Const.Animation.expandSec)
+        ])
         
-        self.description.run(SKAction.sequence([
-            SKAction.wait(forDuration: 0.2),
-            SKAction.fadeAlpha(to: 1, duration: Const.Animation.expandSec)
-        ]))
+        self.title.run(titleAnimation)
+        self.description.run(titleAnimation)
         
         let buttonsAnimation = SKAction.sequence([
             SKAction.scale(to: 0, duration: 0),
@@ -169,9 +174,12 @@ class MenuChooseGame {
             SKAction.scale(to: 1, duration: Const.Animation.expandSec)
         ])
         
+        self.homeButton.animate(action: buttonsAnimation)
         self.startButton.animate(action: buttonsAnimation)
         if (self.mustShowLeftNavButton()) { self.left.animate(action: buttonsAnimation) }
         if (self.mustShowRightNavButton()) { self.right.animate(action: buttonsAnimation) }
+        
+        self.animateInCloud()
     }
     
     private func animateInCloud() {

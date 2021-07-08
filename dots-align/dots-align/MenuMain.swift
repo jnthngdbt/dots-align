@@ -31,6 +31,8 @@ class MenuMain: Menu {
         let timeGameText = "PLAY " + String(Const.Game.maxSeconds) + " SECONDS"
         self.buttons.append(MenuButton(scene: scene, text: timeGameText, id: ButtonId.startTimedGameId))
         
+        self.buttons.append(MenuButton(scene: scene, text: "SCORE BOARD", id: ButtonId.scoreBoard))
+        
         self.arrange(scene: scene)
         
         self.setTitle(scene: scene)
@@ -50,6 +52,7 @@ class MenuMain: Menu {
         self.title.position = CGPoint(x: titlePosX, y: titlePosY)
         self.title.zPosition = self.buttons.last!.shape.zPosition
         self.title.verticalAlignmentMode = .center
+        self.title.setScale(0)
         scene.addChild(self.title)
     }
     
@@ -62,6 +65,11 @@ class MenuMain: Menu {
     }
     
     private func animateIn() {
+        self.title.run(SKAction.sequence([
+            SKAction.wait(forDuration: Const.Animation.titleAppearWait),
+            SKAction.scale(to: 1, duration: Const.Animation.expandSec)
+        ]))
+        
         self.animateInButtons()
         self.animateInCloud()
     }

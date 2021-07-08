@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AB7616FD2697DFBF00A97945 /* ScoreBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7616FC2697DFBF00A97945 /* ScoreBoard.swift */; };
 		AB86CD192687A89C00448D04 /* Music.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB86CD182687A89B00448D04 /* Music.swift */; };
 		AB86CD20268AC55B00448D04 /* Menu.m4a in Resources */ = {isa = PBXBuildFile; fileRef = AB86CD1E268AC55B00448D04 /* Menu.m4a */; };
 		AB86CD21268AC55B00448D04 /* Game.m4a in Resources */ = {isa = PBXBuildFile; fileRef = AB86CD1F268AC55B00448D04 /* Game.m4a */; };
@@ -89,6 +90,7 @@
 		1087D8DDCCC8A02EECA9AE75 /* Pods-dots-align-pod-dots-align.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dots-align-pod-dots-align.debug.xcconfig"; path = "Target Support Files/Pods-dots-align-pod-dots-align/Pods-dots-align-pod-dots-align.debug.xcconfig"; sourceTree = "<group>"; };
 		317DC0512EA41069469A4487 /* libPods-dots-align-pod-dots-align.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-dots-align-pod-dots-align.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AF33B1CC4E0778AB225EF2D /* Pods-dots-align-pod-dots-align.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dots-align-pod-dots-align.release.xcconfig"; path = "Target Support Files/Pods-dots-align-pod-dots-align/Pods-dots-align-pod-dots-align.release.xcconfig"; sourceTree = "<group>"; };
+		AB7616FC2697DFBF00A97945 /* ScoreBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreBoard.swift; sourceTree = "<group>"; };
 		AB86CD182687A89B00448D04 /* Music.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Music.swift; sourceTree = "<group>"; };
 		AB86CD1E268AC55B00448D04 /* Menu.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; name = Menu.m4a; path = ../../music/Menu.m4a; sourceTree = "<group>"; };
 		AB86CD1F268AC55B00448D04 /* Game.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; name = Game.m4a; path = ../../music/Game.m4a; sourceTree = "<group>"; };
@@ -247,6 +249,7 @@
 				AB86CD182687A89B00448D04 /* Music.swift */,
 				EC69761C2669735900E34D6E /* ProgressBar.swift */,
 				EC0656E22666C69900F28CB1 /* Orb.swift */,
+				AB7616FC2697DFBF00A97945 /* ScoreBoard.swift */,
 				EC77FD16264C7C1B00B901FD /* Utils.swift */,
 			);
 			path = "dots-align";
@@ -458,6 +461,7 @@
 				EC812664265DDD1C00FAA61E /* Button.swift in Sources */,
 				EC77FD23264C7D7000B901FD /* Cloud.swift in Sources */,
 				EC7E8C02267EDC77001A81F6 /* MenuChooseGame.swift in Sources */,
+				AB7616FD2697DFBF00A97945 /* ScoreBoard.swift in Sources */,
 				EC77FD17264C7C1B00B901FD /* Utils.swift in Sources */,
 				EC77FD27264C7DE600B901FD /* Level.swift in Sources */,
 				AB86CD35268D199900448D04 /* CloudSatellite.swift in Sources */,

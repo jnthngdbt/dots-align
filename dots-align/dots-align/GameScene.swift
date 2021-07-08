@@ -13,6 +13,7 @@ class GameScene: SKScene {
     var menuMain: MenuMain?
     var menuEndGame: MenuEndGame?
     var menuChooseGame: MenuChooseGame?
+    var scoreBoard: ScoreBoard?
     var gameMode = GameMode.level
     var gameType = GameType.normal
     var touchBeganOnButtonId: ButtonId?
@@ -130,41 +131,44 @@ class GameScene: SKScene {
     func manageButtonTapEnd(buttonId: ButtonId) {
         if buttonId == self.touchBeganOnButtonId {
             
-            if buttonId == ButtonId.tutorialId {
+            if buttonId == .tutorialId {
                 self.startGame(mode: GameMode.tutorial)
             }
-            else if buttonId == ButtonId.startLevelGameId {
+            else if buttonId == .startLevelGameId {
                 self.showMenuChooseGame(mode: GameMode.level, type: self.gameType)
             }
-            else if buttonId == ButtonId.startTimedGameId {
+            else if buttonId == .startTimedGameId {
                 self.showMenuChooseGame(mode: GameMode.time, type: self.gameType)
             }
-            else if buttonId == ButtonId.replayGameId {
+            else if buttonId == .replayGameId {
                 self.showInterstitialAdIfNecessary({
                     self.startGame(mode: self.gameMode, type: self.gameType)
                 })
             }
-            else if buttonId == ButtonId.homeId {
+            else if buttonId == .homeId {
                 self.showMainMenu()
             }
-            else if buttonId == ButtonId.endGameHomeId {
+            else if buttonId == .endGameHomeId {
                 self.showMainMenu()
             }
-            else if buttonId == ButtonId.tutorialInstructionsId {
+            else if buttonId == .tutorialInstructionsId {
                 self.game?.instructions?.onButtonTap(scene: self)
             }
-            else if buttonId == ButtonId.chooseGameStart {
+            else if buttonId == .chooseGameStart {
                 if self.menuChooseGame != nil {
                     self.showInterstitialAdIfNecessary({
                         self.startGame(mode: self.gameMode, type: self.menuChooseGame!.cloudType)
                     })
                 }
             }
-            else if buttonId == ButtonId.chooseGameNavLeft {
+            else if buttonId == .chooseGameNavLeft {
                 self.menuChooseGame?.onLeftTap(scene: self)
             }
-            else if buttonId == ButtonId.chooseGameNavRight {
+            else if buttonId == .chooseGameNavRight {
                 self.menuChooseGame?.onRightTap(scene: self)
+            }
+            else if buttonId == .scoreBoard {
+                self.showScoreBoard()
             }
         }
         
@@ -175,10 +179,8 @@ class GameScene: SKScene {
         self.gameMode = mode
         self.gameType = type
         
+        self.clearScene()
         self.game = Game(scene: self, mode: mode, type: type)
-        self.menuMain = nil
-        self.menuEndGame = nil
-        self.menuChooseGame = nil
         
         self.game?.animateIn()
         self.startGameCountdownIfNecessary(mode: mode)
@@ -225,10 +227,8 @@ class GameScene: SKScene {
     }
     
     func showMainMenu() {
-        self.clearGame()
+        self.clearScene()
         self.menuMain = MenuMain(scene: self)
-        self.menuEndGame = nil
-        self.menuChooseGame = nil
         
         Music.instance.playSong(Const.Music.menu)
     }
@@ -236,9 +236,8 @@ class GameScene: SKScene {
     func showMenuChooseGame(mode: GameMode, type: GameType) {
         self.gameMode = mode
         self.gameType = type
-        self.clearGame()
-        self.menuMain = nil
-        self.menuEndGame = nil
+        
+        self.clearScene()
         self.menuChooseGame = MenuChooseGame(scene: self)
         
         Music.instance.playSong(Const.Music.menu)
@@ -249,18 +248,32 @@ class GameScene: SKScene {
         
         let score = self.game?.score ?? 0
         let bestScore = gameResults?.bestScore ?? 0
-        self.clearGame()
-        self.menuMain = nil
+        
+        self.clearScene()
         self.menuEndGame = MenuEndGame(scene: self, score: score, bestScore: Int(bestScore))
-        self.menuChooseGame = nil
         
         Music.instance.playSong(Const.Music.game)
+    }
+    
+    func showScoreBoard() {
+        self.clearScene()
+        self.scoreBoard = ScoreBoard(scene: self)
+        
+        Music.instance.playSong(Const.Music.menu)
     }
     
     func clearGame() {
         self.game = nil
         self.removeAction(forKey: Const.Game.countdownKey)
         self.removeAction(forKey: Const.Level.boostCountdownKey) // otherwise, game stays in bg when clicking home button
+    }
+    
+    func clearScene() {
+        self.clearGame()
+        self.menuMain = nil
+        self.menuEndGame = nil
+        self.menuChooseGame = nil
+        self.scoreBoard = nil
     }
     
     func showInterstitialAdIfNecessary(_ completionHandler: (() -> Void)? = nil) {
