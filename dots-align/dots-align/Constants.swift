@@ -11,7 +11,7 @@ import GoogleMobileAds
 
 enum IndicatorNames: Int, CaseIterable { case left, dots, boost, score  }
 enum GameMode: Int, CaseIterable { case tutorial, level, time  } // keep order, saved in core data
-enum GameType: Int, CaseIterable { case normal, satellite, shadow, morph } // keep order, saved in core data
+enum GameType: Int, CaseIterable { case normal, satellite, shadow, transit } // keep order, saved in core data
 
 enum ButtonId: String, CaseIterable { case
     none = "",
@@ -87,12 +87,6 @@ class Const {
         static let maxLevel = 10
         static let maxSeconds = 30
         static let countdownKey = "gameCountdown"
-    }
-    
-    class GameType {
-        static let typeSatelliteProb = 0.4
-        static let typeShadowProb = 0.4
-        static let typeMorphProb = 0.2
     }
     
     class Scene {
@@ -180,6 +174,6 @@ func getMaxBoost(type: GameType) -> Int {
     case .normal: return 4
     case .satellite: return 6
     case .shadow: return 8
-    case .morph: return 10
+    case .transit: return 10
     }
 }

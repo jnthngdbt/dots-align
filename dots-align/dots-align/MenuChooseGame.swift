@@ -59,7 +59,7 @@ class MenuChooseGame {
         case .normal: return "NORMAL"
         case .satellite: return "SATELLITE"
         case .shadow: return "SHADOW"
-        case .morph: return "MORPH"
+        case .transit: return "TRANSIT"
         }
     }
     

@@ -107,7 +107,7 @@ class Utils {
             return CloudSatellite(nbPoints: nbPoints, scene: scene, color: color, radius: radius, dotRadius: dotRadius, addGuides: addGuides)
         case .shadow:
             return CloudShadow(nbPoints: nbPoints, scene: scene, color: color, radius: radius, dotRadius: dotRadius, addGuides: addGuides)
-        case .morph:
+        case .transit:
             return CloudTransit(nbPoints: nbPoints, scene: scene, color: color, radius: radius, dotRadius: dotRadius, addGuides: addGuides)
         }
     }
