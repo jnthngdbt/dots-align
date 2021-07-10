@@ -57,4 +57,18 @@ class DatabaseManager {
         
         return results.count > 0 ? Int(results[0].score) : nil
     }
+    
+    static func getNbGames() -> Int? {
+        var count = 0
+        
+        do {
+            let request:NSFetchRequest<GameEntity> = GameEntity.fetchRequest()
+            let context = DatabaseManager.getContext()
+            try count = context.count(for: request)
+        } catch {
+            print("[ERROR] Could not fetch data from database.")
+        }
+        
+        return count
+    }
 }
