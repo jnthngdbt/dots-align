@@ -16,14 +16,16 @@ class ScoreBoard {
     let hdrLevel: SKLabelNode
     let hdrTimed: SKLabelNode
     
+    let hdrLine = SKShapeNode()
+    
     var rowsGame: [SKLabelNode] = []
     var rowsLevel: [SKLabelNode] = []
     var rowsTime: [SKLabelNode] = []
     
     let titlePosY: CGFloat = 0.85
     let hdrPosY: CGFloat = 0.65
-    let hdrHeight: CGFloat = 0.075
-    let rowHeight: CGFloat = 0.06
+    let hdrSpacing: CGFloat = 0.075
+    let rowSpacing: CGFloat = 0.06
     
     let colGameWidth: CGFloat = 0.3
     let colLevelWidth: CGFloat = 0.3
@@ -62,6 +64,8 @@ class ScoreBoard {
         self.setHeaderLabel(scene: scene, label: self.hdrLevel, posX: self.colLevelPosX)
         self.setHeaderLabel(scene: scene, label: self.hdrTimed, posX: self.colTimePosX)
         
+        self.setHeaderLine(scene: scene)
+        
         self.setRowsLabels(scene: scene, labels: self.rowsGame, posX: self.colGamePosX)
         self.setRowsLabels(scene: scene, labels: self.rowsLevel, posX: self.colLevelPosX)
         self.setRowsLabels(scene: scene, labels: self.rowsTime, posX: self.colTimePosX)
@@ -74,7 +78,8 @@ class ScoreBoard {
         self.title.fontName = Const.fontNameTitle
         self.title.fontSize = 0.15 * scene.minSize()
         self.title.position = CGPoint(x: scene.center().x, y: self.titlePosY * scene.size.height)
-        self.title.setScale(0)
+        self.title.verticalAlignmentMode = .center
+        self.title.setScale(0) // will animate
         scene.addChild(self.title)
     }
     
@@ -83,19 +88,33 @@ class ScoreBoard {
         label.fontName = Const.fontNameLabel
         label.fontSize = 0.05 * scene.minSize()
         label.position = CGPoint(x: posX * scene.size.width, y: self.hdrPosY * scene.size.height)
-        label.alpha = 0
+        label.verticalAlignmentMode = .center
+        label.alpha = 0 // will animate
         scene.addChild(label)
+    }
+    
+    private func setHeaderLine(scene: GameScene) {
+        let posY = (self.hdrPosY - 0.5 * self.hdrSpacing) * scene.size.height
+        let pathToDraw = CGMutablePath()
+        pathToDraw.move(to: CGPoint(x: scene.size.width * self.sidePadding, y: posY))
+        pathToDraw.addLine(to: CGPoint(x: scene.size.width * (1 - self.sidePadding), y: posY))
+        
+        self.hdrLine.path = pathToDraw
+        self.hdrLine.strokeColor = UIColor(white: 0.2, alpha: 1)
+        self.hdrLine.alpha = 0 // will animate
+        scene.addChild(self.hdrLine)
     }
     
     private func setRowsLabels(scene: GameScene, labels: [SKLabelNode], posX: CGFloat) {
         var row: CGFloat = 1
         for label in labels {
-            let spacing = row == 1 ? self.hdrHeight : self.hdrHeight + (row - 1) * self.rowHeight
+            let spacing = row == 1 ? self.hdrSpacing : self.hdrSpacing + (row - 1) * self.rowSpacing
             label.fontColor = accentColor
             label.fontName = Const.fontNameLabel
             label.fontSize = 0.05 * scene.minSize()
             label.position = CGPoint(x: posX * scene.size.width, y: (self.hdrPosY - spacing) * scene.size.height)
-            label.alpha = 0
+            label.verticalAlignmentMode = .center
+            label.alpha = 0 // will animate
             scene.addChild(label)
             row += 1
         }
@@ -116,6 +135,8 @@ class ScoreBoard {
         self.hdrLevel.run(tableAnimation)
         self.hdrTimed.run(tableAnimation)
         
+        self.hdrLine.run(tableAnimation)
+        
         for row in self.rowsGame { row.run(tableAnimation) }
         for row in self.rowsLevel { row.run(tableAnimation) }
         for row in self.rowsTime { row.run(tableAnimation) }
@@ -123,9 +144,12 @@ class ScoreBoard {
     
     deinit {
         self.title.removeFromParent()
+        
         self.hdrGame.removeFromParent()
         self.hdrLevel.removeFromParent()
         self.hdrTimed.removeFromParent()
+        
+        self.hdrLine.removeFromParent()
         
         for row in self.rowsGame { row.removeFromParent() }
         for row in self.rowsLevel { row.removeFromParent() }
