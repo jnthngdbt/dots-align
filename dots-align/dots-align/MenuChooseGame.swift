@@ -54,15 +54,6 @@ class MenuChooseGame {
         self.animateIn()
     }
     
-    func getGameTypeString(type: GameType) -> String {
-        switch type {
-        case .normal: return "NORMAL"
-        case .satellite: return "SATELLITE"
-        case .shadow: return "SHADOW"
-        case .transit: return "TRANSIT"
-        }
-    }
-    
     func setTitle(scene: GameScene, posY: CGFloat) {
         self.title.fontColor = labelColor
         self.title.fontName = Const.fontNameTitle
@@ -93,7 +84,7 @@ class MenuChooseGame {
     }
     
     func updateDescription() {
-        let typeStr = self.getGameTypeString(type: self.cloudType)
+        let typeStr = getGameTypeString(type: self.cloudType)
         let boostStr = String(getMaxBoost(type: self.cloudType))
         self.description.text = typeStr + " // x" + boostStr + " BOOST"
     }

@@ -179,3 +179,12 @@ func getMaxBoost(type: GameType) -> Int {
     case .transit: return 10
     }
 }
+
+func getGameTypeString(type: GameType) -> String {
+    switch type {
+    case .normal: return "NORMAL"
+    case .satellite: return "SATELLITE"
+    case .shadow: return "SHADOW"
+    case .transit: return "TRANSIT"
+    }
+}

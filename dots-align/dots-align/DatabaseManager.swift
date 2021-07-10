@@ -19,7 +19,7 @@ class DatabaseManager {
     }
     
     static func addGameResult(game: Game) -> GameEntity {
-        let bestScore = DatabaseManager.getBestScore(gameMode: game.mode)
+        let bestScore = DatabaseManager.getBestScore(gameMode: game.mode, gameType: game.type)
         
         let nbLevels = game.nbCompletedLevels
         
@@ -38,12 +38,12 @@ class DatabaseManager {
         return gameEntry
     }
 
-    static func getBestScore(gameMode: GameMode) -> Int? {
+    static func getBestScore(gameMode: GameMode, gameType: GameType) -> Int? {
         var results = [GameEntity]()
         
         let request:NSFetchRequest<GameEntity> = GameEntity.fetchRequest()
         
-        request.predicate = NSPredicate(format: "mode == %d", gameMode.rawValue)
+        request.predicate = NSPredicate(format: "(mode == %d) AND (type == %d)", gameMode.rawValue, gameType.rawValue)
         
         let sort = NSSortDescriptor(key: "score", ascending: false)
         request.sortDescriptors = [sort]
