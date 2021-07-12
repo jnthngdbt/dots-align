@@ -170,6 +170,12 @@ class GameScene: SKScene {
             else if buttonId == .scoreBoard {
                 self.showScoreBoard()
             }
+            else if buttonId == .scoreBoardLeft {
+                self.scoreBoard?.onLeftTap(scene: self)
+            }
+            else if buttonId == .scoreBoardRight {
+                self.scoreBoard?.onRightTap(scene: self)
+            }
         }
         
         self.touchBeganOnButtonId = nil

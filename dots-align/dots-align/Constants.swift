@@ -25,7 +25,9 @@ enum ButtonId: String, CaseIterable { case
     tutorialInstructionsId = "tutorialInstructions",
     chooseGameStart = "chooseGameStart",
     chooseGameNavLeft = "chooseGameNavLeft",
-    chooseGameNavRight = "chooseGameNavRight"
+    chooseGameNavRight = "chooseGameNavRight",
+    scoreBoardLeft = "scoreBoardLeft",
+    scoreBoardRight = "scoreBoardRight"
 }
 
 func isButton(name: String?) -> Bool {

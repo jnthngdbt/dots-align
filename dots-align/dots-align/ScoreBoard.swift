@@ -9,6 +9,8 @@ import Foundation
 import SpriteKit
 
 class ScoreBoard {
+    enum StatType: Int, CaseIterable { case best, average, count }
+    
     let title: SKLabelNode
     let homeButton: FooterHomeButton
     
@@ -22,14 +24,19 @@ class ScoreBoard {
     var rowsLevel: [SKLabelNode] = []
     var rowsTime: [SKLabelNode] = []
     
+    let description: SKLabelNode
+    let left: Button
+    let right: Button
+    
+    var statType = StatType.allCases.first!
+    
     let titlePosY: CGFloat = 0.85
-    let hdrPosY: CGFloat = 0.65
+    let hdrPosY: CGFloat = 0.68
     let hdrSpacing: CGFloat = 0.075
     let rowSpacing: CGFloat = 0.06
+    let statTypePosY: CGFloat = 0.3
     
-    let colGameWidth: CGFloat = 0.3
-    let colLevelWidth: CGFloat = 0.3
-    let colTimeWidth: CGFloat = 0.3
+    let colWidth: CGFloat = 0.3
     
     let sidePadding: CGFloat
     let colGamePosX: CGFloat
@@ -44,10 +51,10 @@ class ScoreBoard {
         self.hdrLevel = SKLabelNode(text: "LEVEL MODE")
         self.hdrTimed = SKLabelNode(text: "TIME MODE")
         
-        self.sidePadding = 0.5 * (1 - (self.colGameWidth + self.colLevelWidth + self.colTimeWidth))
-        self.colGamePosX = self.sidePadding + 0.5 * self.colGameWidth
-        self.colLevelPosX = self.sidePadding + self.colGameWidth + 0.5 * self.colLevelWidth
-        self.colTimePosX = self.sidePadding + self.colGameWidth + self.colLevelWidth + 0.5 * self.colTimeWidth
+        self.sidePadding = 0.5 * (1 - 3 * self.colWidth)
+        self.colGamePosX = self.sidePadding + 0.5 * self.colWidth
+        self.colLevelPosX = self.sidePadding + 1.5 * self.colWidth
+        self.colTimePosX = self.sidePadding + 2.5 * self.colWidth
         
         for type in GameType.allCases {
             let bestLevel = DatabaseManager.getBestScore(gameMode: .level, gameType: type)
@@ -57,6 +64,11 @@ class ScoreBoard {
             self.rowsLevel.append(SKLabelNode(text: bestLevel != nil ? String(bestLevel!) : "--"))
             self.rowsTime.append(SKLabelNode(text: bestTime != nil ? String(bestTime!) : "--"))
         }
+        
+        let navButtonSize = CGSize(width: 0.12 * scene.size.width, height: 0.12 * scene.size.width)
+        self.description = SKLabelNode(text: "BEST SCORE")
+        self.left = Button(scene: scene, text: "◁", size: navButtonSize, id: .scoreBoardLeft)
+        self.right = Button(scene: scene, text: "▷", size: navButtonSize, id: .scoreBoardRight)
         
         self.setTitle(scene: scene)
         
@@ -69,6 +81,9 @@ class ScoreBoard {
         self.setRowsLabels(scene: scene, labels: self.rowsGame, posX: self.colGamePosX)
         self.setRowsLabels(scene: scene, labels: self.rowsLevel, posX: self.colLevelPosX)
         self.setRowsLabels(scene: scene, labels: self.rowsTime, posX: self.colTimePosX)
+        
+        self.setDescription(scene: scene)
+        self.setNavButtons(scene: scene)
         
         self.animateIn()
     }
@@ -120,6 +135,73 @@ class ScoreBoard {
         }
     }
     
+    private func setDescription(scene: GameScene) {
+        self.description.fontColor = labelColor
+        self.description.fontName = Const.fontNameLabel
+        self.description.fontSize = 0.05 * scene.minSize()
+        self.description.position = CGPoint(x: scene.center().x, y: self.statTypePosY * scene.size.height)
+        self.description.zPosition = Const.Button.zPosition
+        self.description.verticalAlignmentMode = .center
+        self.description.horizontalAlignmentMode = .center
+        self.description.lineBreakMode = .byWordWrapping
+        self.description.numberOfLines = 0
+        self.description.alpha = 0 // will animate
+        scene.addChild(self.description)
+        
+        self.updateDescription()
+    }
+    
+    func setNavButtons(scene: GameScene) {
+        let padding = (self.sidePadding + 0.5 * self.colWidth) * scene.size.width
+        self.left.shape.position = CGPoint(x: padding, y: self.statTypePosY * scene.size.height)
+        self.right.shape.position = CGPoint(x: scene.size.width - padding, y: self.statTypePosY * scene.size.height)
+        
+        self.left.shape.fillColor = UIColor.clear
+        self.right.shape.fillColor = UIColor.clear
+        
+        self.updateNavButtons()
+    }
+    
+    private func getStatTypeString(type: StatType) -> String {
+        switch type {
+        case .best: return "BEST SCORE"
+        case .average: return "AVERAGE SCORE"
+        case .count: return "GAME COUNT"
+        }
+    }
+    
+    func updateDescription() {
+        self.description.text = self.getStatTypeString(type: self.statType)
+    }
+    
+    func updateNavButtons() {
+        self.left.shape.alpha = self.mustShowLeftNavButton() ? 1 : 0
+        self.right.shape.alpha = self.mustShowRightNavButton() ? 1 : 0
+    }
+    
+    func mustShowLeftNavButton() -> Bool {
+        return self.statType.rawValue > 0
+    }
+    
+    func mustShowRightNavButton() -> Bool {
+        return self.statType.rawValue < StatType.allCases.count - 1
+    }
+    
+    func onLeftTap(scene: GameScene) {
+        self.changeStatType(type: StatType(rawValue: self.statType.rawValue - 1))
+    }
+    
+    func onRightTap(scene: GameScene) {
+        self.changeStatType(type: StatType(rawValue: self.statType.rawValue + 1))
+    }
+    
+    private func changeStatType(type: StatType?) {
+        if type == nil { return }
+        self.statType = type!
+        self.updateDescription()
+        self.updateNavButtons()
+    }
+    
     private func animateIn() {
         self.title.run(SKAction.sequence([
             SKAction.wait(forDuration: Const.Animation.titleAppearWait),
@@ -140,6 +222,16 @@ class ScoreBoard {
         for row in self.rowsGame { row.run(tableAnimation) }
         for row in self.rowsLevel { row.run(tableAnimation) }
         for row in self.rowsTime { row.run(tableAnimation) }
+        
+        let statTypeAnimation = SKAction.sequence([
+            SKAction.fadeAlpha(to: 0, duration: 0),
+            SKAction.wait(forDuration: 3.0 * Const.Animation.titleAppearWait),
+            SKAction.fadeAlpha(to: 1, duration: Const.Animation.expandSec)
+        ])
+        
+        self.description.run(statTypeAnimation)
+        if (self.mustShowLeftNavButton()) { self.left.animate(action: statTypeAnimation) }
+        if (self.mustShowRightNavButton()) { self.right.animate(action: statTypeAnimation) }
     }
     
     deinit {
@@ -154,5 +246,7 @@ class ScoreBoard {
         for row in self.rowsGame { row.removeFromParent() }
         for row in self.rowsLevel { row.removeFromParent() }
         for row in self.rowsTime { row.removeFromParent() }
+        
+        self.description.removeFromParent()
     }
 }
