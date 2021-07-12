@@ -58,11 +58,51 @@ class DatabaseManager {
         return results.count > 0 ? Int(results[0].score) : nil
     }
     
-    static func getNbGames() -> Int? {
+    static func getAverageScore(gameMode: GameMode, gameType: GameType) -> Int? {
+        let request:NSFetchRequest<GameEntity> = GameEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "(mode == %d) AND (type == %d) AND (score > 0)", gameMode.rawValue, gameType.rawValue)
+            
+        var results = [GameEntity]()
+        
+        do {
+            let context = DatabaseManager.getContext()
+            try results = context.fetch(request)
+        } catch {
+            print("[ERROR] Could not fetch data from database.")
+        }
+        
+        var sum = 0
+        var count = 0
+        
+        for game in results {
+            sum += Int(game.score)
+            count += 1
+        }
+        
+        return count > 0 ? Int(sum / count) : nil
+    }
+    
+    static func getGameCount(gameMode: GameMode, gameType: GameType) -> Int? {
         var count = 0
         
         do {
-            let request:NSFetchRequest<GameEntity> = GameEntity.fetchRequest()
+            let request: NSFetchRequest<GameEntity> = GameEntity.fetchRequest()
+            request.predicate = NSPredicate(format: "(mode == %d) AND (type == %d) AND (score > 0)", gameMode.rawValue, gameType.rawValue)
+            
+            let context = DatabaseManager.getContext()
+            try count = context.count(for: request)
+        } catch {
+            print("[ERROR] Could not fetch data from database.")
+        }
+        
+        return count
+    }
+    
+    static func getGameCount() -> Int? {
+        var count = 0
+        
+        do {
+            let request: NSFetchRequest<GameEntity> = GameEntity.fetchRequest()
             let context = DatabaseManager.getContext()
             try count = context.count(for: request)
         } catch {

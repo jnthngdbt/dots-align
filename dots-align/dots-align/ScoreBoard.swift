@@ -57,12 +57,9 @@ class ScoreBoard {
         self.colTimePosX = self.sidePadding + 2.5 * self.colWidth
         
         for type in GameType.allCases {
-            let bestLevel = DatabaseManager.getBestScore(gameMode: .level, gameType: type)
-            let bestTime = DatabaseManager.getBestScore(gameMode: .time, gameType: type)
-            
             self.rowsGame.append(SKLabelNode(text: getGameTypeString(type: type)))
-            self.rowsLevel.append(SKLabelNode(text: bestLevel != nil ? String(bestLevel!) : "--"))
-            self.rowsTime.append(SKLabelNode(text: bestTime != nil ? String(bestTime!) : "--"))
+            self.rowsLevel.append(SKLabelNode(text: "--"))
+            self.rowsTime.append(SKLabelNode(text: "--"))
         }
         
         let navButtonSize = CGSize(width: 0.12 * scene.size.width, height: 0.12 * scene.size.width)
@@ -81,6 +78,8 @@ class ScoreBoard {
         self.setRowsLabels(scene: scene, labels: self.rowsGame, posX: self.colGamePosX)
         self.setRowsLabels(scene: scene, labels: self.rowsLevel, posX: self.colLevelPosX)
         self.setRowsLabels(scene: scene, labels: self.rowsTime, posX: self.colTimePosX)
+        
+        self.updateRowsLabels()
         
         self.setDescription(scene: scene)
         self.setNavButtons(scene: scene)
@@ -132,6 +131,24 @@ class ScoreBoard {
             label.alpha = 0 // will animate
             scene.addChild(label)
             row += 1
+        }
+    }
+    
+    private func updateRowsLabels() {
+        for type in GameType.allCases {
+            let valueLevel = self.fetchValue(mode: .level, type: type, stat: self.statType)
+            let valueTime = self.fetchValue(mode: .time, type: type, stat: self.statType)
+            
+            self.rowsLevel[type.rawValue].text = valueLevel != nil ? String(valueLevel!) : "--"
+            self.rowsTime[type.rawValue].text = valueTime != nil ? String(valueTime!) : "--"
+        }
+    }
+    
+    private func fetchValue(mode: GameMode, type: GameType, stat: StatType) -> Int? {
+        switch stat {
+        case .best: return DatabaseManager.getBestScore(gameMode: mode, gameType: type)
+        case .average: return DatabaseManager.getAverageScore(gameMode: mode, gameType: type)
+        case .count: return DatabaseManager.getGameCount(gameMode: mode, gameType: type)
         }
     }
     
@@ -198,6 +215,7 @@ class ScoreBoard {
     private func changeStatType(type: StatType?) {
         if type == nil { return }
         self.statType = type!
+        self.updateRowsLabels()
         self.updateDescription()
         self.updateNavButtons()
     }
