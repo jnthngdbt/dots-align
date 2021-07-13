@@ -14,13 +14,13 @@ class MenuEndGame: Menu {
         
         let isNewBest = score > bestScore
         
-        self.addTitleLabel(scene: scene, label: "SCORES", spacingAfterFactor: 7.0)
+        self.addTitleLabel(scene: scene, label: "SCORES", spacingAfterFactor: 6.0)
         
         if isNewBest {
             self.addScoreLabel(scene: scene, label: "NEW BEST", value: score, scale: 1.5, spacingAfterFactor: 5.0)
         } else {
             self.addScoreLabel(scene: scene, label: "THIS GAME", value: score, scale: 1.0, spacingAfterFactor: 2.0)
-            self.addScoreLabel(scene: scene, label: "YOUR BEST", value: bestScore, scale: 1.0, spacingAfterFactor: 5.0)
+            self.addScoreLabel(scene: scene, label: "YOUR BEST", value: bestScore, scale: 1.0, spacingAfterFactor: 4.0)
         }
         
         self.buttons.append(MenuButton(scene: scene, text: "REPLAY", id: ButtonId.replayGameId))

@@ -79,7 +79,9 @@ class GameScene: SKScene {
         } else { // no button hit
             self.game?.newLevelIfNecessary(scene: self)
             if self.game?.ended == true {
-                self.endGameAnimation()
+                if self.gameMode != .time { // end game animation is called by timer in this case
+                    self.endGameAnimation()
+                }
             }
         }
         
