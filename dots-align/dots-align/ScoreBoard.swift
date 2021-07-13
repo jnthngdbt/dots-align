@@ -24,6 +24,8 @@ class ScoreBoard {
     var rowsLevel: [SKLabelNode] = []
     var rowsTime: [SKLabelNode] = []
     
+    let statLine = SKShapeNode()
+    
     let description: SKLabelNode
     let left: Button
     let right: Button
@@ -34,7 +36,7 @@ class ScoreBoard {
     let hdrPosY: CGFloat = 0.68
     let hdrSpacing: CGFloat = 0.075
     let rowSpacing: CGFloat = 0.06
-    let statTypePosY: CGFloat = 0.3
+    let statTypeSpacing: CGFloat = 0.09
     
     let colWidth: CGFloat = 0.3
     
@@ -42,6 +44,7 @@ class ScoreBoard {
     let colGamePosX: CGFloat
     let colLevelPosX: CGFloat
     let colTimePosX: CGFloat
+    let statTypePosY: CGFloat
     
     init(scene: GameScene) {
         self.title = SKLabelNode(text: "SCORE BOARD")
@@ -62,6 +65,9 @@ class ScoreBoard {
             self.rowsTime.append(SKLabelNode(text: "--"))
         }
         
+        let rowsEndPosY = self.hdrPosY - (self.hdrSpacing + CGFloat(GameType.allCases.count - 1) * self.rowSpacing)
+        self.statTypePosY = rowsEndPosY - self.statTypeSpacing
+        
         let navButtonSize = CGSize(width: 0.12 * scene.size.width, height: 0.12 * scene.size.width)
         self.description = SKLabelNode(text: "BEST SCORE")
         self.left = Button(scene: scene, text: "◁", size: navButtonSize, id: .scoreBoardLeft)
@@ -73,13 +79,14 @@ class ScoreBoard {
         self.setHeaderLabel(scene: scene, label: self.hdrLevel, posX: self.colLevelPosX)
         self.setHeaderLabel(scene: scene, label: self.hdrTimed, posX: self.colTimePosX)
         
-        self.setHeaderLine(scene: scene)
+        self.setLine(scene: scene, posY: (self.hdrPosY - 0.5 * self.hdrSpacing), line: self.hdrLine)
         
         self.setRowsLabels(scene: scene, labels: self.rowsGame, posX: self.colGamePosX)
         self.setRowsLabels(scene: scene, labels: self.rowsLevel, posX: self.colLevelPosX)
         self.setRowsLabels(scene: scene, labels: self.rowsTime, posX: self.colTimePosX)
-        
         self.updateRowsLabels()
+        
+        self.setLine(scene: scene, posY: (rowsEndPosY - 0.5 * self.statTypeSpacing), line: self.statLine)
         
         self.setDescription(scene: scene)
         self.setNavButtons(scene: scene)
@@ -107,16 +114,16 @@ class ScoreBoard {
         scene.addChild(label)
     }
     
-    private func setHeaderLine(scene: GameScene) {
-        let posY = (self.hdrPosY - 0.5 * self.hdrSpacing) * scene.size.height
+    private func setLine(scene: GameScene, posY: CGFloat, line: SKShapeNode) {
+        let posY = posY * scene.size.height
         let pathToDraw = CGMutablePath()
         pathToDraw.move(to: CGPoint(x: scene.size.width * self.sidePadding, y: posY))
         pathToDraw.addLine(to: CGPoint(x: scene.size.width * (1 - self.sidePadding), y: posY))
         
-        self.hdrLine.path = pathToDraw
-        self.hdrLine.strokeColor = UIColor(white: 0.2, alpha: 1)
-        self.hdrLine.alpha = 0 // will animate
-        scene.addChild(self.hdrLine)
+        line.path = pathToDraw
+        line.strokeColor = UIColor(white: 0.2, alpha: 1)
+        line.alpha = 0 // will animate
+        scene.addChild(line)
     }
     
     private func setRowsLabels(scene: GameScene, labels: [SKLabelNode], posX: CGFloat) {
@@ -172,6 +179,9 @@ class ScoreBoard {
         let padding = (self.sidePadding + 0.5 * self.colWidth) * scene.size.width
         self.left.shape.position = CGPoint(x: padding, y: self.statTypePosY * scene.size.height)
         self.right.shape.position = CGPoint(x: scene.size.width - padding, y: self.statTypePosY * scene.size.height)
+        
+        self.left.label.fontSize = 0.05 * scene.minSize()
+        self.right.label.fontSize = 0.05 * scene.minSize()
         
         self.left.shape.fillColor = UIColor.clear
         self.right.shape.fillColor = UIColor.clear
@@ -247,6 +257,8 @@ class ScoreBoard {
             SKAction.fadeAlpha(to: 1, duration: Const.Animation.expandSec)
         ])
         
+        self.statLine.run(statTypeAnimation)
+        
         self.description.run(statTypeAnimation)
         if (self.mustShowLeftNavButton()) { self.left.animate(action: statTypeAnimation) }
         if (self.mustShowRightNavButton()) { self.right.animate(action: statTypeAnimation) }
@@ -266,5 +278,7 @@ class ScoreBoard {
         for row in self.rowsTime { row.removeFromParent() }
         
         self.description.removeFromParent()
+        
+        self.statLine.removeFromParent()
     }
 }
