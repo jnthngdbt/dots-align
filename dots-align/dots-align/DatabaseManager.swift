@@ -37,14 +37,23 @@ class DatabaseManager {
         
         return gameEntry
     }
+    
+    static private func getGameRequest() -> NSFetchRequest<GameEntity> {
+        let request: NSFetchRequest<GameEntity> = GameEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "score > 0")
+        return request
+    }
 
+    static private func getGameRequest(gameMode: GameMode, gameType: GameType) -> NSFetchRequest<GameEntity> {
+        let request: NSFetchRequest<GameEntity> = GameEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "(mode == %d) AND (type == %d) AND (score > 0)", gameMode.rawValue, gameType.rawValue)
+        return request
+    }
+    
     static func getBestScore(gameMode: GameMode, gameType: GameType) -> Int? {
         var results = [GameEntity]()
         
-        let request:NSFetchRequest<GameEntity> = GameEntity.fetchRequest()
-        
-        request.predicate = NSPredicate(format: "(mode == %d) AND (type == %d)", gameMode.rawValue, gameType.rawValue)
-        
+        let request = getGameRequest(gameMode: gameMode, gameType: gameType)
         let sort = NSSortDescriptor(key: "score", ascending: false)
         request.sortDescriptors = [sort]
             
@@ -59,12 +68,11 @@ class DatabaseManager {
     }
     
     static func getAverageScore(gameMode: GameMode, gameType: GameType) -> Int? {
-        let request:NSFetchRequest<GameEntity> = GameEntity.fetchRequest()
-        request.predicate = NSPredicate(format: "(mode == %d) AND (type == %d) AND (score > 0)", gameMode.rawValue, gameType.rawValue)
             
         var results = [GameEntity]()
         
         do {
+            let request = getGameRequest(gameMode: gameMode, gameType: gameType)
             let context = DatabaseManager.getContext()
             try results = context.fetch(request)
         } catch {
@@ -86,9 +94,7 @@ class DatabaseManager {
         var count = 0
         
         do {
-            let request: NSFetchRequest<GameEntity> = GameEntity.fetchRequest()
-            request.predicate = NSPredicate(format: "(mode == %d) AND (type == %d) AND (score > 0)", gameMode.rawValue, gameType.rawValue)
-            
+            let request = getGameRequest(gameMode: gameMode, gameType: gameType)
             let context = DatabaseManager.getContext()
             try count = context.count(for: request)
         } catch {
@@ -102,7 +108,7 @@ class DatabaseManager {
         var count = 0
         
         do {
-            let request: NSFetchRequest<GameEntity> = GameEntity.fetchRequest()
+            let request = getGameRequest()
             let context = DatabaseManager.getContext()
             try count = context.count(for: request)
         } catch {
