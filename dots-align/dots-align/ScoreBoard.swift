@@ -30,13 +30,16 @@ class ScoreBoard {
     let left: Button
     let right: Button
     
+    let totalLabel: SKLabelNode
+    
     var statType = StatType.allCases.first!
     
-    let titlePosY: CGFloat = 0.85
-    let hdrPosY: CGFloat = 0.68
+    let titlePosY: CGFloat = 0.88
+    let hdrPosY: CGFloat = 0.72
     let hdrSpacing: CGFloat = 0.075
     let rowSpacing: CGFloat = 0.06
     let statTypeSpacing: CGFloat = 0.09
+    let totalLabelSpacing: CGFloat = 0.12
     
     let colWidth: CGFloat = 0.3
     
@@ -45,6 +48,7 @@ class ScoreBoard {
     let colLevelPosX: CGFloat
     let colTimePosX: CGFloat
     let statTypePosY: CGFloat
+    let totalPosY: CGFloat
     
     init(scene: GameScene) {
         self.title = SKLabelNode(text: "SCORE BOARD")
@@ -73,6 +77,9 @@ class ScoreBoard {
         self.left = Button(scene: scene, text: "◁", size: navButtonSize, id: .scoreBoardLeft)
         self.right = Button(scene: scene, text: "▷", size: navButtonSize, id: .scoreBoardRight)
         
+        self.totalPosY = self.statTypePosY - self.totalLabelSpacing
+        self.totalLabel = SKLabelNode(text: "TOTAL: 0")
+        
         self.setTitle(scene: scene)
         
         self.setHeaderLabel(scene: scene, label: self.hdrGame, posX: self.colGamePosX)
@@ -90,6 +97,8 @@ class ScoreBoard {
         
         self.setDescription(scene: scene)
         self.setNavButtons(scene: scene)
+        
+        self.setTotal(scene: scene)
         
         self.animateIn()
     }
@@ -142,13 +151,20 @@ class ScoreBoard {
     }
     
     private func updateRowsLabels() {
+        var total = 0
+        
         for type in GameType.allCases {
             let valueLevel = self.fetchValue(mode: .level, type: type, stat: self.statType)
             let valueTime = self.fetchValue(mode: .time, type: type, stat: self.statType)
             
             self.rowsLevel[type.rawValue].text = valueLevel != nil ? String(valueLevel!) : "--"
             self.rowsTime[type.rawValue].text = valueTime != nil ? String(valueTime!) : "--"
+            
+            total += valueLevel ?? 0
+            total += valueTime ?? 0
         }
+        
+        self.updateTotal(total)
     }
     
     private func fetchValue(mode: GameMode, type: GameType, stat: StatType) -> Int? {
@@ -187,6 +203,20 @@ class ScoreBoard {
         self.right.shape.fillColor = UIColor.clear
         
         self.updateNavButtons()
+    }
+    
+    private func setTotal(scene: GameScene) {
+        self.totalLabel.fontColor = labelColor
+        self.totalLabel.fontName = Const.fontNameTitle
+        self.totalLabel.fontSize = 0.08 * scene.minSize()
+        self.totalLabel.position = CGPoint(x: scene.center().x, y: self.totalPosY * scene.size.height)
+        self.totalLabel.verticalAlignmentMode = .center
+        self.totalLabel.setScale(0) // will animate
+        scene.addChild(self.totalLabel)
+    }
+    
+    private func updateTotal(_ total: Int) {
+        self.totalLabel.text = "TOTAL: " + String(total)
     }
     
     private func getStatTypeString(type: StatType) -> String {
@@ -237,6 +267,7 @@ class ScoreBoard {
         ]))
         
         let tableAnimation = SKAction.sequence([
+            SKAction.fadeAlpha(to: 0, duration: 0),
             SKAction.wait(forDuration: 2.0 * Const.Animation.titleAppearWait),
             SKAction.fadeAlpha(to: 1, duration: Const.Animation.expandSec)
         ])
@@ -251,17 +282,18 @@ class ScoreBoard {
         for row in self.rowsLevel { row.run(tableAnimation) }
         for row in self.rowsTime { row.run(tableAnimation) }
         
-        let statTypeAnimation = SKAction.sequence([
-            SKAction.fadeAlpha(to: 0, duration: 0),
+        self.statLine.run(tableAnimation)
+        
+        self.description.run(tableAnimation)
+        if (self.mustShowLeftNavButton()) { self.left.animate(action: tableAnimation) }
+        if (self.mustShowRightNavButton()) { self.right.animate(action: tableAnimation) }
+        
+        let totalAnimation = SKAction.sequence([
             SKAction.wait(forDuration: 3.0 * Const.Animation.titleAppearWait),
-            SKAction.fadeAlpha(to: 1, duration: Const.Animation.expandSec)
+            SKAction.scale(to: 1, duration: Const.Animation.expandSec)
         ])
         
-        self.statLine.run(statTypeAnimation)
-        
-        self.description.run(statTypeAnimation)
-        if (self.mustShowLeftNavButton()) { self.left.animate(action: statTypeAnimation) }
-        if (self.mustShowRightNavButton()) { self.right.animate(action: statTypeAnimation) }
+        self.totalLabel.run(totalAnimation)
     }
     
     deinit {
@@ -278,7 +310,7 @@ class ScoreBoard {
         for row in self.rowsTime { row.removeFromParent() }
         
         self.description.removeFromParent()
-        
         self.statLine.removeFromParent()
+        self.totalLabel.removeFromParent()
     }
 }
