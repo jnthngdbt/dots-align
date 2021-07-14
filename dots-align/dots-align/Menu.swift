@@ -27,16 +27,31 @@ class Menu {
     }
     
     func getTopPosition(scene: GameScene) -> CGPoint {
+        let totalHeight = self.getMenuTotalHeight()
+        
+        var pos = scene.center()
+        pos.y += 0.5 * totalHeight
+        
+        return pos
+    }
+    
+    func getBottomPosition(scene: GameScene) -> CGPoint {
+        let totalHeight = self.getMenuTotalHeight()
+        
+        var pos = scene.center()
+        pos.y -= 0.5 * totalHeight
+        
+        return pos
+    }
+    
+    func getMenuTotalHeight() -> CGFloat {
         var totalHeight: CGFloat = 0.0
         for b in self.buttons {
             totalHeight += b.shape.frame.height + b.spacingAfter
         }
         totalHeight -= self.buttons.last!.spacingAfter
         
-        var pos = scene.center()
-        pos.y += 0.5 * totalHeight
-        
-        return pos
+        return totalHeight
     }
     
     func animateButtons(action: SKAction) {

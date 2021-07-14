@@ -15,7 +15,26 @@ class Music {
     var audioPlayerBeep: AVAudioPlayer?
     var songPlaying: String = ""
     
+    func toggleSounds(songIfUnmute: String = "") {
+        UserDefaults.standard.set(!self.isMuted(), forKey: Const.DefaultsKeys.muteSound)
+        self.updateSounds(songIfUnmute: songIfUnmute)
+    }
+    
+    func updateSounds(songIfUnmute: String = "") {
+        if self.isMuted() {
+            self.stop()
+        } else {
+            self.playSong(songIfUnmute)
+        }
+    }
+    
+    func isMuted() -> Bool {
+        return UserDefaults.standard.bool(forKey: Const.DefaultsKeys.muteSound) // returns false if not set yet
+    }
+    
     func playSong(_ name: String) {
+        if self.isMuted() { return }
+        
         if name == self.songPlaying {
             return // same song, let it continue
         }
@@ -32,6 +51,8 @@ class Music {
     }
     
     func playBeep(_ name: String) {
+        if self.isMuted() { return }
+        
         if let path = Bundle.main.path(forResource: name, ofType: "wav") {
             let url = NSURL(fileURLWithPath: path)
             do {

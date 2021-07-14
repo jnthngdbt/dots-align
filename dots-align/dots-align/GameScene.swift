@@ -48,6 +48,8 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         self.backgroundColor = Const.backgroundColor
         
+        Music.instance.updateSounds(songIfUnmute: Const.Music.menu)
+        
         self.showMainMenu()
     }
     
@@ -177,6 +179,10 @@ class GameScene: SKScene {
             }
             else if buttonId == .scoreBoardRight {
                 self.scoreBoard?.onRightTap(scene: self)
+            }
+            else if buttonId == .soundsToggle {
+                Music.instance.toggleSounds(songIfUnmute: Const.Music.menu)
+                self.menuMain?.updateSoundButton()
             }
         }
         

@@ -11,6 +11,7 @@ import SpriteKit
 class MenuMain: Menu {
     let cloud: Cloud?
     let title: SKLabelNode!
+    let soundButton: Button
     
     init(scene: GameScene) {
         // Set cloud.
@@ -20,6 +21,9 @@ class MenuMain: Menu {
         self.cloud?.desalign()
         
         self.title = SKLabelNode(text: "ALIGN DOTS")
+        
+        let soundRadius = Const.Button.Menu.heightFactor * scene.minSize()
+        self.soundButton = Button(scene: scene, text: "SOUND", size: CGSize(width: soundRadius, height: soundRadius), id: .soundsToggle)
         
         super.init()
         
@@ -36,6 +40,7 @@ class MenuMain: Menu {
         self.arrange(scene: scene)
         
         self.setTitle(scene: scene)
+        self.setSoundButton(scene: scene)
         
         self.animateIn()
     }
@@ -54,6 +59,22 @@ class MenuMain: Menu {
         self.title.verticalAlignmentMode = .center
         self.title.setScale(0)
         scene.addChild(self.title)
+    }
+    
+    func setSoundButton(scene: GameScene) {
+        let x = scene.center().x
+        let y = self.getBottomPosition(scene: scene).y - (Const.MenuMain.spacingFactor + 0.5 * Const.Button.Menu.heightFactor) * scene.minSize()
+        self.soundButton.shape.fillColor = UIColor.clear
+        self.soundButton.shape.strokeColor = Const.Button.fillColor
+        self.soundButton.shape.lineWidth = 3
+        self.soundButton.shape.position = CGPoint(x: x, y: y)
+        self.soundButton.label.fontColor = labelColor
+        self.soundButton.label.fontSize = 0.03 * scene.minSize()
+        self.updateSoundButton()
+    }
+    
+    func updateSoundButton() {
+        self.soundButton.label.fontColor = Music.instance.isMuted() ? labelColor : accentColor
     }
     
     func update() {
@@ -93,6 +114,8 @@ class MenuMain: Menu {
         ])
         
         self.animateButtons(action: animation)
+        
+        self.soundButton.animate(action: animation)
     }
     
     deinit {
