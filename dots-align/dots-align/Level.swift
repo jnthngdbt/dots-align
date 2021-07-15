@@ -46,7 +46,7 @@ class Level {
         self.indicators?.update(name: IndicatorNames.dots, value: self.getTotalNbDots())
         self.indicators?.update(name: IndicatorNames.boost, value: self.getBoostInt(), prefix: "x")
         
-        if mode == .time && Const.Level.makeBoostDecreaseWithTimeInTimeGame {
+        if mode == .time {
             self.startBoostCountdown(scene: scene, maxBoost: self.maxBoost)
         }
     }
@@ -92,7 +92,7 @@ class Level {
         
         self.angleCumul += q.angle
         
-        if self.mode == .level || ((self.mode == .time) && !Const.Level.makeBoostDecreaseWithTimeInTimeGame) {
+        if self.mode == .level {
             self.updateBoostFromRotation()
             self.indicators?.update(name: IndicatorNames.boost, value: self.getBoostInt(), gaugeValue: self.boost, prefix: "x")
         }

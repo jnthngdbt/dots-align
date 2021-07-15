@@ -81,7 +81,6 @@ class Const {
         static let dotRadiusFactor: CGFloat = 0.022
         static let levelScoreFontSizeFactor: CGFloat = 0.1
         static let levelScoreEndPosOffsetFactor: CGFloat = 0.035
-        static let makeBoostDecreaseWithTimeInTimeGame = true
         static let boostCountdownSec = 6.0
         static let boostCountdownNbSteps = 20
         static let boostCountdownKey = "boostCountdown"
