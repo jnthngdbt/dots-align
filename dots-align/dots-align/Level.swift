@@ -52,7 +52,11 @@ class Level {
     }
     
     func startBoostCountdown(scene: GameScene, maxBoost: Int) {
-        let duration = CGFloat(maxBoost - 1) / Const.Level.boostPerSec
+        // Adapt duration with max boost (difficulty).
+        let baseBoost = getMaxBoost(type: .normal)
+        let durationRamp = Const.Level.boostCountdownDurationRampFactorSecsPerBoost * CGFloat(maxBoost - baseBoost)
+        let duration = Const.Level.boostCountdownBaseDuration + durationRamp
+        
         let nbSteps = duration / Const.Level.boostStepSec
         let boostStep = CGFloat(maxBoost - 1) / nbSteps
         let waitSec = Const.Level.boostStepSec
@@ -65,7 +69,7 @@ class Level {
             })
         ])
         
-        let countdown = SKAction.repeat(countdownStep, count: Int(nbSteps))
+        let countdown = SKAction.repeat(countdownStep, count: Int(nbSteps.rounded()))
         scene.run(countdown, withKey: Const.Level.boostCountdownKey)
     }
     

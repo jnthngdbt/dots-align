@@ -82,8 +82,9 @@ class Const {
         static let levelScoreFontSizeFactor: CGFloat = 0.1
         static let levelScoreEndPosOffsetFactor: CGFloat = 0.035
         static let boostCountdownKey = "boostCountdown"
+        static let boostCountdownBaseDuration: CGFloat = 5.0
+        static let boostCountdownDurationRampFactorSecsPerBoost: CGFloat = 0.6 // duration = baseDuration + (maxBoost - minBoost) * factor
         static let boostPerAngle = 1 / (0.45 * Scalar.pi)
-        static let boostPerSec: CGFloat = 1.0 // duration: (maxBoost - 1) / boostPerSec
         static let boostStepSec: CGFloat = 0.1
     }
     
