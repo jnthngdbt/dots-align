@@ -35,7 +35,7 @@ class GameViewController: UIViewController, GADFullScreenContentDelegate {
         }
         
         bannerView = GADBannerView(adSize: Const.Ads.bannerSize)
-        bannerView.adUnitID = Const.Ads.adUnitIdBannerTest
+        bannerView.adUnitID = (Const.buildMode == .publish) ? Const.Ads.adUnitIdBannerProd : Const.Ads.adUnitIdBannerTest
         bannerView.rootViewController = self
         addBannerViewToView(bannerView)
         bannerView.load(GADRequest())
@@ -71,7 +71,7 @@ class GameViewController: UIViewController, GADFullScreenContentDelegate {
     private func loadInterstitialAd() {
         let request = GADRequest()
         GADInterstitialAd.load(
-            withAdUnitID: Const.Ads.adUnitIdInterstitialTest,
+            withAdUnitID: (Const.buildMode == .publish) ? Const.Ads.adUnitIdInterstitialProd : Const.Ads.adUnitIdInterstitialTest,
             request: request,
             completionHandler: { [self] ad, error in
                 if let error = error {
