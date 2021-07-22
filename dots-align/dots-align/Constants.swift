@@ -168,7 +168,7 @@ class Const {
         static let showStats = false
     }
     
-    static let buildMode = BuildMode.dev
+    static let buildMode = BuildMode.publish
     
     static let backgroundColor = UIColor(white: 0.0, alpha: 1)
     
