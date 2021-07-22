@@ -9,7 +9,7 @@ import Foundation
 import SpriteKit
 import GoogleMobileAds
 
-enum BuildMode { case dev, publish }
+enum BuildMode { case dev, demo, publish }
 enum IndicatorNames: Int, CaseIterable { case left, dots, boost, score  }
 enum GameMode: Int, CaseIterable { case tutorial, level, time  } // keep order, saved in core data
 enum GameType: Int, CaseIterable { case normal, satellite, shadow, transit } // keep order, saved in core data
@@ -179,6 +179,9 @@ class Const {
     static let fontNameLabel = "AvenirNextCondensed-Bold"
     static let fontNameTitle = "AvenirNextCondensed-Heavy"
 
+    static func mustShowAds() -> Bool {
+        return Const.buildMode != .demo
+    }
 }
 
 func getMaxBoost(type: GameType) -> Int {

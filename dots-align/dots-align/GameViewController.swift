@@ -12,7 +12,7 @@ import GoogleMobileAds
 
 class GameViewController: UIViewController, GADFullScreenContentDelegate {
 
-    var bannerView: GADBannerView!
+    var bannerView: GADBannerView?
     var interstitial: GADInterstitialAd?
     var interstitialAdCompletionHandler: (() -> Void)?
     
@@ -34,13 +34,15 @@ class GameViewController: UIViewController, GADFullScreenContentDelegate {
             }
         }
         
-        bannerView = GADBannerView(adSize: Const.Ads.bannerSize)
-        bannerView.adUnitID = (Const.buildMode == .publish) ? Const.Ads.adUnitIdBannerProd : Const.Ads.adUnitIdBannerTest
-        bannerView.rootViewController = self
-        addBannerViewToView(bannerView)
-        bannerView.load(GADRequest())
-        
-        self.loadInterstitialAd()
+        if Const.mustShowAds() {
+            bannerView = GADBannerView(adSize: Const.Ads.bannerSize)
+            bannerView!.adUnitID = (Const.buildMode == .publish) ? Const.Ads.adUnitIdBannerProd : Const.Ads.adUnitIdBannerTest
+            bannerView!.rootViewController = self
+            addBannerViewToView(bannerView!)
+            bannerView!.load(GADRequest())
+            
+            self.loadInterstitialAd()
+        }
     }
     
     private func addBannerViewToView(_ bannerView: GADBannerView) {
@@ -90,6 +92,8 @@ class GameViewController: UIViewController, GADFullScreenContentDelegate {
             interstitial?.present(fromRootViewController: self)
         } else {
             print("Ad wasn't ready")
+            self.interstitialAdCompletionHandler = nil
+            completionHandler?()
         }
     }
     

@@ -92,7 +92,8 @@ class FooterButton: Button {
         let w = widthScaleFactor * Const.Button.Footer.widthFactor * scene.minSize()
         let h = Const.Button.Footer.heightFactor * scene.minSize()
         let size = CGSize(width: w, height: h)
-        let posY = scene.getSafeAreaBottomPadding() + 0.1 * scene.minSize() + Const.Ads.bannerSize.size.height
+        let adsOffset = Const.mustShowAds() ? Const.Ads.bannerSize.size.height : 0
+        let posY = scene.getSafeAreaBottomPadding() + 0.1 * scene.minSize() + adsOffset
         
         super.init(scene: scene, text: text, size: size, id: id)
         self.shape.alpha = 1.0
