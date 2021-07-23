@@ -13,6 +13,26 @@
 
 - https://developer.apple.com/app-store/business-models/
 
+# App preview videos
+
+- recorded directly on iphone
+  - must be between 15 and 30 secs
+- downloaded from web icloud
+- must change fps from 60 to 30
+  - handbrake
+    - drag video
+    - dimension
+      - remove any cropping
+      - remove resolution limit
+    - video 
+      - make sure 30fps
+    - start encoding
+  - vlc (does not work, get error, i think because of audio encoding)
+    - media > convert/save
+    - select videos, convert/save
+    - in profile, select H.264 + mp3 (mp4)
+      - edit selected profile (wrench) > video codec > fps
+
 # Release on app store
 
 - https://developer.apple.com/ios/submit/
