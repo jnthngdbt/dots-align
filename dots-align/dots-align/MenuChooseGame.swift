@@ -28,7 +28,8 @@ class MenuChooseGame {
         self.cloudRadius = 0.5 * cloudDiameter
         self.dotRadius = Const.MenuChooseGame.dotRadiusFactor * scene.minSize()
         
-        self.cloudType = .normal
+        let lastGameType = UserDefaults.standard.integer(forKey: Const.DefaultsKeys.lastGameTypeSelected) // returns 0 if not set yet
+        self.cloudType = GameType(rawValue: lastGameType)
         
         self.cloud = Utils.makeCloud(type: self.cloudType, nbPoints: Const.MenuChooseGame.nbDots, scene: scene, color: accentColor, radius: self.cloudRadius, dotRadius: self.dotRadius)
         self.cloud?.desalign()
@@ -144,6 +145,8 @@ class MenuChooseGame {
         
         self.cloud = Utils.makeCloud(type: self.cloudType, nbPoints: Const.MenuChooseGame.nbDots, scene: scene, color: accentColor, radius: self.cloudRadius, dotRadius: self.dotRadius)
         self.cloud?.desalign()
+        
+        UserDefaults.standard.set(self.cloudType.rawValue, forKey: Const.DefaultsKeys.lastGameTypeSelected)
         
         self.updateDescription()
         self.updateNavButtons()

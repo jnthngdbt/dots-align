@@ -1,10 +1,11 @@
 # Todo
 
 === app store description
+---- add score gauge when finishing level
+---- add blink game type
 ---- lock game types
---- unlock game congrats page, single nice button
---- choose game menu start at hardest or last played (use UserDefaults, like 'muteSound', for 'lastGameTypePlayed')
--- game types: mines cloud, lens, teleport/lag, all cross
+--- unlock game congrats page, single nice button, set as 'last game type played'
+-- game types: mines cloud, lens, teleport/lag
 - fix dissappearing points
 
 # Ads

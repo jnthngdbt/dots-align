@@ -53,6 +53,7 @@ class Const {
     
     class DefaultsKeys {
         static let muteSound = "muteSound"
+        static let lastGameTypeSelected = "lastGameTypeSelected"
     }
     
     class Dot {
