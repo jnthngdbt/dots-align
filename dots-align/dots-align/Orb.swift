@@ -15,6 +15,7 @@ class Orb {
         self.node.fillColor = Const.Orb.color
         self.node.strokeColor = UIColor.clear
         self.node.position = scene.center()
+        self.node.setScale(0) // must animate
         scene.addChild(self.node)
     }
     
