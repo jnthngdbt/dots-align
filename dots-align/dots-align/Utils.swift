@@ -96,7 +96,8 @@ class Utils {
             return Quat(angle: speed * angle, axis: axis)
         }
         
-        return Quat(angle: 0, axis: Vector3d(0, 0, 1)) // no effect
+        // No rotation (0 angle). Using x vector, because cross product with z vector may be used elsewhere.
+        return Quat(angle: 0, axis: Vector3d(1, 0, 0))
     }
     
     class func makeCloud(type: GameType, nbPoints: Int, scene: GameScene, color: UIColor, radius: CGFloat, dotRadius: CGFloat, addGuides: Bool = false, mustShadow: Bool = false) -> Cloud {

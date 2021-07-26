@@ -25,6 +25,10 @@ class MenuChooseGame {
     let dotRadius: CGFloat
     let nbGamesPlayed: Int
     
+    let disalignment = 0.9 // diagonal coordinate
+    let rotationOffset = 0.9 // how rotation animation offsets from diagonal
+    let rotationSpeed = 0.01
+    
     init(scene: GameScene) {
         self.cloudDiameter = Const.MenuChooseGame.sphereDiameterFactor * scene.minSize()
         self.cloudRadius = 0.5 * cloudDiameter
@@ -35,7 +39,7 @@ class MenuChooseGame {
         self.cloudType = GameType(rawValue: lastGameType)
         
         self.cloud = Utils.makeCloud(type: self.cloudType, nbPoints: Const.MenuChooseGame.nbDots, scene: scene, color: MenuChooseGame.getCloudColor(type: cloudType, nbGamesPlayed: self.nbGamesPlayed), radius: self.cloudRadius, dotRadius: self.dotRadius)
-        self.cloud?.desalign()
+        self.cloud?.desalign(x: self.disalignment, y: self.disalignment)
         
         let navButtonWidthSpace = 0.5 * (scene.size.width - self.cloudDiameter)
         let navButtonSize = CGSize(width: 0.8 * navButtonWidthSpace, height: 0.98 * self.cloudDiameter)
@@ -197,7 +201,7 @@ class MenuChooseGame {
         self.cloudType = type
         
         self.cloud = Utils.makeCloud(type: self.cloudType, nbPoints: Const.MenuChooseGame.nbDots, scene: scene, color: self.getCloudColor(), radius: self.cloudRadius, dotRadius: self.dotRadius)
-        self.cloud?.desalign()
+        self.cloud?.desalign(x: self.disalignment, y: self.disalignment)
         
         UserDefaults.standard.set(self.cloudType.rawValue, forKey: Const.DefaultsKeys.lastGameTypeSelected)
         
@@ -248,6 +252,13 @@ class MenuChooseGame {
         ])
         
         self.cloud?.animate(action: animation)
+    }
+    
+    func update() {
+        // Rotate slightly off diagonal. The cloud disalignment is on the diagonal.
+        // If perfectly on diagonal, when it aligns while rotating, creates weird visual glitch.
+        let dir = simd_normalize(Vector3d(x: self.rotationOffset, y: 1, z: 0))
+        self.cloud?.rotate(dir: dir, speed: self.rotationSpeed)
     }
     
     deinit {

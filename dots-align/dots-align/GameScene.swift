@@ -64,8 +64,6 @@ class GameScene: SKScene {
             if self.game!.level.ended {
                 self.removeAction(forKey: Const.Level.boostCountdownKey) // otherwise it continues poping between levels
             }
-        } else if (self.menuChooseGame != nil) {
-            self.touchRotate(touches: touches)
         }
     }
     
@@ -95,6 +93,7 @@ class GameScene: SKScene {
     
     override func update(_ currentTime: TimeInterval) {
         self.menuMain?.update()
+        self.menuChooseGame?.update()
     }
     
     func touchRotate(touches: Set<UITouch>) {
@@ -106,7 +105,6 @@ class GameScene: SKScene {
             if (dx == 0) && (dy == 0) { return }
             
             self.game?.level.rotate(dir: v, speed: Const.Scene.orbitingSpeed)
-            self.menuChooseGame?.rotate(dir: v, speed: Const.Scene.orbitingSpeed)
         }
     }
     
