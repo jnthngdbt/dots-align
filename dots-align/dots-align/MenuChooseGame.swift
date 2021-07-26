@@ -212,7 +212,7 @@ class MenuChooseGame {
     }
     
     static func isGameTypeLocked(type: GameType, nbGamesPlayed: Int) -> Bool {
-        return nbGamesPlayed < getNbGamesToUnlock(type: type)
+        return (Const.buildMode == .demo) ? false : (nbGamesPlayed < getNbGamesToUnlock(type: type))
     }
     
     private func animateIn() {
