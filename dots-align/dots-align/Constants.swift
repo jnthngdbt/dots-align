@@ -199,11 +199,11 @@ func getMaxBoost(type: GameType) -> Int {
 
 func getNbGamesToUnlock(type: GameType) -> Int {
     switch type {
-    case .normal: return 10
-    case .satellite: return 20
-    case .shadow: return 30
-    case .transit: return 40
-    case .rewire: return 50
+    case .normal: return 0
+    case .satellite: return 10
+    case .shadow: return 20
+    case .transit: return 30
+    case .rewire: return 40
     }
 }
 

@@ -1,10 +1,9 @@
 # Todo
 
-=== app store description
 ---- add score gauge when finishing level
----- add blink game type
----- lock game types
+---- lock and animate cloud in choose game menu
 --- unlock game congrats page, single nice button, set as 'last game type played'
+--- add blink game type
 -- game types: mines cloud, lens, teleport/lag
 - fix dissappearing points
 

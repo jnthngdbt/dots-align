@@ -13,6 +13,7 @@ class MenuChooseGame {
     var cloud: Cloud?
     let orb: Orb?
     let description: SKLabelNode
+    let lockedText: SKLabelNode
     let startButton: FooterButton
     var homeButton: FooterHomeButton!
     var cloudType: GameType!
@@ -22,16 +23,18 @@ class MenuChooseGame {
     let cloudDiameter: CGFloat
     let cloudRadius: CGFloat
     let dotRadius: CGFloat
+    let nbGamesPlayed: Int
     
     init(scene: GameScene) {
         self.cloudDiameter = Const.MenuChooseGame.sphereDiameterFactor * scene.minSize()
         self.cloudRadius = 0.5 * cloudDiameter
         self.dotRadius = Const.MenuChooseGame.dotRadiusFactor * scene.minSize()
+        self.nbGamesPlayed = DatabaseManager.getGameCount() ?? 0
         
         let lastGameType = UserDefaults.standard.integer(forKey: Const.DefaultsKeys.lastGameTypeSelected) // returns 0 if not set yet
         self.cloudType = GameType(rawValue: lastGameType)
         
-        self.cloud = Utils.makeCloud(type: self.cloudType, nbPoints: Const.MenuChooseGame.nbDots, scene: scene, color: MenuChooseGame.getCloudColor(type: cloudType), radius: self.cloudRadius, dotRadius: self.dotRadius)
+        self.cloud = Utils.makeCloud(type: self.cloudType, nbPoints: Const.MenuChooseGame.nbDots, scene: scene, color: MenuChooseGame.getCloudColor(type: cloudType, nbGamesPlayed: self.nbGamesPlayed), radius: self.cloudRadius, dotRadius: self.dotRadius)
         self.cloud?.desalign()
         
         let navButtonWidthSpace = 0.5 * (scene.size.width - self.cloudDiameter)
@@ -40,6 +43,7 @@ class MenuChooseGame {
         self.orb = Orb(scene: scene)
         self.title = SKLabelNode(text: "SELECT GAME")
         self.description = SKLabelNode(text: "SATELLITE // x6 BOOST")
+        self.lockedText = SKLabelNode(text: "PLAY 10 MORE GAMES TO UNLOCK")
         self.homeButton = FooterHomeButton(scene: scene)
         self.startButton = FooterButton(scene: scene, text: "START", id: .chooseGameStart, widthScaleFactor: Const.MenuChooseGame.startButtonWidthScaleFactor)
         self.left = Button(scene: scene, text: "◁", size: navButtonSize, id: .chooseGameNavLeft)
@@ -51,6 +55,7 @@ class MenuChooseGame {
         self.setDescription(scene: scene, posY: scene.center().y + cloudRadius + 0.3 * topSpaceLeft)
         self.setStartButton(scene: scene)
         self.setNavButtons(scene: scene)
+        self.setLockedText(scene: scene) // set after start footer button to get its position
         
         self.animateIn()
     }
@@ -90,6 +95,33 @@ class MenuChooseGame {
         self.description.text = typeStr + " // x" + boostStr + " BOOST"
     }
     
+    func setLockedText(scene: GameScene) {
+        let footerButtonTop = self.startButton.shape.position.y + 0.5 * self.startButton.size().height
+        let cloudBottom = scene.center().y - self.cloudRadius // - self.dotRadius
+        let bottomSpaceCenter = 0.5 * (footerButtonTop + cloudBottom)
+        
+        self.lockedText.fontColor = accentColor
+        self.lockedText.fontName = Const.fontNameTitle
+        self.lockedText.fontSize = 0.04 * scene.minSize()
+        self.lockedText.position = CGPoint(x: scene.center().x, y: bottomSpaceCenter)
+        self.lockedText.zPosition = Const.Button.zPosition
+        self.lockedText.verticalAlignmentMode = .center
+        self.lockedText.horizontalAlignmentMode = .center
+        self.lockedText.setScale(0)
+        self.lockedText.alpha = 1
+        scene.addChild(self.lockedText)
+        
+        self.updateLockedText(animate: false)
+    }
+    
+    func updateLockedText(animate: Bool = true) {
+        let nbGamesLeft = max(0, getNbGamesToUnlock(type: self.cloudType) - self.nbGamesPlayed)
+        self.lockedText.text = "PLAY " + String(nbGamesLeft) + " MORE GAMES TO UNLOCK"
+        if animate {
+            self.lockedText.run(SKAction.scale(to: self.isGameTypeLocked() ? 1 : 0, duration: 0))
+        }
+    }
+    
     func setNavButtons(scene: GameScene) {
         let width = self.left.size().width
         self.left.shape.position = CGPoint(x: 0.5 * width, y: scene.center().y)
@@ -118,12 +150,13 @@ class MenuChooseGame {
         let leftFooterPaddingFactor = Const.Indicators.sidePaddingFactor - 0.5 * Const.Button.Footer.widthFactor
         let buttonWidth = Const.Button.Footer.widthFactor * Const.MenuChooseGame.startButtonWidthScaleFactor
         self.startButton.shape.position.x = scene.size.width - (leftFooterPaddingFactor + 0.5 * buttonWidth) * scene.minSize()
+        self.startButton.label.fontSize = 0.85 * self.startButton.label.fontSize
         
         self.updateStartButton()
     }
     
     func updateStartButton() {
-        if MenuChooseGame.isGameTypeLocked(type: self.cloudType) {
+        if self.isGameTypeLocked() {
             self.startButton.label.fontColor = disabledButtonFontColor
             self.startButton.label.text = "LOCKED"
         } else {
@@ -132,8 +165,12 @@ class MenuChooseGame {
         }
     }
     
-    static func getCloudColor(type: GameType) -> UIColor {
-        return self.isGameTypeLocked(type: type) ? Const.Cloud.lockedColor : Const.Cloud.color
+    func getCloudColor() -> UIColor {
+        return MenuChooseGame.getCloudColor(type: self.cloudType, nbGamesPlayed: self.nbGamesPlayed)
+    }
+    
+    static func getCloudColor(type: GameType, nbGamesPlayed: Int) -> UIColor {
+        return self.isGameTypeLocked(type: type, nbGamesPlayed: nbGamesPlayed) ? Const.Cloud.lockedColor : Const.Cloud.color
     }
     
     func rotate(dir: Vector3d, speed: Scalar = 1) {
@@ -159,18 +196,23 @@ class MenuChooseGame {
         if type == nil { return }
         self.cloudType = type
         
-        self.cloud = Utils.makeCloud(type: self.cloudType, nbPoints: Const.MenuChooseGame.nbDots, scene: scene, color: MenuChooseGame.getCloudColor(type: self.cloudType), radius: self.cloudRadius, dotRadius: self.dotRadius)
+        self.cloud = Utils.makeCloud(type: self.cloudType, nbPoints: Const.MenuChooseGame.nbDots, scene: scene, color: self.getCloudColor(), radius: self.cloudRadius, dotRadius: self.dotRadius)
         self.cloud?.desalign()
         
         UserDefaults.standard.set(self.cloudType.rawValue, forKey: Const.DefaultsKeys.lastGameTypeSelected)
         
         self.updateDescription()
+        self.updateLockedText()
         self.updateNavButtons()
         self.updateStartButton()
     }
     
-    static func isGameTypeLocked(type: GameType) -> Bool {
-        return (DatabaseManager.getGameCount() ?? 0) < getNbGamesToUnlock(type: type)
+    func isGameTypeLocked() -> Bool {
+        return MenuChooseGame.isGameTypeLocked(type: self.cloudType, nbGamesPlayed: self.nbGamesPlayed)
+    }
+    
+    static func isGameTypeLocked(type: GameType, nbGamesPlayed: Int) -> Bool {
+        return nbGamesPlayed < getNbGamesToUnlock(type: type)
     }
     
     private func animateIn() {
@@ -181,6 +223,7 @@ class MenuChooseGame {
         
         self.title.run(titleAnimation)
         self.description.run(titleAnimation)
+        if self.isGameTypeLocked() { self.lockedText.run(titleAnimation) }
         
         let buttonsAnimation = SKAction.sequence([
             SKAction.scale(to: 0, duration: 0),
@@ -210,5 +253,6 @@ class MenuChooseGame {
     deinit {
         self.title.removeFromParent()
         self.description.removeFromParent()
+        self.lockedText.removeFromParent()
     }
 }

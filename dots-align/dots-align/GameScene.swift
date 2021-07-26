@@ -160,7 +160,7 @@ class GameScene: SKScene {
             }
             else if buttonId == .chooseGameStart {
                 if self.menuChooseGame != nil {
-                    if !MenuChooseGame.isGameTypeLocked(type: self.menuChooseGame!.cloudType) {
+                    if !self.menuChooseGame!.isGameTypeLocked() {
                         self.showInterstitialAdIfNecessary({
                             self.startGame(mode: self.gameMode, type: self.menuChooseGame!.cloudType)
                         })
