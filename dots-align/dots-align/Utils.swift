@@ -89,7 +89,7 @@ class Utils {
     class func quaternionFromDir(dir: Vector3d, speed: Scalar = 1) -> Quat {
         let norm = simd_length(dir)
         
-        if norm > 0 {
+        if norm > 0 && norm < 1 { // avoid divide by 0, avoid undetermined asin when > 1
             let angle = asin(norm)
             let unit = simd_normalize(dir)
             let axis = simd_normalize(simd_cross(unit, Vector3d(0, 0, -1)))
