@@ -16,7 +16,8 @@ class CloudSatellite: CloudWithDerps {
             color: color,
             radius: radius,
             dotRadius: dotRadius,
-            derpSizeRation: 0.5, // <-
+            nbPointsDerp: nbPoints / 2,
+            derpSizeRatio: 0.5, // <-
             addGuides: addGuides)
     }
 }

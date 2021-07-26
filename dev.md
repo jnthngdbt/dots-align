@@ -1,8 +1,6 @@
 # Todo
 
-=== do promo video(s): full game, menus 
 === app store description
-== push to testflight
 ---- lock game types
 --- unlock game congrats page, single nice button
 --- choose game menu start at hardest or last played (use UserDefaults, like 'muteSound', for 'lastGameTypePlayed')

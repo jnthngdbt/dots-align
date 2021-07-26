@@ -35,9 +35,9 @@ class ScoreBoard {
     var statType = StatType.allCases.first!
     
     let titlePosY: CGFloat = 0.88
-    let hdrPosY: CGFloat = 0.72
+    let hdrPosY: CGFloat = 0.74
     let hdrSpacing: CGFloat = 0.075
-    let rowSpacing: CGFloat = 0.06
+    let rowSpacing: CGFloat = 0.05
     let statTypeSpacing: CGFloat = 0.09
     let totalLabelSpacing: CGFloat = 0.12
     
