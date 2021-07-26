@@ -40,6 +40,7 @@ func isButton(name: String?) -> Bool {
 
 let labelColor = UIColor(white: 0.55, alpha: 1)
 let accentColor = UIColor(red: 0.55, green: 0.45, blue: 1.0, alpha: 1)
+let disabledButtonFontColor = UIColor(white: 0.3, alpha: 1)
 
 class Const {
     class Ads {
@@ -66,6 +67,7 @@ class Const {
         static let alignedOrientation = Vector3d(0, 0, 1)
         static let alignedDistThresh = 0.05
         static let color = accentColor
+        static let lockedColor = UIColor(white: 0.3, alpha: 1)
         static let guideDotsColor = UIColor.red
     }
     
@@ -192,6 +194,16 @@ func getMaxBoost(type: GameType) -> Int {
     case .shadow: return 8
     case .transit: return 10
     case .rewire: return 14
+    }
+}
+
+func getNbGamesToUnlock(type: GameType) -> Int {
+    switch type {
+    case .normal: return 10
+    case .satellite: return 20
+    case .shadow: return 30
+    case .transit: return 40
+    case .rewire: return 50
     }
 }
 

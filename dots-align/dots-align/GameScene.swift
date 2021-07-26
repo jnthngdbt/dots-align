@@ -160,9 +160,11 @@ class GameScene: SKScene {
             }
             else if buttonId == .chooseGameStart {
                 if self.menuChooseGame != nil {
-                    self.showInterstitialAdIfNecessary({
-                        self.startGame(mode: self.gameMode, type: self.menuChooseGame!.cloudType)
-                    })
+                    if !MenuChooseGame.isGameTypeLocked(type: self.menuChooseGame!.cloudType) {
+                        self.showInterstitialAdIfNecessary({
+                            self.startGame(mode: self.gameMode, type: self.menuChooseGame!.cloudType)
+                        })
+                    }
                 }
             }
             else if buttonId == .chooseGameNavLeft {

@@ -31,7 +31,7 @@ class MenuChooseGame {
         let lastGameType = UserDefaults.standard.integer(forKey: Const.DefaultsKeys.lastGameTypeSelected) // returns 0 if not set yet
         self.cloudType = GameType(rawValue: lastGameType)
         
-        self.cloud = Utils.makeCloud(type: self.cloudType, nbPoints: Const.MenuChooseGame.nbDots, scene: scene, color: accentColor, radius: self.cloudRadius, dotRadius: self.dotRadius)
+        self.cloud = Utils.makeCloud(type: self.cloudType, nbPoints: Const.MenuChooseGame.nbDots, scene: scene, color: MenuChooseGame.getCloudColor(type: cloudType), radius: self.cloudRadius, dotRadius: self.dotRadius)
         self.cloud?.desalign()
         
         let navButtonWidthSpace = 0.5 * (scene.size.width - self.cloudDiameter)
@@ -118,6 +118,22 @@ class MenuChooseGame {
         let leftFooterPaddingFactor = Const.Indicators.sidePaddingFactor - 0.5 * Const.Button.Footer.widthFactor
         let buttonWidth = Const.Button.Footer.widthFactor * Const.MenuChooseGame.startButtonWidthScaleFactor
         self.startButton.shape.position.x = scene.size.width - (leftFooterPaddingFactor + 0.5 * buttonWidth) * scene.minSize()
+        
+        self.updateStartButton()
+    }
+    
+    func updateStartButton() {
+        if MenuChooseGame.isGameTypeLocked(type: self.cloudType) {
+            self.startButton.label.fontColor = disabledButtonFontColor
+            self.startButton.label.text = "LOCKED"
+        } else {
+            self.startButton.label.fontColor = accentColor
+            self.startButton.label.text = "START"
+        }
+    }
+    
+    static func getCloudColor(type: GameType) -> UIColor {
+        return self.isGameTypeLocked(type: type) ? Const.Cloud.lockedColor : Const.Cloud.color
     }
     
     func rotate(dir: Vector3d, speed: Scalar = 1) {
@@ -143,13 +159,18 @@ class MenuChooseGame {
         if type == nil { return }
         self.cloudType = type
         
-        self.cloud = Utils.makeCloud(type: self.cloudType, nbPoints: Const.MenuChooseGame.nbDots, scene: scene, color: accentColor, radius: self.cloudRadius, dotRadius: self.dotRadius)
+        self.cloud = Utils.makeCloud(type: self.cloudType, nbPoints: Const.MenuChooseGame.nbDots, scene: scene, color: MenuChooseGame.getCloudColor(type: self.cloudType), radius: self.cloudRadius, dotRadius: self.dotRadius)
         self.cloud?.desalign()
         
         UserDefaults.standard.set(self.cloudType.rawValue, forKey: Const.DefaultsKeys.lastGameTypeSelected)
         
         self.updateDescription()
         self.updateNavButtons()
+        self.updateStartButton()
+    }
+    
+    static func isGameTypeLocked(type: GameType) -> Bool {
+        return (DatabaseManager.getGameCount() ?? 0) < getNbGamesToUnlock(type: type)
     }
     
     private func animateIn() {
