@@ -37,8 +37,7 @@ class CloudAlternate: Cloud {
         self.updateDotScale()
     }
     
-    // Override animation in to have dot specific scale.
-    override func animateIn(action: SKAction) {
+    override func animateIn(wait: TimeInterval = 0.0) {
         self.animate(action: SKAction.scale(to: 0, duration: 0.0))
         self.updateDotScale(animationDur: Const.Animation.expandSec)
     }

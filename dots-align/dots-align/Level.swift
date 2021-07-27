@@ -133,13 +133,7 @@ class Level {
     }
     
     func animateIn() {
-        let animation = SKAction.sequence([
-            SKAction.scale(to: 0, duration: 0.0),
-            SKAction.wait(forDuration: 0.2),
-            SKAction.scale(to: 1, duration: Const.Animation.expandSec)
-        ])
-        
-        self.cloud.animateIn(action: animation)
+        self.cloud.animateIn(wait: 0.2)
     }
     
     func animateOut() {

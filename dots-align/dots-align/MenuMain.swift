@@ -98,11 +98,12 @@ class MenuMain: Menu {
     private func animateInCloud() {
         let animation = SKAction.sequence([
             SKAction.fadeAlpha(to: 0, duration: 0.0),
+            SKAction.scale(to: 1, duration: 0.0),
             SKAction.wait(forDuration: 0.5),
             SKAction.fadeAlpha(to: 1, duration: 1.0)
         ])
         
-        self.cloud?.animateIn(action: animation)
+        self.cloud?.animate(action: animation)
     }
     
     private func animateInButtons() {

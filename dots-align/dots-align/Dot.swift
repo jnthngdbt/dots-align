@@ -26,6 +26,7 @@ class Dot {
         self.radius = radius
         self.mustShadow = mustShadow
         self.node = SKShapeNode.init(circleOfRadius: self.radius)
+        self.node.setScale(0) // needs to animate
         
         self.update()
         

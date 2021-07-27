@@ -202,6 +202,7 @@ class MenuChooseGame {
         
         self.cloud = Utils.makeCloud(type: self.cloudType, nbPoints: Const.MenuChooseGame.nbDots, scene: scene, color: self.getCloudColor(), radius: self.cloudRadius, dotRadius: self.dotRadius)
         self.cloud?.desalign(x: self.disalignment, y: self.disalignment)
+        self.cloud?.animateIn(wait: 0.0)
         
         UserDefaults.standard.set(self.cloudType.rawValue, forKey: Const.DefaultsKeys.lastGameTypeSelected)
         
@@ -241,17 +242,7 @@ class MenuChooseGame {
         if (self.mustShowLeftNavButton()) { self.left.animate(action: buttonsAnimation) }
         if (self.mustShowRightNavButton()) { self.right.animate(action: buttonsAnimation) }
         
-        self.animateInCloud()
-    }
-    
-    private func animateInCloud() {
-        let animation = SKAction.sequence([
-            SKAction.scale(to: 0, duration: 0.0),
-            SKAction.wait(forDuration: 0.2),
-            SKAction.scale(to: 1, duration: Const.Animation.expandSec)
-        ])
-        
-        self.cloud?.animateIn(action: animation)
+        self.cloud?.animateIn(wait: 0.2)
         
         self.orb?.node.run(SKAction.sequence([
             SKAction.wait(forDuration: 0.1),

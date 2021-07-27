@@ -91,9 +91,11 @@ class Cloud {
         }
     }
     
-    // Same as animate, but specifies that it is for appearing animation.
-    func animateIn(action: SKAction) {
-        self.animate(action: action)
+    func animateIn(wait: TimeInterval = 0.0) {
+        self.animate(action: SKAction.sequence([
+            SKAction.wait(forDuration: wait),
+            SKAction.scale(to: 1, duration: Const.Animation.expandSec)
+        ]))
     }
     
     func clear() {
