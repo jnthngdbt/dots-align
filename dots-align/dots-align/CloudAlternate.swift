@@ -9,7 +9,7 @@ import Foundation
 import SpriteKit
 
 class CloudAlternate: Cloud {
-    let peakSpacingAngle = 0.3 * Scalar.pi
+    let peakSpacingAngle = 0.5 * Scalar.pi
     var lastPeakPos = Vector3d(0, 0, 0)
     var debugLastPeakDot: Dot?
     
@@ -32,6 +32,17 @@ class CloudAlternate: Cloud {
         self.updatePeakPos() // init peak pos
     }
     
+    override func rotate(quaternion: Quat) {
+        super.rotate(quaternion: quaternion)
+        self.updateDotScale()
+    }
+    
+    // Override animation in to have dot specific scale.
+    override func animateIn(action: SKAction) {
+        self.animate(action: SKAction.scale(to: 0, duration: 0.0))
+        self.updateDotScale(animationDur: Const.Animation.expandSec)
+    }
+    
     private func updatePeakPos() {
         self.lastPeakPos = self.orientation
         
@@ -39,10 +50,9 @@ class CloudAlternate: Cloud {
         self.debugLastPeakDot?.update()
     }
     
-    override func rotate(quaternion: Quat) {
-        super.rotate(quaternion: quaternion)
-        
-        let angleBetweenVectors = acos(abs(simd_dot(self.orientation, self.lastPeakPos))) // assumes both vectors are normalized
+    private func updateDotScale(animationDur: TimeInterval = 0.0) {
+        let dot = abs(simd_dot(self.orientation, self.lastPeakPos))
+        let angleBetweenVectors = dot < 1.0 ? acos(dot) : 0 // acos assumes both vectors were normalized
         let vectorToPeakSpacingAngle = Scalar.pi * angleBetweenVectors / self.peakSpacingAngle
         
         let scaleA = 1.0 - abs(sin(vectorToPeakSpacingAngle))
@@ -50,7 +60,8 @@ class CloudAlternate: Cloud {
 
         for i in 0..<self.dots.count {
             let scale = (i <= self.dots.count / 2) ? scaleA : scaleB
-            self.dots[i].animate(action: SKAction.scale(to: CGFloat(scale * scale), duration: 0.0))
+            let dotAnimation = SKAction.scale(to: CGFloat(scale * scale), duration: animationDur)
+            self.dots[i].animate(action: dotAnimation)
         }
         
         // Reset source position when peak reached.

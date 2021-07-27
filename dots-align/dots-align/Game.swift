@@ -97,7 +97,7 @@ class Game {
             SKAction.wait(forDuration: waitSec + 0.4),
             SKAction.scale(to: 1, duration: Const.Animation.expandSec)
         ]))
-        self.level.cloud.animate(action: SKAction.sequence([
+        self.level.cloud.animateIn(action: SKAction.sequence([
             SKAction.wait(forDuration: waitSec + 0.6),
             SKAction.scale(to: 1, duration: Const.Animation.expandSec)
         ]))

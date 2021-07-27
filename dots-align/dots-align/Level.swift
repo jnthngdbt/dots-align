@@ -139,7 +139,7 @@ class Level {
             SKAction.scale(to: 1, duration: Const.Animation.expandSec)
         ])
         
-        self.cloud.animate(action: animation)
+        self.cloud.animateIn(action: animation)
     }
     
     func animateOut() {

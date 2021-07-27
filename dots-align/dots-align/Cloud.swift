@@ -91,6 +91,11 @@ class Cloud {
         }
     }
     
+    // Same as animate, but specifies that it is for appearing animation.
+    func animateIn(action: SKAction) {
+        self.animate(action: action)
+    }
+    
     func clear() {
         self.orientation = Const.Cloud.alignedOrientation
         self.alignedDist = 0

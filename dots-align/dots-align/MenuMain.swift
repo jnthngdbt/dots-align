@@ -102,7 +102,7 @@ class MenuMain: Menu {
             SKAction.fadeAlpha(to: 1, duration: 1.0)
         ])
         
-        self.cloud?.animate(action: animation)
+        self.cloud?.animateIn(action: animation)
     }
     
     private func animateInButtons() {

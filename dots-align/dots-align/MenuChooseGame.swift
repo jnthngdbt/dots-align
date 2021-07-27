@@ -251,7 +251,7 @@ class MenuChooseGame {
             SKAction.scale(to: 1, duration: Const.Animation.expandSec)
         ])
         
-        self.cloud?.animate(action: animation)
+        self.cloud?.animateIn(action: animation)
         
         self.orb?.node.run(SKAction.sequence([
             SKAction.wait(forDuration: 0.1),
