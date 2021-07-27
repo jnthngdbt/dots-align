@@ -38,8 +38,7 @@ class CloudAlternate: Cloud {
     }
     
     override func animateIn(wait: TimeInterval = 0.0) {
-        self.animate(action: SKAction.scale(to: 0, duration: 0.0))
-        self.updateDotScale(animationDur: Const.Animation.expandSec)
+        self.updateDotScale(wait: wait, duration: Const.Animation.expandSec)
     }
     
     private func updatePeakPos() {
@@ -49,18 +48,20 @@ class CloudAlternate: Cloud {
         self.debugLastPeakDot?.update()
     }
     
-    private func updateDotScale(animationDur: TimeInterval = 0.0) {
+    private func updateDotScale(wait: TimeInterval = 0.0, duration: TimeInterval = 0.0) {
         let dot = abs(simd_dot(self.orientation, self.lastPeakPos))
         let angleBetweenVectors = dot < 1.0 ? acos(dot) : 0 // acos assumes both vectors were normalized
         let vectorToPeakSpacingAngle = Scalar.pi * angleBetweenVectors / self.peakSpacingAngle
         
         let scaleA = 1.0 - abs(sin(vectorToPeakSpacingAngle))
         let scaleB = 1.0 - abs(cos(vectorToPeakSpacingAngle))
-
+        
         for i in 0..<self.dots.count {
             let scale = (i <= self.dots.count / 2) ? scaleA : scaleB
-            let dotAnimation = SKAction.scale(to: CGFloat(scale * scale), duration: animationDur)
-            self.dots[i].animate(action: dotAnimation)
+            self.dots[i].animate(action: SKAction.sequence([
+                SKAction.wait(forDuration: wait),
+                SKAction.scale(to: CGFloat(scale * scale), duration: duration)
+            ]))
         }
         
         // Reset source position when peak reached.
