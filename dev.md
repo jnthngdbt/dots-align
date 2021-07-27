@@ -1,11 +1,17 @@
 # Todo
 
----- add score gauge when finishing level
----- lock and animate cloud in choose game menu
---- unlock game congrats page, single nice button, set as 'last game type played'
---- add blink game type
--- game types: mines cloud, lens, teleport/lag
-- fix dissappearing points
+---- add getGameTypeIndex to allow inserting new ones, 1 step boosts, insert shift harder types by 1 boost
+---- unlock game congrats page, single nice button, set as 'last game type played'
+--- add score gauge when finishing level
+--- start button animation
+--- redo game types app preview with new types
+
+# New game types ideas
+
+- firefly
+- mines cloud
+- lens
+- teleport/lag (maybe not if blink)
 
 # Ads
 

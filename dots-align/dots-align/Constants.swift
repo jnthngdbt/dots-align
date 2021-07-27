@@ -12,7 +12,7 @@ import GoogleMobileAds
 enum BuildMode { case dev, demo, publish }
 enum IndicatorNames: Int, CaseIterable { case left, dots, boost, score  }
 enum GameMode: Int, CaseIterable { case tutorial, level, time  } // keep order, saved in core data
-enum GameType: Int, CaseIterable { case normal, satellite, shadow, transit, rewire } // keep order, saved in core data
+enum GameType: Int, CaseIterable { case normal, satellite, shadow, transit, rewire, alternate } // keep order, saved in core data
 
 enum ButtonId: String, CaseIterable { case
     none = "",
@@ -168,6 +168,7 @@ class Const {
     class Debug {
         static let showBtnEdges = false
         static let showGuideDots = false
+        static let showCloudDebug = false
         static let showStats = false
     }
     
@@ -190,10 +191,11 @@ class Const {
 func getMaxBoost(type: GameType) -> Int {
     switch type {
     case .normal: return 4
-    case .satellite: return 6
-    case .shadow: return 8
-    case .transit: return 10
-    case .rewire: return 14
+    case .satellite: return 5
+    case .shadow: return 6
+    case .transit: return 7
+    case .alternate: return 8
+    case .rewire: return 9
     }
 }
 
@@ -203,7 +205,8 @@ func getNbGamesToUnlock(type: GameType) -> Int {
     case .satellite: return 10
     case .shadow: return 20
     case .transit: return 30
-    case .rewire: return 40
+    case .alternate: return 40
+    case .rewire: return 50
     }
 }
 
@@ -213,6 +216,7 @@ func getGameTypeString(type: GameType) -> String {
     case .satellite: return "SATELLITE"
     case .shadow: return "SHADOW"
     case .transit: return "TRANSIT"
+    case .alternate: return "ALTERNATE"
     case .rewire: return "REWIRE"
     }
 }
