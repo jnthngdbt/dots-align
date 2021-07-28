@@ -141,16 +141,9 @@ class Level {
     }
     
     private func animateOutCloud() {
-        let expand = SKAction.group([
-            SKAction.fadeAlpha(to: 0.9, duration: Const.Animation.blinkSec),
-            SKAction.scale(to: 1.5, duration: Const.Animation.blinkSec)
-        ])
-        
-        let back = SKAction.group([
-            SKAction.fadeAlpha(to: 1.0, duration: Const.Animation.blinkSec),
-            SKAction.scale(to: 1.0, duration: Const.Animation.blinkSec)
-        ])
-        
+        let expand = SKAction.scale(to: 1.5, duration: Const.Animation.blinkSec)
+        let back = SKAction.scale(to: 1.0, duration: Const.Animation.blinkSec)
+    
         let collapse = SKAction.group([
             SKAction.fadeAlpha(to: 0.0, duration: Const.Animation.collapseSec),
             SKAction.scale(to: 0, duration: Const.Animation.collapseSec)

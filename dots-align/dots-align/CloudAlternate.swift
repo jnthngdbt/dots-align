@@ -55,8 +55,9 @@ class CloudAlternate: Cloud {
         let scaleB = 1.0 - abs(cos(vectorToPeakSpacingAngle))
         
         for i in 0..<self.dots.count {
-            let scale = (i <= self.dots.count / 2) ? scaleA : scaleB
-            self.dots[i].setRadius(radius: self.dots[i].baseRadius * CGFloat(scale))
+            let scale = (i < self.dots.count / 2) ? scaleA : scaleB
+            self.dots[i].setRadius(radius: self.dots[i].baseRadius * CGFloat(scale * scale))
+            self.dots[i].node.alpha = CGFloat(scale)
         }
         
         // Reset source position when peak reached.
