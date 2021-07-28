@@ -8,12 +8,37 @@
 import Foundation
 import SpriteKit
 
+class SizeableCircle: SKShapeNode {
+    var radius: CGFloat {
+        didSet {
+            self.path = SizeableCircle.path(radius: self.radius)
+        }
+    }
+
+    init(radius: CGFloat) {
+        self.radius = radius
+        super.init()
+        self.path = SizeableCircle.path(radius: self.radius)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    class func path(radius: CGFloat) -> CGMutablePath {
+        let path: CGMutablePath = CGMutablePath()
+        path.addArc(center: CGPoint.zero, radius: radius, startAngle: 0.0, endAngle: 2.0 * CGFloat.pi, clockwise: false)
+        return path
+    }
+
+}
+
 class Dot {
-    var node: SKShapeNode
+    var node: SizeableCircle
     var point: Vector3d
     let scene: GameScene
     let color: UIColor
-    var radius: CGFloat = 0.0
+    var baseRadius: CGFloat
     var sphereRadius: CGFloat = 0.0
     let mustShadow: Bool
 
@@ -23,9 +48,9 @@ class Dot {
         self.point = simd_normalize(point3d)
         
         self.sphereRadius = sphereRadius
-        self.radius = radius
+        self.baseRadius = radius
         self.mustShadow = mustShadow
-        self.node = SKShapeNode.init(circleOfRadius: self.radius)
+        self.node = SizeableCircle.init(radius: radius)
         self.node.setScale(0) // needs to animate
         
         self.update()
@@ -67,6 +92,10 @@ class Dot {
     func rotate(quaternion: Quat) {
         self.point = quaternion.act(self.point)
         self.update()
+    }
+    
+    func setRadius(radius: CGFloat) {
+        self.node.radius = radius
     }
     
     func animate(action: SKAction) {
