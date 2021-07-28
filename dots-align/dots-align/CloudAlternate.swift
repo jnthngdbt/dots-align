@@ -9,13 +9,14 @@ import Foundation
 import SpriteKit
 
 class CloudAlternate: Cloud {
-    let peakSpacingAngle = 0.5 * Scalar.pi
+    let peakSpacingAngle = 0.45 * Scalar.pi // note: may become weird when to high, something breaks
     var lastPeakPos = Vector3d(0, 0, 0)
     var debugLastPeakDot: Dot?
     
     init(nbPoints: Int, scene: GameScene, color: UIColor, radius: CGFloat, dotRadius: CGFloat, addGuides: Bool = false) {
         if Const.Debug.showCloudDebug {
             self.debugLastPeakDot = Dot(scene: scene, color: UIColor.red, point3d: Const.Cloud.alignedOrientation, radius: 0.5 * dotRadius, sphereRadius: radius)
+            self.debugLastPeakDot?.node.setScale(1)
         }
         
         super.init(
@@ -30,15 +31,12 @@ class CloudAlternate: Cloud {
     override func desalign(x: Scalar, y: Scalar) {
         super.desalign(x: x, y: y)
         self.updatePeakPos() // init peak pos
+        self.updateDotScale()
     }
     
     override func rotate(quaternion: Quat) {
         super.rotate(quaternion: quaternion)
         self.updateDotScale()
-    }
-    
-    override func animateIn(wait: TimeInterval = 0.0) {
-        self.updateDotScale(wait: wait, duration: Const.Animation.expandSec)
     }
     
     private func updatePeakPos() {
@@ -48,7 +46,7 @@ class CloudAlternate: Cloud {
         self.debugLastPeakDot?.update()
     }
     
-    private func updateDotScale(wait: TimeInterval = 0.0, duration: TimeInterval = 0.0) {
+    private func updateDotScale() {
         let dot = abs(simd_dot(self.orientation, self.lastPeakPos))
         let angleBetweenVectors = dot < 1.0 ? acos(dot) : 0 // acos assumes both vectors were normalized
         let vectorToPeakSpacingAngle = Scalar.pi * angleBetweenVectors / self.peakSpacingAngle
@@ -58,10 +56,7 @@ class CloudAlternate: Cloud {
         
         for i in 0..<self.dots.count {
             let scale = (i <= self.dots.count / 2) ? scaleA : scaleB
-            self.dots[i].animate(action: SKAction.sequence([
-                SKAction.wait(forDuration: wait),
-                SKAction.scale(to: CGFloat(scale * scale), duration: duration)
-            ]))
+            self.dots[i].setRadius(radius: self.dots[i].baseRadius * CGFloat(scale))
         }
         
         // Reset source position when peak reached.
