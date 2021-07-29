@@ -56,8 +56,11 @@ class CloudAlternate: Cloud {
         let scaleA = 1.0 - abs(sin(self.speed * self.angleCumul))
         let scaleB = 1.0 - abs(cos(self.speed * self.angleCumul))
         
+        let halfCount = self.dots.count / 2
+        let split = (halfCount % 2 == 0) ? halfCount : halfCount + 1 // adapt to even/odd 
+        
         for i in 0..<self.dots.count {
-            let scale = (i < self.dots.count / 2) ? scaleA : scaleB
+            let scale = (i < split) ? scaleA : scaleB
             self.dots[i].setRadius(radius: self.dots[i].baseRadius * CGFloat(scale))
             self.dots[i].node.alpha = CGFloat(scale * 1.5)
         }
