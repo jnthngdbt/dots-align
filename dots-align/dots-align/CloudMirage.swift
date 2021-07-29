@@ -1,5 +1,5 @@
 //
-//  CloudAlternate.swift
+//  CloudMirage.swift
 //  dots-align
 //
 //  Created by Jonathan on 2021-07-26.
@@ -8,7 +8,7 @@
 import Foundation
 import SpriteKit
 
-class CloudAlternate: Cloud {
+class CloudMirage: Cloud {
     let speed: Scalar = 1.5
     
     var skipDirection = false

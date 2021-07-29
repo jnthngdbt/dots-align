@@ -16,7 +16,7 @@
 		AB86CD39268E045B00448D04 /* CloudTransit.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB86CD38268E045B00448D04 /* CloudTransit.swift */; };
 		AB86CD3B268E0BF500448D04 /* CloudShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB86CD3A268E0BF500448D04 /* CloudShadow.swift */; };
 		ABA976B826AB3F5900103032 /* CloudRewire.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA976B726AB3F5900103032 /* CloudRewire.swift */; };
-		ABA976BA26AF496B00103032 /* CloudAlternate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA976B926AF496B00103032 /* CloudAlternate.swift */; };
+		ABA976BA26AF496B00103032 /* CloudMirage.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA976B926AF496B00103032 /* CloudMirage.swift */; };
 		ABFAE9C4269553CB00C200B2 /* Beep.C2.wav in Resources */ = {isa = PBXBuildFile; fileRef = ABFAE9BC269553CB00C200B2 /* Beep.C2.wav */; };
 		ABFAE9C5269553CB00C200B2 /* Beep.A2.wav in Resources */ = {isa = PBXBuildFile; fileRef = ABFAE9BD269553CB00C200B2 /* Beep.A2.wav */; };
 		ABFAE9C6269553CB00C200B2 /* Beep.E2.wav in Resources */ = {isa = PBXBuildFile; fileRef = ABFAE9BE269553CB00C200B2 /* Beep.E2.wav */; };
@@ -101,7 +101,7 @@
 		AB86CD38268E045B00448D04 /* CloudTransit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudTransit.swift; sourceTree = "<group>"; };
 		AB86CD3A268E0BF500448D04 /* CloudShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudShadow.swift; sourceTree = "<group>"; };
 		ABA976B726AB3F5900103032 /* CloudRewire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudRewire.swift; sourceTree = "<group>"; };
-		ABA976B926AF496B00103032 /* CloudAlternate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudAlternate.swift; sourceTree = "<group>"; };
+		ABA976B926AF496B00103032 /* CloudMirage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudMirage.swift; sourceTree = "<group>"; };
 		ABFAE9BC269553CB00C200B2 /* Beep.C2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.C2.wav; path = ../../music/Beep.C2.wav; sourceTree = "<group>"; };
 		ABFAE9BD269553CB00C200B2 /* Beep.A2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.A2.wav; path = ../../music/Beep.A2.wav; sourceTree = "<group>"; };
 		ABFAE9BE269553CB00C200B2 /* Beep.E2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.E2.wav; path = ../../music/Beep.E2.wav; sourceTree = "<group>"; };
@@ -236,7 +236,7 @@
 				AB86CD34268D199900448D04 /* CloudSatellite.swift */,
 				AB86CD3A268E0BF500448D04 /* CloudShadow.swift */,
 				AB86CD38268E045B00448D04 /* CloudTransit.swift */,
-				ABA976B926AF496B00103032 /* CloudAlternate.swift */,
+				ABA976B926AF496B00103032 /* CloudMirage.swift */,
 				ABA976B726AB3F5900103032 /* CloudRewire.swift */,
 				EC77FD26264C7DE600B901FD /* Level.swift */,
 				EC77FD2A264C7E0F00B901FD /* Game.swift */,
@@ -451,7 +451,7 @@
 				EC77FD2B264C7E0F00B901FD /* Game.swift in Sources */,
 				EC69761F266973E000E34D6E /* MenuEndGame.swift in Sources */,
 				E100A7CF263E44F900F81153 /* GameScene.swift in Sources */,
-				ABA976BA26AF496B00103032 /* CloudAlternate.swift in Sources */,
+				ABA976BA26AF496B00103032 /* CloudMirage.swift in Sources */,
 				ECEFA386266B08DA007F2C77 /* Database.xcdatamodeld in Sources */,
 				EC77FD2F264C7F3000B901FD /* Indicator.swift in Sources */,
 				AB86CD192687A89C00448D04 /* Music.swift in Sources */,

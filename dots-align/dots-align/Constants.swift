@@ -12,7 +12,7 @@ import GoogleMobileAds
 enum BuildMode { case dev, demo, publish }
 enum IndicatorNames: Int, CaseIterable { case left, dots, boost, score  }
 enum GameMode: Int, CaseIterable { case tutorial, level, time  } // keep order, saved in core data
-enum GameType: Int, CaseIterable { case normal, satellite, shadow, transit, rewire, alternate } // keep order, saved in core data
+enum GameType: Int, CaseIterable { case normal, satellite, shadow, transit, rewire, mirage } // keep order, saved in core data
 
 enum ButtonId: String, CaseIterable { case
     none = "",
@@ -194,7 +194,7 @@ func getMaxBoost(type: GameType) -> Int {
     case .satellite: return 5
     case .shadow: return 6
     case .transit: return 7
-    case .alternate: return 8
+    case .mirage: return 8
     case .rewire: return 9
     }
 }
@@ -205,7 +205,7 @@ func getNbGamesToUnlock(type: GameType) -> Int {
     case .satellite: return 10
     case .shadow: return 20
     case .transit: return 30
-    case .alternate: return 40
+    case .mirage: return 40
     case .rewire: return 50
     }
 }
@@ -216,7 +216,7 @@ func getGameTypeString(type: GameType) -> String {
     case .satellite: return "SATELLITE"
     case .shadow: return "SHADOW"
     case .transit: return "TRANSIT"
-    case .alternate: return "ALTERNATE"
+    case .mirage: return "MIRAGE"
     case .rewire: return "REWIRE"
     }
 }

@@ -110,8 +110,8 @@ class Utils {
             return CloudShadow(nbPoints: nbPoints, scene: scene, color: color, radius: radius, dotRadius: dotRadius, addGuides: addGuides)
         case .transit:
             return CloudTransit(nbPoints: nbPoints, scene: scene, color: color, radius: radius, dotRadius: dotRadius, addGuides: addGuides)
-        case .alternate:
-            return CloudAlternate(nbPoints: nbPoints, scene: scene, color: color, radius: radius, dotRadius: dotRadius, addGuides: addGuides)
+        case .mirage:
+            return CloudMirage(nbPoints: nbPoints, scene: scene, color: color, radius: radius, dotRadius: dotRadius, addGuides: addGuides)
         case .rewire:
             return CloudRewire(nbPoints: nbPoints, scene: scene, color: color, radius: radius, dotRadius: dotRadius, addGuides: addGuides)
         }
