@@ -57,12 +57,29 @@ class CloudMirage: Cloud {
         let scaleB = 1.0 - abs(cos(self.speed * self.angleCumul))
         
         let halfCount = self.dots.count / 2
-        let split = (halfCount % 2 == 0) ? halfCount : halfCount + 1 // adapt to even/odd 
+        let split = (halfCount % 2 == 0) ? halfCount : halfCount + 1 // adapt to even/odd
+        
+        let factor = 1.5 // scales before clipping; stays visible longer, lowers gap between 2 states
+        let power = 1.0 // flattens towards 0; more abrupt transition
         
         for i in 0..<self.dots.count {
             let scale = (i < split) ? scaleA : scaleB
-            self.dots[i].setRadius(radius: self.dots[i].baseRadius * CGFloat(scale))
-            self.dots[i].node.alpha = CGFloat(scale * 1.5)
+            
+            let radius = min(1.0, pow(scale * factor, power))
+            let alpha = CloudMirage.getAlphaForRadiusFactor(radius)
+            
+            self.dots[i].setRadius(radius: self.dots[i].baseRadius * CGFloat(radius))
+            self.dots[i].node.alpha = CGFloat(alpha)
         }
+    }
+    
+    private static func getAlphaForRadiusFactor(_ radiusFactor: Scalar) -> Scalar {
+        let min = 0.4 // hide small dots
+        let max = 0.6 // do not fade big dots
+        
+        if radiusFactor > max { return 1.0 }
+        if radiusFactor < min { return 0.0 }
+        
+        return (radiusFactor - min) / (max - min)
     }
 }
