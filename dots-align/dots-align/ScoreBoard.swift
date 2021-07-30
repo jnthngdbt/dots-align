@@ -38,8 +38,8 @@ class ScoreBoard {
     let hdrPosY: CGFloat = 0.74
     let hdrSpacing: CGFloat = 0.075
     let rowSpacing: CGFloat = 0.05
-    let statTypeSpacing: CGFloat = 0.09
-    let totalLabelSpacing: CGFloat = 0.12
+    let statTypeSpacing: CGFloat = 0.08
+    let totalLabelSpacing: CGFloat = 0.09
     
     let colWidth: CGFloat = 0.3
     
