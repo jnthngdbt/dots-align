@@ -40,7 +40,7 @@ class Level {
         
         self.cloud.desalign()
         
-        self.maxBoost = getMaxBoost(type: type)
+        self.maxBoost = Const.getGameTypeData(type).maxBoost
         self.boost = CGFloat(self.maxBoost)
         
         self.indicators?.update(name: IndicatorNames.dots, value: self.getTotalNbDots())
@@ -53,7 +53,7 @@ class Level {
     
     func startBoostCountdown(scene: GameScene, maxBoost: Int) {
         // Adapt duration with max boost (difficulty).
-        let baseBoost = getMaxBoost(type: .normal)
+        let baseBoost = Const.gameTypeDataArray.first!.maxBoost
         let durationRamp = Const.Level.boostCountdownDurationRampFactorSecsPerBoost * CGFloat(maxBoost - baseBoost)
         let duration = Const.Level.boostCountdownBaseDuration + durationRamp
         

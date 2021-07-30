@@ -59,7 +59,7 @@ class Game {
         self.levelScoreLabelEndPos = scene.center()
         self.levelScoreLabelEndPos.y += (0.5 * Const.Level.sphereDiameterFactor + Const.Level.levelScoreEndPosOffsetFactor) * scene.minSize()
         self.levelScoreLabel = SKLabelNode(text: "0")
-        self.levelScoreLabel.fontColor = labelColor
+        self.levelScoreLabel.fontColor = Const.labelColor
         self.levelScoreLabel.fontName = Const.fontNameLabel
         self.levelScoreLabel.fontSize = Const.Level.levelScoreFontSizeFactor * scene.minSize()
         self.levelScoreLabel.position = self.levelScoreLabelStartPos

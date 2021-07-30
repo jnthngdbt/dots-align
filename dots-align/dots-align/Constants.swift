@@ -32,17 +32,50 @@ enum ButtonId: String, CaseIterable { case
     scoreBoardRight = "scoreBoardRight"
 }
 
+class GameTypeData {
+    let type: GameType
+    let maxBoost: Int
+    let nbGamesToUnlock: Int
+    let string: String
+    
+    init(type: GameType, maxBoost: Int, nbGamesToUnlock: Int, string: String) {
+        self.type = type
+        self.maxBoost = maxBoost
+        self.nbGamesToUnlock = nbGamesToUnlock
+        self.string = string
+    }
+}
+
 func isButton(name: String?) -> Bool {
     if name == nil { return false }
     let id = ButtonId(rawValue: name!)
     return (id != nil) && (id != ButtonId.none)
 }
 
-let labelColor = UIColor(white: 0.55, alpha: 1)
-let accentColor = UIColor(red: 0.55, green: 0.45, blue: 1.0, alpha: 1)
-let disabledButtonFontColor = UIColor(white: 0.3, alpha: 1)
-
 class Const {
+    static let backgroundColor = UIColor(white: 0.0, alpha: 1)
+    static let labelColor = UIColor(white: 0.55, alpha: 1)
+    static let accentColor = UIColor(red: 0.55, green: 0.45, blue: 1.0, alpha: 1)
+    static let disabledButtonFontColor = UIColor(white: 0.3, alpha: 1)
+    
+    static let buildMode = BuildMode.dev
+    
+    // Default: HelveticaNeue-UltraLight.
+    // Some nice: HelveticaNeue, AvenirNextCondensed, AvenirNext
+    // Heavy, Bold, DemiBold, Medium, Regular, UltraLight.
+    static let fontNameText = "AvenirNextCondensed-DemiBold"
+    static let fontNameLabel = "AvenirNextCondensed-Bold"
+    static let fontNameTitle = "AvenirNextCondensed-Heavy"
+    
+    static let gameTypeDataArray = [
+        GameTypeData(type: .normal      , maxBoost: 4   , nbGamesToUnlock: 0   , string: "NORMAL"      ),
+        GameTypeData(type: .satellite   , maxBoost: 6   , nbGamesToUnlock: 10  , string: "SATELLITE"   ),
+        GameTypeData(type: .shadow      , maxBoost: 8   , nbGamesToUnlock: 20  , string: "SHADOW"      ),
+        GameTypeData(type: .mirage      , maxBoost: 10  , nbGamesToUnlock: 30  , string: "MIRAGE"      ),
+        GameTypeData(type: .rewire      , maxBoost: 12  , nbGamesToUnlock: 40  , string: "REWIRE"      ),
+        GameTypeData(type: .transit     , maxBoost: 14  , nbGamesToUnlock: 50  , string: "TRANSIT"     ),
+    ]
+    
     class Ads {
         static let bannerSize = kGADAdSizeBanner
         static let adUnitIdBannerTest = "ca-app-pub-3940256099942544/2934735716"
@@ -171,52 +204,22 @@ class Const {
         static let showCloudDebug = false
         static let showStats = false
     }
-    
-    static let buildMode = BuildMode.dev
-    
-    static let backgroundColor = UIColor(white: 0.0, alpha: 1)
-    
-    // Default: HelveticaNeue-UltraLight.
-    // Some nice: HelveticaNeue, AvenirNextCondensed, AvenirNext
-    // Heavy, Bold, DemiBold, Medium, Regular, UltraLight.
-    static let fontNameText = "AvenirNextCondensed-DemiBold"
-    static let fontNameLabel = "AvenirNextCondensed-Bold"
-    static let fontNameTitle = "AvenirNextCondensed-Heavy"
 
     static func mustShowAds() -> Bool {
         return Const.buildMode != .demo
     }
-}
-
-func getMaxBoost(type: GameType) -> Int {
-    switch type {
-    case .normal: return 4
-    case .satellite: return 5
-    case .shadow: return 6
-    case .transit: return 7
-    case .mirage: return 8
-    case .rewire: return 9
+    
+    static func getGameTypeData(_ type: GameType) -> GameTypeData {
+        for g in Const.gameTypeDataArray {
+            if g.type == type { return g }
+        }
+        return Const.gameTypeDataArray.first!
     }
-}
-
-func getNbGamesToUnlock(type: GameType) -> Int {
-    switch type {
-    case .normal: return 0
-    case .satellite: return 10
-    case .shadow: return 20
-    case .transit: return 30
-    case .mirage: return 40
-    case .rewire: return 50
-    }
-}
-
-func getGameTypeString(type: GameType) -> String {
-    switch type {
-    case .normal: return "NORMAL"
-    case .satellite: return "SATELLITE"
-    case .shadow: return "SHADOW"
-    case .transit: return "TRANSIT"
-    case .mirage: return "MIRAGE"
-    case .rewire: return "REWIRE"
+    
+    static func getGameTypeDataIndex(_ type: GameType) -> Int {
+        for i in 0..<Const.gameTypeDataArray.count {
+            if Const.gameTypeDataArray[i].type == type { return i }
+        }
+        return 0
     }
 }

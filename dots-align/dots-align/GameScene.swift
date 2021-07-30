@@ -160,7 +160,8 @@ class GameScene: SKScene {
                 if self.menuChooseGame != nil {
                     if !self.menuChooseGame!.isGameTypeLocked() {
                         self.showInterstitialAdIfNecessary({
-                            self.startGame(mode: self.gameMode, type: self.menuChooseGame!.cloudType)
+                            let data = Const.gameTypeDataArray[self.menuChooseGame!.cloudTypeIdx]
+                            self.startGame(mode: self.gameMode, type: data.type)
                         })
                     }
                 }

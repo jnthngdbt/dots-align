@@ -63,13 +63,13 @@ class ScoreBoard {
         self.colLevelPosX = self.sidePadding + 1.5 * self.colWidth
         self.colTimePosX = self.sidePadding + 2.5 * self.colWidth
         
-        for type in GameType.allCases {
-            self.rowsGame.append(SKLabelNode(text: getGameTypeString(type: type)))
+        for g in Const.gameTypeDataArray {
+            self.rowsGame.append(SKLabelNode(text: g.string))
             self.rowsLevel.append(SKLabelNode(text: "--"))
             self.rowsTime.append(SKLabelNode(text: "--"))
         }
         
-        let rowsEndPosY = self.hdrPosY - (self.hdrSpacing + CGFloat(GameType.allCases.count - 1) * self.rowSpacing)
+        let rowsEndPosY = self.hdrPosY - (self.hdrSpacing + CGFloat(Const.gameTypeDataArray.count - 1) * self.rowSpacing)
         self.statTypePosY = rowsEndPosY - self.statTypeSpacing
         
         let navButtonSize = CGSize(width: 0.12 * scene.size.width, height: 0.12 * scene.size.width)
@@ -104,7 +104,7 @@ class ScoreBoard {
     }
     
     private func setTitle(scene: GameScene) {
-        self.title.fontColor = labelColor
+        self.title.fontColor = Const.labelColor
         self.title.fontName = Const.fontNameTitle
         self.title.fontSize = 0.15 * scene.minSize()
         self.title.position = CGPoint(x: scene.center().x, y: self.titlePosY * scene.size.height)
@@ -114,7 +114,7 @@ class ScoreBoard {
     }
     
     private func setHeaderLabel(scene: GameScene, label: SKLabelNode, posX: CGFloat) {
-        label.fontColor = labelColor
+        label.fontColor = Const.labelColor
         label.fontName = Const.fontNameLabel
         label.fontSize = 0.05 * scene.minSize()
         label.position = CGPoint(x: posX * scene.size.width, y: self.hdrPosY * scene.size.height)
@@ -139,7 +139,7 @@ class ScoreBoard {
         var row: CGFloat = 1
         for label in labels {
             let spacing = row == 1 ? self.hdrSpacing : self.hdrSpacing + (row - 1) * self.rowSpacing
-            label.fontColor = accentColor
+            label.fontColor = Const.accentColor
             label.fontName = Const.fontNameLabel
             label.fontSize = 0.05 * scene.minSize()
             label.position = CGPoint(x: posX * scene.size.width, y: (self.hdrPosY - spacing) * scene.size.height)
@@ -153,15 +153,18 @@ class ScoreBoard {
     private func updateRowsLabels() {
         var total = 0
         
-        for type in GameType.allCases {
-            let valueLevel = self.fetchValue(mode: .level, type: type, stat: self.statType)
-            let valueTime = self.fetchValue(mode: .time, type: type, stat: self.statType)
+        var rowIdx = 0
+        for g in Const.gameTypeDataArray {
+            let valueLevel = self.fetchValue(mode: .level, type: g.type, stat: self.statType)
+            let valueTime = self.fetchValue(mode: .time, type: g.type, stat: self.statType)
             
-            self.rowsLevel[type.rawValue].text = valueLevel != nil ? String(valueLevel!) : "--"
-            self.rowsTime[type.rawValue].text = valueTime != nil ? String(valueTime!) : "--"
+            self.rowsLevel[rowIdx].text = valueLevel != nil ? String(valueLevel!) : "--"
+            self.rowsTime[rowIdx].text = valueTime != nil ? String(valueTime!) : "--"
             
             total += valueLevel ?? 0
             total += valueTime ?? 0
+            
+            rowIdx += 1
         }
         
         self.updateTotal(total)
@@ -176,7 +179,7 @@ class ScoreBoard {
     }
     
     private func setDescription(scene: GameScene) {
-        self.description.fontColor = labelColor
+        self.description.fontColor = Const.labelColor
         self.description.fontName = Const.fontNameLabel
         self.description.fontSize = 0.05 * scene.minSize()
         self.description.position = CGPoint(x: scene.center().x, y: self.statTypePosY * scene.size.height)
@@ -206,7 +209,7 @@ class ScoreBoard {
     }
     
     private func setTotal(scene: GameScene) {
-        self.totalLabel.fontColor = labelColor
+        self.totalLabel.fontColor = Const.labelColor
         self.totalLabel.fontName = Const.fontNameTitle
         self.totalLabel.fontSize = 0.08 * scene.minSize()
         self.totalLabel.position = CGPoint(x: scene.center().x, y: self.totalPosY * scene.size.height)

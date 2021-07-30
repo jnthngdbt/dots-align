@@ -51,7 +51,7 @@ class MenuEndGame: Menu {
         label.shape.fillColor = UIColor.clear
         label.label.fontSize *= 3
         label.shape.setScale(1.0)
-        label.label.fontColor = labelColor
+        label.label.fontColor = Const.labelColor
         label.spacingAfter *= spacingAfterFactor
         self.buttons.append(label)
     }
@@ -61,7 +61,7 @@ class MenuEndGame: Menu {
         scoreLabel.shape.fillColor = UIColor.clear
         scoreLabel.label.fontSize *= 2.25
         scoreLabel.shape.setScale(scale * 0.4)
-        scoreLabel.label.fontColor = labelColor
+        scoreLabel.label.fontColor = Const.labelColor
         scoreLabel.spacingAfter *= 0
         self.buttons.append(scoreLabel)
         
@@ -69,7 +69,7 @@ class MenuEndGame: Menu {
         scoreButton.shape.fillColor = UIColor.clear
         scoreButton.label.fontSize *= 2.25
         scoreButton.shape.setScale(scale * 1.0)
-        scoreButton.label.fontColor = labelColor
+        scoreButton.label.fontColor = Const.labelColor
         scoreButton.spacingAfter *= spacingAfterFactor
         self.buttons.append(scoreButton)
     }
