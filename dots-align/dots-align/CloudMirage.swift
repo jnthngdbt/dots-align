@@ -59,8 +59,8 @@ class CloudMirage: Cloud {
         let halfCount = self.dots.count / 2
         let split = (halfCount % 2 == 0) ? halfCount : halfCount + 1 // adapt to even/odd
         
-        let factor = 1.5 // scales before clipping; stays visible longer, lowers gap between 2 states
-        let power = 1.0 // flattens towards 0; more abrupt transition
+        let factor = 1.5 // scales before clipping; stays visible longer, full scale longer, lowers gap between 2 states
+        let power = 0.5 // flattens towards 0; more abrupt transition // can create overlap when lowering < 1.0
         
         for i in 0..<self.dots.count {
             let scale = (i < split) ? scaleA : scaleB
