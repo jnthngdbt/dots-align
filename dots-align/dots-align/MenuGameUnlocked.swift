@@ -21,6 +21,8 @@ class MenuGameUnlocked {
     let rotationOffset = 0.9 // how rotation animation offsets from diagonal
     let rotationSpeed = 0.01
     
+    var titlePosY: CGFloat
+    
     init(scene: GameScene, gameTypeData: GameTypeData) {
         self.title = SKLabelNode(text: "CONGRATS")
         self.explanation = SKLabelNode(text: "YOU PLAYED " + String(gameTypeData.nbGamesToUnlock) + " GAMES TO UNLOCK")
@@ -37,12 +39,14 @@ class MenuGameUnlocked {
         
         self.orb = Orb(scene: scene, diameter: self.cloudScale * Const.Orb.diameterFactor)
         self.button = MenuButton(scene: scene, text: "NICE", id: .unlockedGameOk)
-        self.button.shape.position = CGPoint(x: scene.center().x, y: 0.19 * scene.size.height)
         
-        let explanationPosY = 0.80 * scene.size.height
-        self.setTitle(scene: scene, posY: 0.92 * scene.size.height)
+        self.titlePosY = 0.92 * scene.size.height
+        
+        let explanationPosY = self.getTopSpaceCenterPosY(scene: scene) + 0.032 * scene.minSize()
+        self.setTitle(scene: scene, posY: self.titlePosY)
         self.setExplanation(scene: scene, posY: explanationPosY)
         self.setGameDescription(scene: scene, posY: explanationPosY - 0.06 * scene.minSize()) // using minsize for fixed spacing
+        self.button.shape.position = CGPoint(x: scene.center().x, y: self.getBottomSpaceCenterPosY(scene: scene))
         
         self.animateIn()
     }
@@ -75,6 +79,22 @@ class MenuGameUnlocked {
         self.gameDescription.verticalAlignmentMode = .center
         self.gameDescription.setScale(0) // will animate
         scene.addChild(self.gameDescription)
+    }
+    
+    private func getTopSpaceCenterPosY(scene: GameScene) -> CGFloat {
+        // Not perfect, but adapts good enough.
+        let orbRadius = 0.5 * self.cloudScale * Const.Orb.diameterFactor * scene.minSize()
+        let orbTop = scene.center().y + orbRadius
+        let center = 0.5 * (orbTop + self.titlePosY)
+        return center
+    }
+    
+    private func getBottomSpaceCenterPosY(scene: GameScene) -> CGFloat {
+        let cloudRadius = 0.5 * self.cloudScale * Const.Cloud.sphereDiameterFactor * scene.minSize()
+        let cloudBottom = scene.center().y - cloudRadius
+        let bannerTop = Const.getBannerAdHeight()
+        let center = 0.5 * (cloudBottom + bannerTop)
+        return center
     }
     
     private func animateIn() {

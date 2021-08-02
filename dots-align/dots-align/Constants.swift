@@ -212,6 +212,10 @@ class Const {
         return Const.buildMode != .demo
     }
     
+    static func getBannerAdHeight() -> CGFloat {
+        return Const.mustShowAds() ? Const.Ads.bannerSize.size.height : 0
+    }
+    
     static func getGameTypeData(_ type: GameType) -> GameTypeData {
         for g in Const.gameTypeDataArray {
             if g.type == type { return g }
