@@ -25,8 +25,8 @@ class Level {
         
         self.nbPatternPoints = nbPatternPoints
         
-        let radius = 0.5 * Const.Level.sphereDiameterFactor * scene.minSize()
-        let dotRadius = Const.Level.dotRadiusFactor * scene.minSize()
+        let radius = 0.5 * Const.Cloud.sphereDiameterFactor * scene.minSize()
+        let dotRadius = Const.Cloud.dotRadiusFactor * scene.minSize()
         let color = mode == .tutorial ? Const.Tutorial.dotsColor : Const.Cloud.color
         
         self.cloud = Utils.makeCloud(

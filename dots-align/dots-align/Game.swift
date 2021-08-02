@@ -57,7 +57,7 @@ class Game {
     func initLevelScoreLabel(scene: GameScene) {
         self.levelScoreLabelStartPos = scene.center()
         self.levelScoreLabelEndPos = scene.center()
-        self.levelScoreLabelEndPos.y += (0.5 * Const.Level.sphereDiameterFactor + Const.Level.levelScoreEndPosOffsetFactor) * scene.minSize()
+        self.levelScoreLabelEndPos.y += (0.5 * Const.Cloud.sphereDiameterFactor + Const.Level.levelScoreEndPosOffsetFactor) * scene.minSize()
         self.levelScoreLabel = SKLabelNode(text: "0")
         self.levelScoreLabel.fontColor = Const.labelColor
         self.levelScoreLabel.fontName = Const.fontNameLabel
@@ -173,9 +173,8 @@ class Game {
         self.indicators?.update(name: IndicatorNames.left, value: self.left)
     }
     
-    func end() -> GameEntity? {
+    func end() {
         self.ended = true
-        return DatabaseManager.addGameResult(game: self)
     }
     
     deinit {

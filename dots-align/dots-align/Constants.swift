@@ -29,7 +29,8 @@ enum ButtonId: String, CaseIterable { case
     chooseGameNavLeft = "chooseGameNavLeft",
     chooseGameNavRight = "chooseGameNavRight",
     scoreBoardLeft = "scoreBoardLeft",
-    scoreBoardRight = "scoreBoardRight"
+    scoreBoardRight = "scoreBoardRight",
+    unlockedGameOk = "unlockedGameOk"
 }
 
 class GameTypeData {
@@ -43,6 +44,10 @@ class GameTypeData {
         self.maxBoost = maxBoost
         self.nbGamesToUnlock = nbGamesToUnlock
         self.string = string
+    }
+    
+    func description() -> String {
+        return self.string + " // x" + String(self.maxBoost) + " BOOST"
     }
 }
 
@@ -97,6 +102,8 @@ class Const {
     }
     
     class Cloud {
+        static let sphereDiameterFactor: CGFloat = 0.6
+        static let dotRadiusFactor: CGFloat = 0.022
         static let alignedOrientation = Vector3d(0, 0, 1)
         static let alignedDistThresh = 0.05
         static let color = accentColor
@@ -114,8 +121,6 @@ class Const {
     }
     
     class Level {
-        static let sphereDiameterFactor: CGFloat = 0.6
-        static let dotRadiusFactor: CGFloat = 0.022
         static let levelScoreFontSizeFactor: CGFloat = 0.1
         static let levelScoreEndPosOffsetFactor: CGFloat = 0.035
         static let boostCountdownKey = "boostCountdown"
@@ -159,8 +164,6 @@ class Const {
     
     class MenuChooseGame {
         static let nbDots = 20
-        static let sphereDiameterFactor: CGFloat = 0.6
-        static let dotRadiusFactor: CGFloat = 0.022
         static let startButtonWidthScaleFactor: CGFloat = 2.0
     }
     

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AB16E08726B4A764004907DE /* MenuGameUnlocked.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB16E08626B4A764004907DE /* MenuGameUnlocked.swift */; };
 		AB7616FD2697DFBF00A97945 /* ScoreBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7616FC2697DFBF00A97945 /* ScoreBoard.swift */; };
 		AB86CD192687A89C00448D04 /* Music.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB86CD182687A89B00448D04 /* Music.swift */; };
 		AB86CD20268AC55B00448D04 /* Menu.m4a in Resources */ = {isa = PBXBuildFile; fileRef = AB86CD1E268AC55B00448D04 /* Menu.m4a */; };
@@ -92,6 +93,7 @@
 		1087D8DDCCC8A02EECA9AE75 /* Pods-dots-align-pod-dots-align.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dots-align-pod-dots-align.debug.xcconfig"; path = "Target Support Files/Pods-dots-align-pod-dots-align/Pods-dots-align-pod-dots-align.debug.xcconfig"; sourceTree = "<group>"; };
 		317DC0512EA41069469A4487 /* libPods-dots-align-pod-dots-align.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-dots-align-pod-dots-align.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AF33B1CC4E0778AB225EF2D /* Pods-dots-align-pod-dots-align.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dots-align-pod-dots-align.release.xcconfig"; path = "Target Support Files/Pods-dots-align-pod-dots-align/Pods-dots-align-pod-dots-align.release.xcconfig"; sourceTree = "<group>"; };
+		AB16E08626B4A764004907DE /* MenuGameUnlocked.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuGameUnlocked.swift; sourceTree = "<group>"; };
 		AB7616FC2697DFBF00A97945 /* ScoreBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreBoard.swift; sourceTree = "<group>"; };
 		AB86CD182687A89B00448D04 /* Music.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Music.swift; sourceTree = "<group>"; };
 		AB86CD1E268AC55B00448D04 /* Menu.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; name = Menu.m4a; path = ../../music/Menu.m4a; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 				EC6976202669740800E34D6E /* Menu.swift */,
 				EC7E8C01267EDC77001A81F6 /* MenuChooseGame.swift */,
 				EC69761E266973E000E34D6E /* MenuEndGame.swift */,
+				AB16E08626B4A764004907DE /* MenuGameUnlocked.swift */,
 				EC77FD32264C7FF600B901FD /* MenuMain.swift */,
 				AB86CD182687A89B00448D04 /* Music.swift */,
 				EC69761C2669735900E34D6E /* ProgressBar.swift */,
@@ -455,6 +458,7 @@
 				ECEFA386266B08DA007F2C77 /* Database.xcdatamodeld in Sources */,
 				EC77FD2F264C7F3000B901FD /* Indicator.swift in Sources */,
 				AB86CD192687A89C00448D04 /* Music.swift in Sources */,
+				AB16E08726B4A764004907DE /* MenuGameUnlocked.swift in Sources */,
 				AB86CD37268D210400448D04 /* CloudWithDerps.swift in Sources */,
 				EC6976212669740800E34D6E /* Menu.swift in Sources */,
 				EC69761B2669713E00E34D6E /* GameIndicators.swift in Sources */,

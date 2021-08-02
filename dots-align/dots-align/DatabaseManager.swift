@@ -24,6 +24,7 @@ class DatabaseManager {
         let nbLevels = game.nbCompletedLevels
         
         let gameEntry = GameEntity(context: DatabaseManager.getContext())
+        gameEntry.date = Date()
         gameEntry.score = Int32(game.score)
         gameEntry.mode = Int32(game.mode.rawValue)
         gameEntry.type = Int32(game.type.rawValue)
@@ -40,31 +41,49 @@ class DatabaseManager {
     
     static private func getGameRequest() -> NSFetchRequest<GameEntity> {
         let request: NSFetchRequest<GameEntity> = GameEntity.fetchRequest()
-        request.predicate = NSPredicate(format: "score > 0")
         return request
     }
 
     static private func getGameRequest(gameMode: GameMode, gameType: GameType) -> NSFetchRequest<GameEntity> {
         let request: NSFetchRequest<GameEntity> = GameEntity.fetchRequest()
-        request.predicate = NSPredicate(format: "(mode == %d) AND (type == %d) AND (score > 0)", gameMode.rawValue, gameType.rawValue)
+        request.predicate = NSPredicate(format: "(mode == %d) AND (type == %d)", gameMode.rawValue, gameType.rawValue)
         return request
     }
     
-    static func getBestScore(gameMode: GameMode, gameType: GameType) -> Int? {
-        var results = [GameEntity]()
+    static func getLastGame() -> GameEntity? {
+        var result = [GameEntity]()
         
-        let request = getGameRequest(gameMode: gameMode, gameType: gameType)
-        let sort = NSSortDescriptor(key: "score", ascending: false)
+        let request: NSFetchRequest<GameEntity> = GameEntity.fetchRequest()
+        let sort = NSSortDescriptor(key: "date", ascending: false)
         request.sortDescriptors = [sort]
-            
+        request.fetchLimit = 1
+        
         do {
             let context = DatabaseManager.getContext()
-            try results = context.fetch(request)
+            try result = context.fetch(request)
         } catch {
             print("[ERROR] Could not fetch data from database.")
         }
         
-        return results.count > 0 ? Int(results[0].score) : nil
+        return result.count > 0 ? result[0] : nil
+    }
+    
+    static func getBestScore(gameMode: GameMode, gameType: GameType) -> Int? {
+        var result = [GameEntity]()
+        
+        let request = getGameRequest(gameMode: gameMode, gameType: gameType)
+        let sort = NSSortDescriptor(key: "score", ascending: false)
+        request.sortDescriptors = [sort]
+        request.fetchLimit = 1
+            
+        do {
+            let context = DatabaseManager.getContext()
+            try result = context.fetch(request)
+        } catch {
+            print("[ERROR] Could not fetch data from database.")
+        }
+        
+        return result.count > 0 ? Int(result[0].score) : nil
     }
     
     static func getAverageScore(gameMode: GameMode, gameType: GameType) -> Int? {

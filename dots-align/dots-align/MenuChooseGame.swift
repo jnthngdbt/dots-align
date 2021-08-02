@@ -30,9 +30,9 @@ class MenuChooseGame {
     let rotationSpeed = 0.01
     
     init(scene: GameScene) {
-        self.cloudDiameter = Const.MenuChooseGame.sphereDiameterFactor * scene.minSize()
+        self.cloudDiameter = Const.Cloud.sphereDiameterFactor * scene.minSize()
         self.cloudRadius = 0.5 * cloudDiameter
-        self.dotRadius = Const.MenuChooseGame.dotRadiusFactor * scene.minSize()
+        self.dotRadius = Const.Cloud.dotRadiusFactor * scene.minSize()
         self.nbGamesPlayed = DatabaseManager.getGameCount() ?? 0
         
         let lastGameType = UserDefaults.standard.integer(forKey: Const.DefaultsKeys.lastGameTypeSelected) // returns 0 if not set yet
@@ -96,7 +96,7 @@ class MenuChooseGame {
     
     func updateDescription() {
         let gameTypeData = Const.gameTypeDataArray[self.cloudTypeIdx]
-        self.description.text = gameTypeData.string + " // x" + String(gameTypeData.maxBoost) + " BOOST"
+        self.description.text = gameTypeData.description()
     }
     
     func setLockedText(scene: GameScene) {

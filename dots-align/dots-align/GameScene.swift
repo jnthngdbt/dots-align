@@ -12,6 +12,7 @@ class GameScene: SKScene {
     var game: Game?
     var menuMain: MenuMain?
     var menuEndGame: MenuEndGame?
+    var menuGameUnlocked: MenuGameUnlocked?
     var menuChooseGame: MenuChooseGame?
     var scoreBoard: ScoreBoard?
     var gameMode = GameMode.level
@@ -80,7 +81,7 @@ class GameScene: SKScene {
             self.game?.newLevelIfNecessary(scene: self)
             if self.game?.ended == true {
                 if self.gameMode != .time { // end game animation is called by timer in this case
-                    self.endGameAnimation()
+                    self.endGame()
                 }
             }
         }
@@ -94,6 +95,7 @@ class GameScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         self.menuMain?.update()
         self.menuChooseGame?.update()
+        self.menuGameUnlocked?.update()
     }
     
     func touchRotate(touches: Set<UITouch>) {
@@ -185,6 +187,9 @@ class GameScene: SKScene {
                 Music.instance.toggleSounds(songIfUnmute: Const.Music.menu)
                 self.menuMain?.updateSoundButton()
             }
+            else if buttonId == .unlockedGameOk {
+                self.showEndGameMenu()
+            }
         }
         
         self.touchBeganOnButtonId = nil
@@ -213,32 +218,49 @@ class GameScene: SKScene {
 
         let countdown = SKAction.sequence([
             SKAction.repeat(countdownStep, count: Const.Game.maxSeconds),
-            SKAction.run(self.endGameAnimation)
+            SKAction.run(self.endGame)
         ])
         
         run(countdown, withKey: Const.Game.countdownKey)
     }
     
-    func endGameAnimation() {
-        let gameResults = self.game!.end()
+    func endGame() {
+        self.game!.end()
+        
+        self.gameCountForInterstitialAd += 1 // only consider completed games for interstitial ads, I'm a good guy
+        
+        _ = DatabaseManager.addGameResult(game: self.game!)
         
         self.removeAction(forKey: Const.Level.boostCountdownKey) // otherwise it continues poping after animated out
         
         self.game?.level.cloud.animate(action: SKAction.scale(to: 0, duration: Const.Animation.collapseSec))
         self.game?.indicators?.animate(action: SKAction.scale(to: 0, duration: Const.Animation.collapseSec))
         
-        let animation = SKAction.sequence([
-            SKAction.wait(forDuration: 0.5),
-            SKAction.scale(to: 0, duration: Const.Animation.collapseSec)
-        ])
-        
         if self.game?.orb != nil {
+            let animation = SKAction.sequence([
+                SKAction.wait(forDuration: 0.5),
+                SKAction.scale(to: 0, duration: Const.Animation.collapseSec)
+            ])
             self.game!.orb!.node.run(animation) {
-                self.showEndGameMenu(gameResults: gameResults)
+                self.showEndGameLandingPage()
             }
         } else {
-            self.showEndGameMenu(gameResults: gameResults)
+            self.showEndGameLandingPage()
         }
+    }
+    
+    func getNewGameUnlocked() -> GameTypeData? {
+        let nbGamesPlayed = DatabaseManager.getGameCount() ?? 0
+        
+        if nbGamesPlayed > 0 {
+            for g in Const.gameTypeDataArray {
+                if g.nbGamesToUnlock == nbGamesPlayed {
+                    return g
+                }
+            }
+        }
+        
+        return nil
     }
     
     func showMainMenu() {
@@ -258,14 +280,26 @@ class GameScene: SKScene {
         Music.instance.playSong(Const.Music.menu)
     }
     
-    func showEndGameMenu(gameResults: GameEntity?) {
-        self.gameCountForInterstitialAd += 1 // only consider completed games for interstitial ads, I'm a good guy
+    func showEndGameLandingPage() {
+        let newGameUnlocked = self.getNewGameUnlocked()
         
-        let score = self.game?.score ?? 0
-        let bestScore = gameResults?.bestScore ?? 0
-        
+        if newGameUnlocked != nil {
+            self.showUnlockedGameMenu(gameTypeData: newGameUnlocked!)
+        } else {
+            self.showEndGameMenu()
+        }
+    }
+    
+    func showEndGameMenu() {
         self.clearScene()
-        self.menuEndGame = MenuEndGame(scene: self, score: score, bestScore: Int(bestScore))
+        self.menuEndGame = MenuEndGame(scene: self)
+        
+        Music.instance.playSong(Const.Music.game)
+    }
+    
+    func showUnlockedGameMenu(gameTypeData: GameTypeData) {
+        self.clearScene()
+        self.menuGameUnlocked = MenuGameUnlocked(scene: self, gameTypeData: gameTypeData)
         
         Music.instance.playSong(Const.Music.game)
     }
@@ -287,6 +321,7 @@ class GameScene: SKScene {
         self.clearGame()
         self.menuMain = nil
         self.menuEndGame = nil
+        self.menuGameUnlocked = nil
         self.menuChooseGame = nil
         self.scoreBoard = nil
     }

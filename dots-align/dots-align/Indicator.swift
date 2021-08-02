@@ -20,7 +20,7 @@ class Indicator {
         
         // Layout indicators on a circle.
         let normalizedPosX = posX - scene.center().x
-        let layoutRadius = Const.Indicators.layoutSphereFactor * Const.Level.sphereDiameterFactor * scene.minSize()
+        let layoutRadius = Const.Indicators.layoutSphereFactor * Const.Cloud.sphereDiameterFactor * scene.minSize()
         let dataPosY = sqrt(layoutRadius * layoutRadius - normalizedPosX * normalizedPosX) + scene.center().y
         let labelPosY = dataPosY + Const.Indicators.verticalSpacingFactor * scene.minSize()
         
