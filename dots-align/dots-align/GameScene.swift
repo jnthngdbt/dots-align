@@ -284,6 +284,7 @@ class GameScene: SKScene {
         let newGameUnlocked = self.getNewGameUnlocked()
         
         if newGameUnlocked != nil {
+            UserDefaults.standard.set(newGameUnlocked!.type.rawValue, forKey: Const.DefaultsKeys.lastGameTypeSelected)
             self.showUnlockedGameMenu(gameTypeData: newGameUnlocked!)
         } else {
             self.showEndGameMenu()
