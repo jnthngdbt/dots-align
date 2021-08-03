@@ -9,6 +9,10 @@ import Foundation
 import GameKit
 
 class GameCenter {
+    static func isAuthenticated() -> Bool {
+        return GKLocalPlayer.local.isAuthenticated
+    }
+    
     static func submit(score: Int, mode: GameMode, type: GameType) {
         let leaderboardIDs = GameCenter.getLeaderBoardIds(mode: mode, type: type)
         

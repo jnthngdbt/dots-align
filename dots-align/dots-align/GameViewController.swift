@@ -11,8 +11,7 @@ import GameKit
 import GameplayKit
 import GoogleMobileAds
 
-class GameViewController: UIViewController, GADFullScreenContentDelegate {
-
+class GameViewController: UIViewController, GADFullScreenContentDelegate, GKGameCenterControllerDelegate {
     var scene: GameScene?
     var bannerView: GADBannerView?
     var interstitial: GADInterstitialAd?
@@ -23,7 +22,7 @@ class GameViewController: UIViewController, GADFullScreenContentDelegate {
         
         if let view = self.view as! SKView? {
             self.scene = GameScene(size: CGSize(width: self.view.bounds.width, height: self.view.bounds.height))
-            self.scene!.adsDelegate = self
+            self.scene!.viewController = self
             
             self.scene!.scaleMode = .aspectFit
             
@@ -169,5 +168,15 @@ class GameViewController: UIViewController, GADFullScreenContentDelegate {
             
             // Perform any other configurations as needed (for example, access point).
         }
+    }
+    
+    func showGameCenterLeaderboards() {
+        let viewController = GKGameCenterViewController(state: .leaderboards)
+        viewController.gameCenterDelegate = self
+        self.present(viewController, animated: true)
+    }
+    
+    func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
+        gameCenterViewController.dismiss(animated: true)
     }
 }

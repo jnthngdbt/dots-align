@@ -10,6 +10,7 @@ import GameKit
 import GameplayKit
 
 class GameScene: SKScene {
+    var viewController: GameViewController?
     var game: Game?
     var menuMain: MenuMain?
     var menuEndGame: MenuEndGame?
@@ -19,7 +20,6 @@ class GameScene: SKScene {
     var gameMode = GameMode.level
     var gameType = GameType.normal
     var touchBeganOnButtonId: ButtonId?
-    var adsDelegate: GameViewController?
     var gameCountForInterstitialAd = 0
     
     func minSize() -> CGFloat {
@@ -112,7 +112,9 @@ class GameScene: SKScene {
     }
     
     func updateGameCenterAccessPoint() {
-        let showAccessPoint = GKLocalPlayer.local.isAuthenticated && (self.menuMain != nil)
+        self.scoreBoard?.updateLeaderboardsButton()
+        
+        let showAccessPoint = GameCenter.isAuthenticated() && (self.scoreBoard != nil)
         GKAccessPoint.shared.isActive = showAccessPoint
     }
     
@@ -188,6 +190,12 @@ class GameScene: SKScene {
             }
             else if buttonId == .scoreBoardRight {
                 self.scoreBoard?.onRightTap(scene: self)
+            }
+            else if buttonId == .scoreBoardLeaderboards {
+                self.scoreBoard?.updateLeaderboardsButton() // update from authentication status
+                if GameCenter.isAuthenticated() {
+                    self.viewController?.showGameCenterLeaderboards()
+                }
             }
             else if buttonId == .soundsToggle {
                 Music.instance.toggleSounds(songIfUnmute: Const.Music.menu)
@@ -272,8 +280,6 @@ class GameScene: SKScene {
         self.menuMain = MenuMain(scene: self)
         
         Music.instance.playSong(Const.Music.menu)
-        
-        self.updateGameCenterAccessPoint()
     }
     
     func showMenuChooseGame(mode: GameMode, type: GameType) {
@@ -316,6 +322,8 @@ class GameScene: SKScene {
         self.scoreBoard = ScoreBoard(scene: self)
         
         Music.instance.playSong(Const.Music.menu)
+        
+        self.updateGameCenterAccessPoint()
     }
     
     func clearGame() {
@@ -340,9 +348,9 @@ class GameScene: SKScene {
             completionHandler?() // no ad, just execute callback directly
         } else { // show ad
             self.gameCountForInterstitialAd = 0
-            if self.adsDelegate != nil {
+            if self.viewController != nil {
                 Music.instance.stop()
-                self.adsDelegate?.showInterstitialAd(completionHandler)
+                self.viewController?.showInterstitialAd(completionHandler)
             }
         }
     }

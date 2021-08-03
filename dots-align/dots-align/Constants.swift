@@ -30,6 +30,7 @@ enum ButtonId: String, CaseIterable { case
     chooseGameNavRight = "chooseGameNavRight",
     scoreBoardLeft = "scoreBoardLeft",
     scoreBoardRight = "scoreBoardRight",
+    scoreBoardLeaderboards = "scoreBoardLeaderboards",
     unlockedGameOk = "unlockedGameOk"
 }
 
@@ -165,6 +166,10 @@ class Const {
     class MenuChooseGame {
         static let nbDots = 20
         static let startButtonWidthScaleFactor: CGFloat = 2.0
+    }
+    
+    class ScoreBoard {
+        static let leaderboardsButtonWidthScaleFactor: CGFloat = 3.2
     }
     
     class Button {

@@ -7,12 +7,14 @@
 
 import Foundation
 import SpriteKit
+import GameKit
 
 class ScoreBoard {
     enum StatType: Int, CaseIterable { case best, average, count }
     
     let title: SKLabelNode
     let homeButton: FooterHomeButton
+    let leaderboardsButton: FooterButton
     
     let hdrGame: SKLabelNode
     let hdrLevel: SKLabelNode
@@ -34,8 +36,8 @@ class ScoreBoard {
     
     var statType = StatType.allCases.first!
     
-    let titlePosY: CGFloat = 0.88
-    let hdrPosY: CGFloat = 0.74
+    let titlePosY: CGFloat = 0.83
+    let titleSpacing: CGFloat = 0.08
     let hdrSpacing: CGFloat = 0.075
     let rowSpacing: CGFloat = 0.05
     let statTypeSpacing: CGFloat = 0.08
@@ -43,6 +45,7 @@ class ScoreBoard {
     
     let colWidth: CGFloat = 0.3
     
+    let hdrPosY: CGFloat
     let sidePadding: CGFloat
     let colGamePosX: CGFloat
     let colLevelPosX: CGFloat
@@ -53,6 +56,7 @@ class ScoreBoard {
     init(scene: GameScene) {
         self.title = SKLabelNode(text: "SCORE BOARD")
         self.homeButton = FooterHomeButton(scene: scene)
+        self.leaderboardsButton = FooterButton(scene: scene, text: "LEADERBOARDS", id: .scoreBoardLeaderboards, widthScaleFactor: Const.ScoreBoard.leaderboardsButtonWidthScaleFactor)
         
         self.hdrGame = SKLabelNode(text: "GAME TYPE")
         self.hdrLevel = SKLabelNode(text: "LEVEL MODE")
@@ -69,6 +73,7 @@ class ScoreBoard {
             self.rowsTime.append(SKLabelNode(text: "--"))
         }
         
+        self.hdrPosY = self.titlePosY - self.titleSpacing
         let rowsEndPosY = self.hdrPosY - (self.hdrSpacing + CGFloat(Const.gameTypeDataArray.count - 1) * self.rowSpacing)
         self.statTypePosY = rowsEndPosY - self.statTypeSpacing
         
@@ -100,13 +105,15 @@ class ScoreBoard {
         
         self.setTotal(scene: scene)
         
+        self.setLeaderboardsButton(scene: scene)
+        
         self.animateIn()
     }
     
     private func setTitle(scene: GameScene) {
         self.title.fontColor = Const.labelColor
         self.title.fontName = Const.fontNameTitle
-        self.title.fontSize = 0.15 * scene.minSize()
+        self.title.fontSize = 0.10 * scene.minSize()
         self.title.position = CGPoint(x: scene.center().x, y: self.titlePosY * scene.size.height)
         self.title.verticalAlignmentMode = .center
         self.title.setScale(0) // will animate
@@ -220,6 +227,21 @@ class ScoreBoard {
     
     private func updateTotal(_ total: Int) {
         self.totalLabel.text = "TOTAL: " + String(total)
+    }
+    
+    func setLeaderboardsButton(scene: GameScene) {
+        let leftFooterPaddingFactor = Const.Indicators.sidePaddingFactor - 0.5 * Const.Button.Footer.widthFactor
+        let buttonWidth = Const.Button.Footer.widthFactor * Const.ScoreBoard.leaderboardsButtonWidthScaleFactor
+        self.leaderboardsButton.shape.position.x = scene.size.width - (leftFooterPaddingFactor + 0.5 * buttonWidth) * scene.minSize()
+        self.leaderboardsButton.label.fontSize = 0.85 * self.leaderboardsButton.label.fontSize
+    }
+    
+    func updateLeaderboardsButton() {
+        if GameCenter.isAuthenticated() {
+            self.leaderboardsButton.label.fontColor = Const.accentColor
+        } else {
+            self.leaderboardsButton.label.fontColor = Const.disabledButtonFontColor
+        }
     }
     
     private func getStatTypeString(type: StatType) -> String {
