@@ -6,6 +6,7 @@
 //
 
 import SpriteKit
+import GameKit
 import GameplayKit
 
 class GameScene: SKScene {
@@ -108,6 +109,11 @@ class GameScene: SKScene {
             
             self.game?.level.rotate(dir: v, speed: Const.Scene.orbitingSpeed)
         }
+    }
+    
+    func updateGameCenterAccessPoint() {
+        let showAccessPoint = GKLocalPlayer.local.isAuthenticated && (self.menuMain != nil)
+        GKAccessPoint.shared.isActive = showAccessPoint
     }
     
     func testButtonHit(touches: Set<UITouch>) -> ButtonId? {
@@ -268,6 +274,8 @@ class GameScene: SKScene {
         self.menuMain = MenuMain(scene: self)
         
         Music.instance.playSong(Const.Music.menu)
+        
+        self.updateGameCenterAccessPoint()
     }
     
     func showMenuChooseGame(mode: GameMode, type: GameType) {
@@ -325,6 +333,8 @@ class GameScene: SKScene {
         self.menuGameUnlocked = nil
         self.menuChooseGame = nil
         self.scoreBoard = nil
+        
+        GKAccessPoint.shared.isActive = false // hide it
     }
     
     func showInterstitialAdIfNecessary(_ completionHandler: (() -> Void)? = nil) {

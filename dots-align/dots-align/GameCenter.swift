@@ -6,3 +6,8 @@
 //
 
 import Foundation
+import GameKit
+
+class GameCenter {
+
+}

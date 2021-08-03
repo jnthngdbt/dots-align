@@ -13,6 +13,7 @@ import GoogleMobileAds
 
 class GameViewController: UIViewController, GADFullScreenContentDelegate {
 
+    var scene: GameScene?
     var bannerView: GADBannerView?
     var interstitial: GADInterstitialAd?
     var interstitialAdCompletionHandler: (() -> Void)?
@@ -21,12 +22,12 @@ class GameViewController: UIViewController, GADFullScreenContentDelegate {
         super.viewDidLoad()
         
         if let view = self.view as! SKView? {
-            let scene = GameScene(size: CGSize(width: self.view.bounds.width, height: self.view.bounds.height))
-            scene.adsDelegate = self
+            self.scene = GameScene(size: CGSize(width: self.view.bounds.width, height: self.view.bounds.height))
+            self.scene!.adsDelegate = self
             
-            scene.scaleMode = .aspectFit
+            self.scene!.scaleMode = .aspectFit
             
-            view.presentScene(scene)
+            view.presentScene(self.scene!)
             view.ignoresSiblingOrder = true
             
             if Const.Debug.showStats {
@@ -140,6 +141,8 @@ class GameViewController: UIViewController, GADFullScreenContentDelegate {
             if let viewController = viewController {
                 self.present(viewController, animated: true)
             }
+            
+            self.scene?.updateGameCenterAccessPoint()
             
             if error != nil {
                 // Player could not be authenticated.
