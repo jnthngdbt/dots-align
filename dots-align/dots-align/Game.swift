@@ -175,6 +175,8 @@ class Game {
     
     func end() {
         self.ended = true
+        _ = DatabaseManager.addGameResult(game: self)
+        GameCenter.submit(score: self.score, mode: self.mode, type: self.type)
     }
     
     deinit {

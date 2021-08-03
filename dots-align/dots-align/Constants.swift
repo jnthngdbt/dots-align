@@ -195,6 +195,22 @@ class Const {
         static let titleAppearWait = 0.1
     }
     
+    class GameCenter {
+        static let boardClassicNormalTimed  = "classic.normal.timed"
+        static let boardClassisNormalLevels = "classic.normal.levels"
+        static let boardClassicSatelliteTimed  = "classic.satellite.timed"
+        static let boardClassisSatelliteLevels = "classic.satellite.levels"
+        static let boardClassicShadowTimed  = "classic.shadow.timed"
+        static let boardClassisShadowLevels = "classic.shadow.levels"
+        static let boardClassicMirageTimed  = "classic.mirage.timed"
+        static let boardClassisMirageLevels = "classic.mirage.levels"
+        static let boardClassicRewireTimed  = "classic.rewire.timed"
+        static let boardClassisRewireLevels = "classic.rewire.levels"
+        static let boardClassicTransitTimed  = "classic.transit.timed"
+        static let boardClassisTransitLevels = "classic.transit.levels"
+        static let boardClassisOverallBest = "classic.overall.best"
+    }
+    
     class Music {
         static let game = "Game"
         static let menu = "Menu"

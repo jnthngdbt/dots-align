@@ -235,8 +235,6 @@ class GameScene: SKScene {
         
         self.gameCountForInterstitialAd += 1 // only consider completed games for interstitial ads, I'm a good guy
         
-        _ = DatabaseManager.addGameResult(game: self.game!)
-        
         self.removeAction(forKey: Const.Level.boostCountdownKey) // otherwise it continues poping after animated out
         
         self.game?.level.cloud.animate(action: SKAction.scale(to: 0, duration: Const.Animation.collapseSec))
