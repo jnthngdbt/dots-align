@@ -7,6 +7,7 @@
 
 import UIKit
 import SpriteKit
+import GameKit
 import GameplayKit
 import GoogleMobileAds
 
@@ -43,6 +44,8 @@ class GameViewController: UIViewController, GADFullScreenContentDelegate {
             
             self.loadInterstitialAd()
         }
+        
+        self.AuthenticateGameCenterLocalPlayer()
     }
     
     private func addBannerViewToView(_ bannerView: GADBannerView) {
@@ -126,5 +129,42 @@ class GameViewController: UIViewController, GADFullScreenContentDelegate {
 
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+    
+    func AuthenticateGameCenterLocalPlayer() {
+        GKLocalPlayer.local.authenticateHandler = { viewController, error in
+            // This handler may be called multiple times. E.g. first while not
+            // logged in, with a view controller to show. After, with a nil view
+            // controller meaning the user is logged in.
+            
+            if let viewController = viewController {
+                self.present(viewController, animated: true)
+            }
+            
+            if error != nil {
+                // Player could not be authenticated.
+                // Disable Game Center in the game.
+                return
+            }
+            
+            // Player was successfully authenticated (GKLocalPlayer.local.isAuthenticated).
+            // Check if there are any player restrictions before starting the game.
+                    
+            if GKLocalPlayer.local.isUnderage {
+                // Hide explicit game content.
+            }
+
+            if GKLocalPlayer.local.isMultiplayerGamingRestricted {
+                // Disable multiplayer game features.
+            }
+
+            if #available(iOS 14.0, *) {
+                if GKLocalPlayer.local.isPersonalizedCommunicationRestricted {
+                    // Disable in game communication UI.
+                }
+            }
+            
+            // Perform any other configurations as needed (for example, access point).
+        }
     }
 }
