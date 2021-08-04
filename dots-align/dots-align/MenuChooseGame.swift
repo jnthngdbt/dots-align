@@ -35,8 +35,7 @@ class MenuChooseGame {
         self.dotRadius = Const.Cloud.dotRadiusFactor * scene.minSize()
         self.nbGamesPlayed = DatabaseManager.getGameCount() ?? 0
         
-        let lastGameType = UserDefaults.standard.integer(forKey: Const.DefaultsKeys.lastGameTypeSelected) // returns 0 if not set yet
-        self.cloudTypeIdx = Const.getGameTypeDataIndex(GameType(rawValue: lastGameType) ?? .normal)
+        self.cloudTypeIdx = Const.getGameTypeDataIndex(UserData.lastGameTypeSelected())
         let gameTypeData = Const.gameTypeDataArray[self.cloudTypeIdx]
         
         self.cloud = Utils.makeCloud(type: gameTypeData.type, nbPoints: Const.MenuChooseGame.nbDots, scene: scene, color: MenuChooseGame.getCloudColor(data: gameTypeData, nbGamesPlayed: self.nbGamesPlayed), radius: self.cloudRadius, dotRadius: self.dotRadius)
@@ -212,7 +211,7 @@ class MenuChooseGame {
         self.cloud?.desalign(x: self.disalignment, y: self.disalignment)
         self.cloud?.animateIn(wait: 0.0)
         
-        UserDefaults.standard.set(type.rawValue, forKey: Const.DefaultsKeys.lastGameTypeSelected)
+        UserData.lastGameTypeSelected(type: type)
         
         self.updateDescription()
         self.updateLockedText()

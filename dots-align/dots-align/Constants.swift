@@ -91,8 +91,8 @@ class Const {
         static let nbGamesForInterstitialAd = 3
     }
     
-    class DefaultsKeys {
-        static let muteSound = "muteSound"
+    class UserDataKeys {
+        static let isSoundMuted = "isSoundMuted"
         static let lastGameTypeSelected = "lastGameTypeSelected"
     }
     

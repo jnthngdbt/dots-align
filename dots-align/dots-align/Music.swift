@@ -16,7 +16,7 @@ class Music {
     var songPlaying: String = ""
     
     func toggleSounds(songIfUnmute: String = "") {
-        UserDefaults.standard.set(!self.isMuted(), forKey: Const.DefaultsKeys.muteSound)
+        UserData.isSoundMuted(!self.isMuted()) // toggle
         self.updateSounds(songIfUnmute: songIfUnmute)
     }
     
@@ -29,7 +29,7 @@ class Music {
     }
     
     func isMuted() -> Bool {
-        return UserDefaults.standard.bool(forKey: Const.DefaultsKeys.muteSound) // returns false if not set yet
+        return UserData.isSoundMuted()
     }
     
     func playSong(_ name: String) {
