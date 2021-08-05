@@ -13,81 +13,39 @@ class GameCenter {
         return GKLocalPlayer.local.isAuthenticated
     }
     
-    static func submit(score: Int, mode: GameMode, type: GameType) {
-        let leaderboardIDs = GameCenter.getLeaderBoardIds(mode: mode, type: type)
-        
-        if leaderboardIDs.count > 0 {
-            GKLeaderboard.submitScore(score, context: 0, player: GKLocalPlayer.local, leaderboardIDs: leaderboardIDs) { error in
-                print(error.debugDescription)
-            }
+    static func submit(_ value: Int, leaderboard: String) {
+        GKLeaderboard.submitScore(value, context: 0, player: GKLocalPlayer.local, leaderboardIDs: [leaderboard]) { error in
+            print(error.debugDescription)
         }
     }
     
-    static private func getLeaderBoardIds(mode: GameMode, type: GameType) -> [String] {
-        var ids: [String] = []
-        
+    static func getLeaderBoardIdForScore(mode: GameMode, type: GameType) -> String {
         switch mode {
-        case .level: ids = GameCenter.getLeaderBoardIdsLevels(type: type)
-        case .time: ids = GameCenter.getLeaderBoardIdsTimed(type: type)
-        case .tutorial: break // should not happen
+        case .level: return GameCenter.getLeaderBoardIdForScoreLevels(type: type)
+        case .time: return GameCenter.getLeaderBoardIdForScoreTimed(type: type)
+        case .tutorial: return "" // should not happen
         }
-        
-        ids.append(Const.GameCenter.boardClassisOverallBest)
-        
-        return ids
     }
     
-    static private func getLeaderBoardIdsTimed(type: GameType) -> [String] {
-        var ids: [String] = []
-        
+    static private func getLeaderBoardIdForScoreTimed(type: GameType) -> String {
         switch type {
-        case .normal:
-            ids.append(Const.GameCenter.boardClassicNormalTimed)
-            break
-        case .satellite:
-            ids.append(Const.GameCenter.boardClassicSatelliteTimed)
-            break
-        case .shadow:
-            ids.append(Const.GameCenter.boardClassicShadowTimed)
-            break
-        case .mirage:
-            ids.append(Const.GameCenter.boardClassicMirageTimed)
-            break
-        case .rewire:
-            ids.append(Const.GameCenter.boardClassicRewireTimed)
-            break
-        case .transit:
-            ids.append(Const.GameCenter.boardClassicTransitTimed)
-            break
+        case .normal: return Const.GameCenter.boardClassicNormalTimed
+        case .satellite: return Const.GameCenter.boardClassicSatelliteTimed
+        case .shadow: return Const.GameCenter.boardClassicShadowTimed
+        case .mirage: return Const.GameCenter.boardClassicMirageTimed
+        case .rewire: return Const.GameCenter.boardClassicRewireTimed
+        case .transit: return Const.GameCenter.boardClassicTransitTimed
         }
-        
-        return ids
     }
     
-    static private func getLeaderBoardIdsLevels(type: GameType) -> [String] {
-        var ids: [String] = []
-        
+    static private func getLeaderBoardIdForScoreLevels(type: GameType) -> String {
         switch type {
-        case .normal:
-            ids.append(Const.GameCenter.boardClassisNormalLevels)
-            break
-        case .satellite:
-            ids.append(Const.GameCenter.boardClassisSatelliteLevels)
-            break
-        case .shadow:
-            ids.append(Const.GameCenter.boardClassisShadowLevels)
-            break
-        case .mirage:
-            ids.append(Const.GameCenter.boardClassisMirageLevels)
-            break
-        case .rewire:
-            ids.append(Const.GameCenter.boardClassisRewireLevels)
-            break
-        case .transit:
-            ids.append(Const.GameCenter.boardClassisTransitLevels)
-            break
+        case .normal: return Const.GameCenter.boardClassicNormalLevels
+        case .satellite: return Const.GameCenter.boardClassicSatelliteLevels
+        case .shadow: return Const.GameCenter.boardClassicShadowLevels
+        case .mirage: return Const.GameCenter.boardClassicMirageLevels
+        case .rewire: return Const.GameCenter.boardClassicRewireLevels
+        case .transit: return Const.GameCenter.boardClassicTransitLevels
         }
-        
-        return ids
     }
 }

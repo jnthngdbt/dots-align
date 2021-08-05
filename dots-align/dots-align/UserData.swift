@@ -24,4 +24,60 @@ class UserData {
     static func isSoundMuted(_ value: Bool) {
         UserDefaults.standard.set(value, forKey: Const.UserDataKeys.isSoundMuted)
     }
+    
+    static func getBestScore(mode: GameMode, type: GameType) -> Int {
+        return UserDefaults.standard.integer(forKey: GameCenter.getLeaderBoardIdForScore(mode: mode, type: type))
+    }
+    
+    static func setBestScoreIfNecessary(score: Int, mode: GameMode, type: GameType) {
+        let key = GameCenter.getLeaderBoardIdForScore(mode: mode, type: type)
+        GameCenter.submit(score, leaderboard: key)
+        
+        if score > getBestScore(mode: mode, type: type) {
+            UserDefaults.standard.set(score, forKey: key)
+        }
+    }
+    
+    static func getBestScoreOverall() -> Int {
+        return UserDefaults.standard.integer(forKey: Const.GameCenter.boardClassicOverallBest)
+    }
+    
+    static func setBestScoreOverallIfNecessary(score: Int) {
+        let key = Const.GameCenter.boardClassicOverallBest
+        GameCenter.submit(score, leaderboard: key)
+        
+        if score > getBestScoreOverall() {
+            UserDefaults.standard.set(score, forKey: key)
+        }
+    }
+    
+    static func getGameCountOverall() -> Int {
+        return UserDefaults.standard.integer(forKey: Const.GameCenter.boardClassicOverallCount)
+    }
+    
+    static func incrementGameCountOverall() {
+        let newCount = getGameCountOverall() + 1
+        let key = Const.GameCenter.boardClassicOverallCount
+        GameCenter.submit(newCount, leaderboard: key)
+        UserDefaults.standard.set(newCount, forKey: key)
+    }
+    
+    static func getLastScore(mode: GameMode, type: GameType) -> Int {
+        return UserDefaults.standard.integer(forKey: getLastScoreKey(mode: mode, type: type))
+    }
+    
+    static func setLastScore(score: Int, mode: GameMode, type: GameType) {
+        UserDefaults.standard.set(score, forKey: getLastScoreKey(mode: mode, type: type))
+    }
+    
+    static private func getLastScoreKey(mode: GameMode, type: GameType) -> String {
+        return GameCenter.getLeaderBoardIdForScore(mode: mode, type: type) + ".last"
+    }
+    
+    static func addGameResult(game: Game) {
+        setBestScoreIfNecessary(score: game.score, mode: game.mode, type: game.type)
+        setBestScoreOverallIfNecessary(score: game.score)
+        setLastScore(score: game.score, mode: game.mode, type: game.type)
+        incrementGameCountOverall()
+    }
 }

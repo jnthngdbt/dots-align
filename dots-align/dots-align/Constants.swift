@@ -94,6 +94,7 @@ class Const {
     class UserDataKeys {
         static let isSoundMuted = "isSoundMuted"
         static let lastGameTypeSelected = "lastGameTypeSelected"
+        // using GameCenter leaderboard IDs as keys for scores
     }
     
     class Dot {
@@ -201,19 +202,22 @@ class Const {
     }
     
     class GameCenter {
+        // GameCenter board names, also used as local data keys (UserData).
         static let boardClassicNormalTimed  = "classic.normal.timed"
-        static let boardClassisNormalLevels = "classic.normal.levels"
+        static let boardClassicNormalLevels = "classic.normal.levels"
         static let boardClassicSatelliteTimed  = "classic.satellite.timed"
-        static let boardClassisSatelliteLevels = "classic.satellite.levels"
+        static let boardClassicSatelliteLevels = "classic.satellite.levels"
         static let boardClassicShadowTimed  = "classic.shadow.timed"
-        static let boardClassisShadowLevels = "classic.shadow.levels"
+        static let boardClassicShadowLevels = "classic.shadow.levels"
         static let boardClassicMirageTimed  = "classic.mirage.timed"
-        static let boardClassisMirageLevels = "classic.mirage.levels"
+        static let boardClassicMirageLevels = "classic.mirage.levels"
         static let boardClassicRewireTimed  = "classic.rewire.timed"
-        static let boardClassisRewireLevels = "classic.rewire.levels"
+        static let boardClassicRewireLevels = "classic.rewire.levels"
         static let boardClassicTransitTimed  = "classic.transit.timed"
-        static let boardClassisTransitLevels = "classic.transit.levels"
-        static let boardClassisOverallBest = "classic.overall.best"
+        static let boardClassicTransitLevels = "classic.transit.levels"
+        static let boardClassicOverallBest = "classic.overall.best"
+        static let boardClassicOverallCount = "classic.overall.count"
+//        static let boardClassicOverallTotal = "classic.overall.total"
     }
     
     class Music {
