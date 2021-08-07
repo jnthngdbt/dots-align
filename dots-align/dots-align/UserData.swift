@@ -31,7 +31,7 @@ class UserData {
     
     static func setBestScoreIfNecessary(score: Int, mode: GameMode, type: GameType) {
         let key = GameCenter.getLeaderBoardIdForScore(mode: mode, type: type)
-        GameCenter.submit(score, leaderboard: key)
+        GameCenter.submit(score, leaderboardID: key)
         
         if score > getBestScore(mode: mode, type: type) {
             UserDefaults.standard.set(score, forKey: key)
@@ -39,12 +39,12 @@ class UserData {
     }
     
     static func getBestScoreOverall() -> Int {
-        return UserDefaults.standard.integer(forKey: Const.GameCenter.boardClassicOverallBest)
+        return UserDefaults.standard.integer(forKey: LeaderboardId.boardClassicOverallBest.rawValue)
     }
     
     static func setBestScoreOverallIfNecessary(score: Int) {
-        let key = Const.GameCenter.boardClassicOverallBest
-        GameCenter.submit(score, leaderboard: key)
+        let key = LeaderboardId.boardClassicOverallBest.rawValue
+        GameCenter.submit(score, leaderboardID: key)
         
         if score > getBestScoreOverall() {
             UserDefaults.standard.set(score, forKey: key)
@@ -52,13 +52,13 @@ class UserData {
     }
     
     static func getGameCountOverall() -> Int {
-        return UserDefaults.standard.integer(forKey: Const.GameCenter.boardClassicOverallCount)
+        return UserDefaults.standard.integer(forKey: LeaderboardId.boardClassicOverallCount.rawValue)
     }
     
     static func incrementGameCountOverall() {
         let newCount = getGameCountOverall() + 1
-        let key = Const.GameCenter.boardClassicOverallCount
-        GameCenter.submit(newCount, leaderboard: key)
+        let key = LeaderboardId.boardClassicOverallCount.rawValue
+        GameCenter.submit(newCount, leaderboardID: key)
         UserDefaults.standard.set(newCount, forKey: key)
     }
     
@@ -75,6 +75,7 @@ class UserData {
     }
     
     static func addGameResult(game: Game) {
+        game.score = 2244
         setBestScoreIfNecessary(score: game.score, mode: game.mode, type: game.type)
         setBestScoreOverallIfNecessary(score: game.score)
         setLastScore(score: game.score, mode: game.mode, type: game.type)

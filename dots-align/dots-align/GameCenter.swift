@@ -13,10 +13,38 @@ class GameCenter {
         return GKLocalPlayer.local.isAuthenticated
     }
     
-    static func submit(_ value: Int, leaderboard: String) {
-        GKLeaderboard.submitScore(value, context: 0, player: GKLocalPlayer.local, leaderboardIDs: [leaderboard]) { error in
+    static func submit(_ value: Int, leaderboardID: String) {
+        GKLeaderboard.submitScore(value, context: 0, player: GKLocalPlayer.local, leaderboardIDs: [leaderboardID]) { error in
             print(error.debugDescription)
         }
+    }
+    
+    static func syncWithLocalData() {
+        var leaderboardIds: [String] = []
+        for id in LeaderboardId.allCases { leaderboardIds.append(id.rawValue) }
+        
+        GKLeaderboard.loadLeaderboards(IDs: leaderboardIds) { (leaderboards, error) -> Void in
+            if (error != nil) {
+                print(error!)
+            }
+            
+            if (leaderboards != nil) {
+                for board in leaderboards! {
+                    syncLeaderboardWithLocalData(leaderboard: board)
+                }
+            }
+        }
+    }
+    
+    static private func syncLeaderboardWithLocalData(leaderboard: GKLeaderboard) {
+        print(leaderboard.baseLeaderboardID)
+        leaderboard.loadEntries(for: [GKLocalPlayer.local], timeScope: GKLeaderboard.TimeScope.allTime, completionHandler: { (localPlayerEntry, playersEntries, error) -> Void in
+            
+            // NOTE: often getting error Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service on pid 10124 named com.apple.gamed was interrupted, but the message was sent over an additional proxy and therefore this proxy has become invalid."
+            print(leaderboard.baseLeaderboardID)
+            print(error)
+            print(localPlayerEntry?.score)
+        })
     }
     
     static func getLeaderBoardIdForScore(mode: GameMode, type: GameType) -> String {
@@ -29,23 +57,23 @@ class GameCenter {
     
     static private func getLeaderBoardIdForScoreTimed(type: GameType) -> String {
         switch type {
-        case .normal: return Const.GameCenter.boardClassicNormalTimed
-        case .satellite: return Const.GameCenter.boardClassicSatelliteTimed
-        case .shadow: return Const.GameCenter.boardClassicShadowTimed
-        case .mirage: return Const.GameCenter.boardClassicMirageTimed
-        case .rewire: return Const.GameCenter.boardClassicRewireTimed
-        case .transit: return Const.GameCenter.boardClassicTransitTimed
+        case .normal: return LeaderboardId.boardClassicNormalTimed.rawValue
+        case .satellite: return LeaderboardId.boardClassicSatelliteTimed.rawValue
+        case .shadow: return LeaderboardId.boardClassicShadowTimed.rawValue
+        case .mirage: return LeaderboardId.boardClassicMirageTimed.rawValue
+        case .rewire: return LeaderboardId.boardClassicRewireTimed.rawValue
+        case .transit: return LeaderboardId.boardClassicTransitTimed.rawValue
         }
     }
     
     static private func getLeaderBoardIdForScoreLevels(type: GameType) -> String {
         switch type {
-        case .normal: return Const.GameCenter.boardClassicNormalLevels
-        case .satellite: return Const.GameCenter.boardClassicSatelliteLevels
-        case .shadow: return Const.GameCenter.boardClassicShadowLevels
-        case .mirage: return Const.GameCenter.boardClassicMirageLevels
-        case .rewire: return Const.GameCenter.boardClassicRewireLevels
-        case .transit: return Const.GameCenter.boardClassicTransitLevels
+        case .normal: return LeaderboardId.boardClassicNormalLevels.rawValue
+        case .satellite: return LeaderboardId.boardClassicSatelliteLevels.rawValue
+        case .shadow: return LeaderboardId.boardClassicShadowLevels.rawValue
+        case .mirage: return LeaderboardId.boardClassicMirageLevels.rawValue
+        case .rewire: return LeaderboardId.boardClassicRewireLevels.rawValue
+        case .transit: return LeaderboardId.boardClassicTransitLevels.rawValue
         }
     }
 }

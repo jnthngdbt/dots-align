@@ -34,6 +34,24 @@ enum ButtonId: String, CaseIterable { case
     unlockedGameOk = "unlockedGameOk"
 }
 
+enum LeaderboardId: String, CaseIterable { case
+    boardClassicNormalTimed  = "classic.normal.timed",
+    boardClassicNormalLevels = "classic.normal.levels",
+    boardClassicSatelliteTimed  = "classic.satellite.timed",
+    boardClassicSatelliteLevels = "classic.satellite.levels",
+    boardClassicShadowTimed  = "classic.shadow.timed",
+    boardClassicShadowLevels = "classic.shadow.levels",
+    boardClassicMirageTimed  = "classic.mirage.timed",
+    boardClassicMirageLevels = "classic.mirage.levels",
+    boardClassicRewireTimed  = "classic.rewire.timed",
+    boardClassicRewireLevels = "classic.rewire.levels",
+    boardClassicTransitTimed  = "classic.transit.timed",
+    boardClassicTransitLevels = "classic.transit.levels",
+    boardClassicOverallBest = "classic.overall.best",
+    boardClassicOverallCount = "classic.overall.count"
+//        static let boardClassicOverallTotal = "classic.overall.total"
+}
+
 class GameTypeData {
     let type: GameType
     let maxBoost: Int
@@ -199,25 +217,6 @@ class Const {
         static let scoreRiseSec = 0.2
         static let scoreRiseWaitSec = 0.3
         static let titleAppearWait = 0.1
-    }
-    
-    class GameCenter {
-        // GameCenter board names, also used as local data keys (UserData).
-        static let boardClassicNormalTimed  = "classic.normal.timed"
-        static let boardClassicNormalLevels = "classic.normal.levels"
-        static let boardClassicSatelliteTimed  = "classic.satellite.timed"
-        static let boardClassicSatelliteLevels = "classic.satellite.levels"
-        static let boardClassicShadowTimed  = "classic.shadow.timed"
-        static let boardClassicShadowLevels = "classic.shadow.levels"
-        static let boardClassicMirageTimed  = "classic.mirage.timed"
-        static let boardClassicMirageLevels = "classic.mirage.levels"
-        static let boardClassicRewireTimed  = "classic.rewire.timed"
-        static let boardClassicRewireLevels = "classic.rewire.levels"
-        static let boardClassicTransitTimed  = "classic.transit.timed"
-        static let boardClassicTransitLevels = "classic.transit.levels"
-        static let boardClassicOverallBest = "classic.overall.best"
-        static let boardClassicOverallCount = "classic.overall.count"
-//        static let boardClassicOverallTotal = "classic.overall.total"
     }
     
     class Music {
