@@ -37,13 +37,25 @@ class GameCenter {
     }
     
     static private func syncLeaderboardWithLocalData(leaderboard: GKLeaderboard) {
-        print(leaderboard.baseLeaderboardID)
         leaderboard.loadEntries(for: [GKLocalPlayer.local], timeScope: GKLeaderboard.TimeScope.allTime, completionHandler: { (localPlayerEntry, playersEntries, error) -> Void in
             
-            // NOTE: often getting error Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service on pid 10124 named com.apple.gamed was interrupted, but the message was sent over an additional proxy and therefore this proxy has become invalid."
-            print(leaderboard.baseLeaderboardID)
-            print(error)
-            print(localPlayerEntry?.score)
+            // NOTE 2021-08: often getting error Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service on pid 10124 named com.apple.gamed was interrupted, but the message was sent over an additional proxy and therefore this proxy has become invalid."
+            // My guess is that it is related to thread / calling callbacks inside callbacks.
+            // However, works when only fetching data from 1 leaderboard.
+            
+            if error != nil {
+                print(error.debugDescription)
+            } else {
+                let leaderboardId = leaderboard.baseLeaderboardID
+                let localScore = UserData.loadFromLocalLeaderboard(leaderboardId: leaderboardId)
+                let remoteScore = localPlayerEntry?.score ?? 0
+                
+                if localScore > remoteScore {
+                    GameCenter.submit(localScore, leaderboardID: leaderboardId)
+                } else if localScore < remoteScore {
+                    UserData.saveToLocalLeaderboard(value: remoteScore, leaderboardId: leaderboardId)
+                }
+            }
         })
     }
     

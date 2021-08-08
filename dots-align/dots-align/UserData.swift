@@ -26,7 +26,7 @@ class UserData {
     }
     
     static func getBestScore(mode: GameMode, type: GameType) -> Int {
-        return UserDefaults.standard.integer(forKey: GameCenter.getLeaderBoardIdForScore(mode: mode, type: type))
+        return loadFromLocalLeaderboard(leaderboardId: GameCenter.getLeaderBoardIdForScore(mode: mode, type: type))
     }
     
     static func setBestScoreIfNecessary(score: Int, mode: GameMode, type: GameType) {
@@ -34,12 +34,12 @@ class UserData {
         GameCenter.submit(score, leaderboardID: key)
         
         if score > getBestScore(mode: mode, type: type) {
-            UserDefaults.standard.set(score, forKey: key)
+            saveToLocalLeaderboard(value: score, leaderboardId: key)
         }
     }
     
     static func getBestScoreOverall() -> Int {
-        return UserDefaults.standard.integer(forKey: LeaderboardId.boardClassicOverallBest.rawValue)
+        return loadFromLocalLeaderboard(leaderboardId: LeaderboardId.boardClassicOverallBest.rawValue)
     }
     
     static func setBestScoreOverallIfNecessary(score: Int) {
@@ -47,27 +47,27 @@ class UserData {
         GameCenter.submit(score, leaderboardID: key)
         
         if score > getBestScoreOverall() {
-            UserDefaults.standard.set(score, forKey: key)
+            saveToLocalLeaderboard(value: score, leaderboardId: key)
         }
     }
     
     static func getGameCountOverall() -> Int {
-        return UserDefaults.standard.integer(forKey: LeaderboardId.boardClassicOverallCount.rawValue)
+        return loadFromLocalLeaderboard(leaderboardId: LeaderboardId.boardClassicOverallCount.rawValue)
     }
     
     static func incrementGameCountOverall() {
         let newCount = getGameCountOverall() + 1
         let key = LeaderboardId.boardClassicOverallCount.rawValue
         GameCenter.submit(newCount, leaderboardID: key)
-        UserDefaults.standard.set(newCount, forKey: key)
+        saveToLocalLeaderboard(value: newCount, leaderboardId: key)
     }
     
     static func getLastScore(mode: GameMode, type: GameType) -> Int {
-        return UserDefaults.standard.integer(forKey: getLastScoreKey(mode: mode, type: type))
+        return loadFromLocalLeaderboard(leaderboardId: getLastScoreKey(mode: mode, type: type))
     }
     
     static func setLastScore(score: Int, mode: GameMode, type: GameType) {
-        UserDefaults.standard.set(score, forKey: getLastScoreKey(mode: mode, type: type))
+        saveToLocalLeaderboard(value: score, leaderboardId: getLastScoreKey(mode: mode, type: type))
     }
     
     static private func getLastScoreKey(mode: GameMode, type: GameType) -> String {
@@ -80,5 +80,13 @@ class UserData {
         setBestScoreOverallIfNecessary(score: game.score)
         setLastScore(score: game.score, mode: game.mode, type: game.type)
         incrementGameCountOverall()
+    }
+    
+    static func saveToLocalLeaderboard(value: Int, leaderboardId: String) {
+        UserDefaults.standard.set(value, forKey: leaderboardId)
+    }
+    
+    static func loadFromLocalLeaderboard(leaderboardId: String) -> Int {
+        return UserDefaults.standard.integer(forKey: leaderboardId)
     }
 }
