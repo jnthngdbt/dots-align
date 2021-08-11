@@ -13,13 +13,17 @@ class GameCenter {
         return GKLocalPlayer.local.isAuthenticated
     }
     
-    static func submit(_ value: Int, leaderboardID: String) {
+    static func submitIfPossible(_ value: Int, leaderboardID: String) {
+        if !GameCenter.isAuthenticated() { return }
+        
         GKLeaderboard.submitScore(value, context: 0, player: GKLocalPlayer.local, leaderboardIDs: [leaderboardID]) { error in
             print(error.debugDescription)
         }
     }
     
-    static func syncWithLocalData() {
+    static func syncWithLocalDataIfPossible() {
+        if !GameCenter.isAuthenticated() { return }
+        
         var leaderboardIds: [String] = []
         for id in LeaderboardId.allCases { leaderboardIds.append(id.rawValue) }
         
@@ -30,7 +34,7 @@ class GameCenter {
             
             if (leaderboards != nil) {
                 for board in leaderboards! {
-                    syncLeaderboardWithLocalData(leaderboard: board)
+                    GameCenter.syncLeaderboardWithLocalData(leaderboard: board)
                 }
             }
         }
@@ -42,6 +46,9 @@ class GameCenter {
             // NOTE 2021-08: often getting error Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service on pid 10124 named com.apple.gamed was interrupted, but the message was sent over an additional proxy and therefore this proxy has become invalid."
             // My guess is that it is related to thread / calling callbacks inside callbacks.
             // However, works when only fetching data from 1 leaderboard.
+            // Moreover, when break on first line here, works only for first leaderboard.
+            
+            print(leaderboard.baseLeaderboardID)
             
             if error != nil {
                 print(error.debugDescription)
@@ -50,8 +57,10 @@ class GameCenter {
                 let localScore = UserData.loadFromLocalLeaderboard(leaderboardId: leaderboardId)
                 let remoteScore = localPlayerEntry?.score ?? 0
                 
+                print(remoteScore)
+                
                 if localScore > remoteScore {
-                    GameCenter.submit(localScore, leaderboardID: leaderboardId)
+                    GameCenter.submitIfPossible(localScore, leaderboardID: leaderboardId)
                 } else if localScore < remoteScore {
                     UserData.saveToLocalLeaderboard(value: remoteScore, leaderboardId: leaderboardId)
                 }

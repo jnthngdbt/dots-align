@@ -31,7 +31,7 @@ class UserData {
     
     static func setBestScoreIfNecessary(score: Int, mode: GameMode, type: GameType) {
         let key = GameCenter.getLeaderBoardIdForScore(mode: mode, type: type)
-        GameCenter.submit(score, leaderboardID: key)
+        GameCenter.submitIfPossible(score, leaderboardID: key)
         
         if score > getBestScore(mode: mode, type: type) {
             saveToLocalLeaderboard(value: score, leaderboardId: key)
@@ -44,7 +44,7 @@ class UserData {
     
     static func setBestScoreOverallIfNecessary(score: Int) {
         let key = LeaderboardId.boardClassicOverallBest.rawValue
-        GameCenter.submit(score, leaderboardID: key)
+        GameCenter.submitIfPossible(score, leaderboardID: key)
         
         if score > getBestScoreOverall() {
             saveToLocalLeaderboard(value: score, leaderboardId: key)
@@ -58,7 +58,7 @@ class UserData {
     static func incrementGameCountOverall() {
         let newCount = getGameCountOverall() + 1
         let key = LeaderboardId.boardClassicOverallCount.rawValue
-        GameCenter.submit(newCount, leaderboardID: key)
+        GameCenter.submitIfPossible(newCount, leaderboardID: key)
         saveToLocalLeaderboard(value: newCount, leaderboardId: key)
     }
     
