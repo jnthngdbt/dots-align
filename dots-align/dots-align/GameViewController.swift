@@ -168,6 +168,7 @@ class GameViewController: UIViewController, GADFullScreenContentDelegate, GKGame
             
             // Perform any other configurations as needed (for example, access point).
             
+            GameCenter.registerUserToLeaderboardsIfNecessary()
             GameCenter.syncWithLocalDataIfPossible()
         }
     }

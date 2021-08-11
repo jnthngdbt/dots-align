@@ -17,12 +17,20 @@ class UserData {
         UserDefaults.standard.set(type.rawValue, forKey: Const.UserDataKeys.lastGameTypeSelected)
     }
     
-    static func isSoundMuted() -> Bool{
+    static func isSoundMuted() -> Bool {
         return UserDefaults.standard.bool(forKey: Const.UserDataKeys.isSoundMuted) // returns false if not set yet
     }
     
     static func isSoundMuted(_ value: Bool) {
         UserDefaults.standard.set(value, forKey: Const.UserDataKeys.isSoundMuted)
+    }
+    
+    static func isUserRegisteredToLeaderboards() -> Bool {
+        return UserDefaults.standard.bool(forKey: Const.UserDataKeys.isUserRegisteredToLeaderboards) // returns false if not set yet
+    }
+    
+    static func isUserRegisteredToLeaderboards(_ value: Bool) {
+        UserDefaults.standard.set(value, forKey: Const.UserDataKeys.isUserRegisteredToLeaderboards)
     }
     
     static func getBestScore(mode: GameMode, type: GameType) -> Int {

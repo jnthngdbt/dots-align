@@ -112,6 +112,7 @@ class Const {
     class UserDataKeys {
         static let isSoundMuted = "isSoundMuted"
         static let lastGameTypeSelected = "lastGameTypeSelected"
+        static let isUserRegisteredToLeaderboards = "isUserRegisteredToLeaderboards"
         // using GameCenter leaderboard IDs as keys for scores
     }
     

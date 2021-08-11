@@ -13,6 +13,21 @@ class GameCenter {
         return GKLocalPlayer.local.isAuthenticated
     }
     
+    // Ugly hack. When calling loadEntries on multiple leaderboards where some leaderboards have
+    // no score for current user, may get nothing at all due to
+    // Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service on pid _ named com.apple.gamed was interrupted, but the message was sent over an additional proxy and therefore this proxy has become invalid."
+    // Workaround: at first game launch, submit score 0 to all leaderboards.
+    static func registerUserToLeaderboardsIfNecessary() {
+        if !GameCenter.isAuthenticated() { return }
+        if UserData.isUserRegisteredToLeaderboards() { return }
+        
+        for id in LeaderboardId.allCases {
+            GameCenter.submitIfPossible(0, leaderboardID: id.rawValue)
+        }
+        
+        UserData.isUserRegisteredToLeaderboards(true)
+    }
+    
     static func submitIfPossible(_ value: Int, leaderboardID: String) {
         if !GameCenter.isAuthenticated() { return }
         
@@ -42,11 +57,6 @@ class GameCenter {
     
     static private func syncLeaderboardWithLocalData(leaderboard: GKLeaderboard) {
         leaderboard.loadEntries(for: [GKLocalPlayer.local], timeScope: GKLeaderboard.TimeScope.allTime, completionHandler: { (localPlayerEntry, playersEntries, error) -> Void in
-            
-            // NOTE 2021-08: often getting error Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service on pid 10124 named com.apple.gamed was interrupted, but the message was sent over an additional proxy and therefore this proxy has become invalid."
-            // My guess is that it is related to thread / calling callbacks inside callbacks.
-            // However, works when only fetching data from 1 leaderboard.
-            // Moreover, when break on first line here, works only for first leaderboard.
             
             print(leaderboard.baseLeaderboardID)
             

@@ -163,14 +163,14 @@ class ScoreBoard {
             let valueLevel = self.fetchValue(mode: .level, type: g.type, stat: self.statType)
             let valueTime = self.fetchValue(mode: .time, type: g.type, stat: self.statType)
             
-            self.rowsLevel[rowIdx].text = valueLevel != nil ? String(valueLevel!) : "--"
-            self.rowsTime[rowIdx].text = valueTime != nil ? String(valueTime!) : "--"
+            self.rowsLevel[rowIdx].text = String(valueLevel)
+            self.rowsTime[rowIdx].text = String(valueTime)
             
             rowIdx += 1
         }
     }
     
-    private func fetchValue(mode: GameMode, type: GameType, stat: StatType) -> Int? {
+    private func fetchValue(mode: GameMode, type: GameType, stat: StatType) -> Int {
         switch stat {
         case .best: return UserData.getBestScore(mode: mode, type: type)
         case .last: return UserData.getLastScore(mode: mode, type: type)
