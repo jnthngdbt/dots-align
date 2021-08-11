@@ -10,7 +10,7 @@ import SpriteKit
 import GameKit
 
 class ScoreBoard {
-    enum StatType: Int, CaseIterable { case best, average, count }
+    enum StatType: Int, CaseIterable { case best, last }
     
     let title: SKLabelNode
     let homeButton: FooterHomeButton
@@ -179,9 +179,8 @@ class ScoreBoard {
     
     private func fetchValue(mode: GameMode, type: GameType, stat: StatType) -> Int? {
         switch stat {
-        case .best: return DatabaseManager.getBestScore(gameMode: mode, gameType: type)
-        case .average: return DatabaseManager.getAverageScore(gameMode: mode, gameType: type)
-        case .count: return DatabaseManager.getGameCount(gameMode: mode, gameType: type)
+        case .best: return UserData.getBestScore(mode: mode, type: type)
+        case .last: return UserData.getLastScore(mode: mode, type: type)
         }
     }
     
@@ -247,8 +246,7 @@ class ScoreBoard {
     private func getStatTypeString(type: StatType) -> String {
         switch type {
         case .best: return "BEST SCORE"
-        case .average: return "AVERAGE SCORE"
-        case .count: return "GAME COUNT"
+        case .last: return "LAST SCORE"
         }
     }
     

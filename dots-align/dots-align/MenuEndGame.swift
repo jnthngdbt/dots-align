@@ -9,12 +9,11 @@ import Foundation
 import SpriteKit
 
 class MenuEndGame: Menu {
-    init(scene: GameScene) {
+    init(scene: GameScene, mode: GameMode, type: GameType) {
         super.init()
         
-        let lastGame = DatabaseManager.getLastGame()
-        let score = Int(lastGame?.score ?? 0)
-        let bestScore = Int(lastGame?.bestScore ?? 0)
+        let score = UserData.getLastScore(mode: mode, type: type)
+        let bestScore = UserData.getBestScore(mode: mode, type: type)
         
         let isNewBest = score > bestScore
         

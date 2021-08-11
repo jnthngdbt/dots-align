@@ -33,7 +33,7 @@ class MenuChooseGame {
         self.cloudDiameter = Const.Cloud.sphereDiameterFactor * scene.minSize()
         self.cloudRadius = 0.5 * cloudDiameter
         self.dotRadius = Const.Cloud.dotRadiusFactor * scene.minSize()
-        self.nbGamesPlayed = DatabaseManager.getGameCount() ?? 0
+        self.nbGamesPlayed = UserData.getGameCountOverall()
         
         self.cloudTypeIdx = Const.getGameTypeDataIndex(UserData.lastGameTypeSelected())
         let gameTypeData = Const.gameTypeDataArray[self.cloudTypeIdx]

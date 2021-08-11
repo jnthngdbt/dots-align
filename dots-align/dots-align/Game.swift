@@ -175,7 +175,6 @@ class Game {
     
     func end() {
         self.ended = true
-        _ = DatabaseManager.addGameResult(game: self)
         UserData.addGameResult(game: self)
     }
     

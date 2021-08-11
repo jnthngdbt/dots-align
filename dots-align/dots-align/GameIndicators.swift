@@ -28,7 +28,8 @@ class GameIndicators {
         self.indicators[IndicatorNames.score.rawValue].label.text = "SCORE"
         self.indicators[IndicatorNames.score.rawValue].data.text = "0"
         
-        let scoreMax = CGFloat(DatabaseManager.getBestScore(gameMode: mode, gameType: type) ?? 1)
+        let bestScore = UserData.getBestScore(mode: mode, type: type)
+        let scoreMax = (bestScore == 0) ? 1 : bestScore
         let gameTypeData = Const.getGameTypeData(type)
         
         self.indicators[IndicatorNames.left.rawValue].gauge?.maximum = CGFloat(left)
@@ -36,7 +37,7 @@ class GameIndicators {
         self.indicators[IndicatorNames.dots.rawValue].gauge?.maximum = 2.0 * CGFloat(Const.Game.maxNbPoints)
         self.indicators[IndicatorNames.boost.rawValue].gauge?.minimum = 1.0
         self.indicators[IndicatorNames.boost.rawValue].gauge?.maximum = CGFloat(gameTypeData.maxBoost)
-        self.indicators[IndicatorNames.score.rawValue].gauge?.maximum = scoreMax
+        self.indicators[IndicatorNames.score.rawValue].gauge?.maximum = CGFloat(scoreMax)
         
         self.update(name: IndicatorNames.left, value: left)
         self.update(name: IndicatorNames.dots, value: 0)

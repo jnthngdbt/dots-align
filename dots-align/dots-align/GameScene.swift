@@ -262,7 +262,7 @@ class GameScene: SKScene {
     }
     
     func getNewGameUnlocked() -> GameTypeData? {
-        let nbGamesPlayed = DatabaseManager.getGameCount() ?? 0
+        let nbGamesPlayed = UserData.getGameCountOverall()
         
         if nbGamesPlayed > 0 {
             for g in Const.gameTypeDataArray {
@@ -305,7 +305,7 @@ class GameScene: SKScene {
     
     func showEndGameMenu() {
         self.clearScene()
-        self.menuEndGame = MenuEndGame(scene: self)
+        self.menuEndGame = MenuEndGame(scene: self, mode: self.gameMode, type: self.gameType)
         
         Music.instance.playSong(Const.Music.game)
     }
