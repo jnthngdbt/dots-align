@@ -75,7 +75,6 @@ class UserData {
     }
     
     static func addGameResult(game: Game) {
-        game.score = 2244
         setBestScoreIfNecessary(score: game.score, mode: game.mode, type: game.type)
         setBestScoreOverallIfNecessary(score: game.score)
         setLastScore(score: game.score, mode: game.mode, type: game.type)
