@@ -32,7 +32,9 @@ class GameCenter {
         if !GameCenter.isAuthenticated() { return }
         
         GKLeaderboard.submitScore(value, context: 0, player: GKLocalPlayer.local, leaderboardIDs: [leaderboardID]) { error in
-            print(error.debugDescription)
+            if (error != nil) {
+                print(error.debugDescription)
+            }
         }
     }
     
