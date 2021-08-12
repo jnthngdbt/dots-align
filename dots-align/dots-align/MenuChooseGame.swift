@@ -244,10 +244,10 @@ class MenuChooseGame {
             SKAction.scale(to: 1, duration: Const.Animation.expandSec)
         ])
         
-        self.homeButton.animate(action: buttonsAnimation)
-        self.startButton.animate(action: buttonsAnimation)
-        if (self.mustShowLeftNavButton()) { self.left.animate(action: buttonsAnimation) }
-        if (self.mustShowRightNavButton()) { self.right.animate(action: buttonsAnimation) }
+        self.homeButton.animate(buttonsAnimation)
+        self.startButton.animate(buttonsAnimation)
+        if (self.mustShowLeftNavButton()) { self.left.animate(buttonsAnimation) }
+        if (self.mustShowRightNavButton()) { self.right.animate(buttonsAnimation) }
         
         self.cloud?.animateIn(wait: 0.2)
         

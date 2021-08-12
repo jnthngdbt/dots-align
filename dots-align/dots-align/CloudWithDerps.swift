@@ -38,11 +38,11 @@ class CloudWithDerps: Cloud {
         }
     }
     
-    override func animate(action: SKAction) {
-        super.animate(action: action)
+    override func animate(_ action: SKAction) {
+        super.animate(action)
         
         for derp in self.derps {
-            derp.animate(action: action)
+            derp.animate(action)
         }
     }
     

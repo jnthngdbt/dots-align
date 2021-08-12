@@ -69,15 +69,15 @@ class Game {
     
     func animateIn(waitSec: TimeInterval = 0.0) {
         // Start hidden.
-        self.level.cloud.animate(action: SKAction.scale(to: 0, duration: 0.0))
-        self.indicators?.animate(action: SKAction.fadeAlpha(to: 0, duration: 0.0))
+        self.level.cloud.animate(SKAction.scale(to: 0, duration: 0.0))
+        self.indicators?.animate(SKAction.fadeAlpha(to: 0, duration: 0.0))
         self.orb?.node.run(SKAction.scale(to: 0, duration: 0.0))
-        self.homeButton?.animate(action: SKAction.scale(to: 0, duration: 0.0))
-        self.instructions?.button.animate(action: SKAction.scale(to: 0, duration: 0.0))
-        self.instructions?.animate(action: SKAction.fadeAlpha(to: 0, duration: 0.0))
+        self.homeButton?.animate(SKAction.scale(to: 0, duration: 0.0))
+        self.instructions?.button.animate(SKAction.scale(to: 0, duration: 0.0))
+        self.instructions?.animate(SKAction.fadeAlpha(to: 0, duration: 0.0))
         
         // Pop.
-        self.instructions?.animate(action: SKAction.sequence([
+        self.instructions?.animate(SKAction.sequence([
             SKAction.wait(forDuration: waitSec + 0.2),
             SKAction.fadeAlpha(to: 1, duration: Const.Animation.expandSec)
         ]))
@@ -85,15 +85,15 @@ class Game {
             SKAction.wait(forDuration: waitSec + 0.2),
             SKAction.scale(to: 1, duration: Const.Animation.expandSec)
         ]))
-        self.indicators?.animate(action: SKAction.sequence([
+        self.indicators?.animate(SKAction.sequence([
             SKAction.wait(forDuration: waitSec + 0.4),
             SKAction.fadeAlpha(to: 1, duration: Const.Animation.expandSec)
         ]))
-        self.homeButton?.animate(action: SKAction.sequence([
+        self.homeButton?.animate(SKAction.sequence([
             SKAction.wait(forDuration: waitSec + 0.4),
             SKAction.scale(to: 1, duration: Const.Animation.expandSec)
         ]))
-        self.instructions?.button.animate(action: SKAction.sequence([
+        self.instructions?.button.animate(SKAction.sequence([
             SKAction.wait(forDuration: waitSec + 0.4),
             SKAction.scale(to: 1, duration: Const.Animation.expandSec)
         ]))

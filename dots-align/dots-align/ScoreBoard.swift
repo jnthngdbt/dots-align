@@ -300,8 +300,8 @@ class ScoreBoard {
         self.statLine.run(tableAnimation)
         
         self.description.run(tableAnimation)
-        if (self.mustShowLeftNavButton()) { self.left.animate(action: tableAnimation) }
-        if (self.mustShowRightNavButton()) { self.right.animate(action: tableAnimation) }
+        if (self.mustShowLeftNavButton()) { self.left.animate(tableAnimation) }
+        if (self.mustShowRightNavButton()) { self.right.animate(tableAnimation) }
         
         let totalAnimation = SKAction.sequence([
             SKAction.wait(forDuration: 3.0 * Const.Animation.titleAppearWait),

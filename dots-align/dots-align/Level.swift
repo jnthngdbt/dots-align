@@ -156,6 +156,6 @@ class Level {
             collapse
         ])
 
-        self.cloud.animate(action: animation)
+        self.cloud.animate(animation)
     }
 }

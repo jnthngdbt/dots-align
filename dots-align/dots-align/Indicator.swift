@@ -80,10 +80,10 @@ class Indicator {
         self.data.run(animation)
     }
     
-    func animate(action: SKAction) {
+    func animate(_ action: SKAction) {
         self.label.run(action)
         self.data.run(action)
-        self.gauge?.animate(action: action)
+        self.gauge?.animate(action)
     }
     
     deinit {

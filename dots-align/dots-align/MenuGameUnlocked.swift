@@ -118,12 +118,12 @@ class MenuGameUnlocked {
             SKAction.scale(to: 1, duration: Const.Animation.expandSec)
         ]))
         
-        self.cloud?.animate(action: SKAction.sequence([
+        self.cloud?.animate(SKAction.sequence([
             SKAction.wait(forDuration: 0.4),
             SKAction.scale(to: 1, duration: Const.Animation.expandSec)
         ]))
         
-        self.button.animate(action: SKAction.sequence([
+        self.button.animate(SKAction.sequence([
             SKAction.scale(to: 0, duration: 0),
             SKAction.fadeAlpha(to: 1, duration: 0),
             SKAction.wait(forDuration: 0.4),

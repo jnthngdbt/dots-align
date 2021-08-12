@@ -93,8 +93,8 @@ class Instructions {
         }
     }
     
-    func animate(action: SKAction) {
-        self.text?.animate(action: action)
+    func animate(_ action: SKAction) {
+        self.text?.animate(action)
         self.title?.run(action)
     }
     

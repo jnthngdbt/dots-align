@@ -59,9 +59,9 @@ class GameIndicators {
         }
     }
     
-    func animate(action: SKAction) {
+    func animate(_ action: SKAction) {
         for i in self.indicators {
-            i.animate(action: action)
+            i.animate(action)
         }
     }
 }

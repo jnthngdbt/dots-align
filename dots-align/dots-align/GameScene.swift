@@ -245,8 +245,8 @@ class GameScene: SKScene {
         
         self.removeAction(forKey: Const.Level.boostCountdownKey) // otherwise it continues poping after animated out
         
-        self.game?.level.cloud.animate(action: SKAction.scale(to: 0, duration: Const.Animation.collapseSec))
-        self.game?.indicators?.animate(action: SKAction.scale(to: 0, duration: Const.Animation.collapseSec))
+        self.game?.level.cloud.animate(SKAction.scale(to: 0, duration: Const.Animation.collapseSec))
+        self.game?.indicators?.animate(SKAction.scale(to: 0, duration: Const.Animation.collapseSec))
         
         if self.game?.orb != nil {
             let animation = SKAction.sequence([

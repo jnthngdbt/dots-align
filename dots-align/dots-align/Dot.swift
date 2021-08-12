@@ -98,7 +98,7 @@ class Dot {
         self.node.radius = radius
     }
     
-    func animate(action: SKAction) {
+    func animate(_ action: SKAction) {
         self.node.run(action)
     }
     

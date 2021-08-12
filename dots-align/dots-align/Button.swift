@@ -41,7 +41,7 @@ class ContainedLabel {
         return self.shape.frame.size
     }
     
-    func animate(action: SKAction) {
+    func animate(_ action: SKAction) {
         self.shape.run(action)
     }
     
