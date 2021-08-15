@@ -83,9 +83,12 @@ class UserData {
     }
     
     static func addGameResult(game: Game) {
+        setLastScore(score: game.score, mode: game.mode, type: game.type) // not game center
+        
+        if Const.Debug.skipSaveGameResult { return }
+        
         setBestScoreIfNecessary(score: game.score, mode: game.mode, type: game.type)
         setBestScoreOverallIfNecessary(score: game.score)
-        setLastScore(score: game.score, mode: game.mode, type: game.type)
         incrementGameCountOverall()
     }
     

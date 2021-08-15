@@ -231,6 +231,7 @@ class Const {
         static let showGuideDots = false
         static let showCloudDebug = false
         static let showStats = false
+        static let skipSaveGameResult = false
     }
 
     static func mustShowAds() -> Bool {
