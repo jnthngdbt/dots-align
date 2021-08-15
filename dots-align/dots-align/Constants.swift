@@ -254,4 +254,18 @@ class Const {
         }
         return 0
     }
+    
+    static func getNextUnlockedGame(gameCount: Int) -> GameTypeData? {
+        var next: GameTypeData? = nil
+        
+        for g in Const.gameTypeDataArray {
+            if gameCount < g.nbGamesToUnlock {
+                if (next == nil) || (g.nbGamesToUnlock < next!.nbGamesToUnlock) {
+                    next = g
+                } 
+            }
+        }
+        
+        return next
+    }
 }
