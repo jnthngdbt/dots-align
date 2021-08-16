@@ -45,13 +45,6 @@ class MenuEndGame {
         self.setGamesLeft(scene: scene)
         self.setButtons(scene: scene)
         
-//        if isNewBest {
-//            self.addScoreLabel(scene: scene, label: "NEW BEST", value: score, scale: 1.5, spacingAfterFactor: 5.0)
-//        } else {
-//            self.addScoreLabel(scene: scene, label: "THIS GAME", value: score, scale: 1.0, spacingAfterFactor: 2.0)
-//            self.addScoreLabel(scene: scene, label: "YOUR BEST", value: bestScore, scale: 1.0, spacingAfterFactor: 4.0)
-//        }
-        
         self.animateIn()
     }
     
@@ -71,11 +64,16 @@ class MenuEndGame {
     }
     
     private func setScoreIndicators(scene: GameScene) {
-        let posY = 0.67 * scene.size.height
+        let isNewBest = self.isNewBestScore()
+        let posY = (isNewBest ? 0.64 : 0.67) * scene.size.height
         let spacing = 0.16 * scene.size.height
     
-        MenuEndGame.setScoreIndicator(scene: scene, title: self.newScoreTitle, value: self.newScoreValue, posY: posY)
+        MenuEndGame.setScoreIndicator(scene: scene, title: self.newScoreTitle, value: self.newScoreValue, posY: posY, scale: isNewBest ? 1.8 : 1.0)
         MenuEndGame.setScoreIndicator(scene: scene, title: self.bestScoreTitle, value: self.bestScoreValue, posY: posY - spacing)
+        
+        if isNewBest {
+            self.newScoreTitle.text = "NEW BEST"
+        }
     }
     
     private func setGamesLeft(scene: GameScene) {
@@ -85,7 +83,7 @@ class MenuEndGame {
         
         MenuEndGame.setLabel(scene: scene, label: self.gamesLeft, fontSize: 0.04, posY: 0.34 * scene.size.height)
         
-        self.mustShowGamesLeft = nbGamesLeft <= self.maxNbGamesLeft
+        self.mustShowGamesLeft = (nbGamesLeft <= self.maxNbGamesLeft) && (nbGamesLeft > 0)
         let gamesText = nbGamesLeft > 1 ? "GAMES" : "GAME"
         let fullText = "PLAY " + String(nbGamesLeft) + " MORE " + gamesText + " TO UNLOCK A NEW GAME!"
         self.gamesLeft.text = !self.mustShowGamesLeft ? "" : fullText
@@ -109,12 +107,12 @@ class MenuEndGame {
         scene.addChild(label)
     }
     
-    private static func setScoreIndicator(scene: GameScene, title: SKLabelNode, value: SKLabelNode, posY: CGFloat) {
+    private static func setScoreIndicator(scene: GameScene, title: SKLabelNode, value: SKLabelNode, posY: CGFloat, scale: CGFloat = 1.0) {
         let titlePosY = posY
-        let valuePosY = titlePosY - 0.1 * scene.minSize() // spacing not function of height
+        let valuePosY = titlePosY - 0.1 * scale * scene.minSize() // spacing not function of height
         
-        MenuEndGame.setLabel(scene: scene, label: title, fontSize: 0.06, posY: titlePosY)
-        MenuEndGame.setLabel(scene: scene, label: value, fontSize: 0.15, posY: valuePosY)
+        MenuEndGame.setLabel(scene: scene, label: title, fontSize: 0.06 * scale, posY: titlePosY)
+        MenuEndGame.setLabel(scene: scene, label: value, fontSize: 0.15 * scale, posY: valuePosY)
     }
     
     private func animateIn() {
@@ -122,8 +120,10 @@ class MenuEndGame {
         self.gameDescription.run(MenuEndGame.getAnimation(wait: 0.2))
         self.newScoreTitle.run(MenuEndGame.getAnimation(wait: 0.4))
         self.newScoreValue.run(MenuEndGame.getAnimation(wait: 0.4))
-        self.bestScoreTitle.run(MenuEndGame.getAnimation(wait: 0.4))
-        self.bestScoreValue.run(MenuEndGame.getAnimation(wait: 0.4))
+        if !self.isNewBestScore() { // otherwise leave hidden
+            self.bestScoreTitle.run(MenuEndGame.getAnimation(wait: 0.4))
+            self.bestScoreValue.run(MenuEndGame.getAnimation(wait: 0.4))
+        }
         self.gamesLeft.run(MenuEndGame.getAnimation(wait: 0.5))
         self.replayButton.animate(MenuEndGame.getAnimation(wait: 0.6))
         self.homeButton.animate(MenuEndGame.getAnimation(wait: 0.6))
