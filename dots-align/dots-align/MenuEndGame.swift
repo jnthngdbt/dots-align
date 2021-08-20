@@ -21,6 +21,7 @@ class MenuEndGame {
     
     let newScore: Int
     let bestScore: Int
+    let isNewBestScore: Bool
     
     var mustShowGamesLeft: Bool = false
     let maxNbGamesLeft = 5
@@ -28,6 +29,7 @@ class MenuEndGame {
     init(scene: GameScene, mode: GameMode, type: GameType) {
         self.newScore = UserData.getLastScore(mode: mode, type: type)
         self.bestScore = UserData.getBestScore(mode: mode, type: type)
+        self.isNewBestScore = UserData.getIsNewBestScore(mode: mode, type: type)
         
         self.title = SKLabelNode(text: "SCORE")
         self.gameDescription = SKLabelNode(text: Const.getGameTypeData(type).description())
@@ -48,10 +50,6 @@ class MenuEndGame {
         self.animateIn()
     }
     
-    private func isNewBestScore() -> Bool {
-        return self.newScore > self.bestScore
-    }
-    
     private func setTitle(scene: GameScene) {
         MenuEndGame.setLabel(scene: scene, label: self.title, fontSize: 0.18, posY: 0.90 * scene.size.height)
         self.title.fontName = Const.fontNameTitle
@@ -64,14 +62,13 @@ class MenuEndGame {
     }
     
     private func setScoreIndicators(scene: GameScene) {
-        let isNewBest = self.isNewBestScore()
-        let posY = (isNewBest ? 0.64 : 0.67) * scene.size.height
+        let posY = (self.isNewBestScore ? 0.64 : 0.67) * scene.size.height
         let spacing = 0.16 * scene.size.height
     
-        MenuEndGame.setScoreIndicator(scene: scene, title: self.newScoreTitle, value: self.newScoreValue, posY: posY, scale: isNewBest ? 1.8 : 1.0)
+        MenuEndGame.setScoreIndicator(scene: scene, title: self.newScoreTitle, value: self.newScoreValue, posY: posY, scale: self.isNewBestScore ? 1.8 : 1.0)
         MenuEndGame.setScoreIndicator(scene: scene, title: self.bestScoreTitle, value: self.bestScoreValue, posY: posY - spacing)
         
-        if isNewBest {
+        if self.isNewBestScore {
             self.newScoreTitle.text = "NEW BEST"
         }
     }
@@ -120,7 +117,7 @@ class MenuEndGame {
         self.gameDescription.run(MenuEndGame.getAnimation(wait: 0.2))
         self.newScoreTitle.run(MenuEndGame.getAnimation(wait: 0.4))
         self.newScoreValue.run(MenuEndGame.getAnimation(wait: 0.4))
-        if !self.isNewBestScore() { // otherwise leave hidden
+        if !self.isNewBestScore { // otherwise leave hidden
             self.bestScoreTitle.run(MenuEndGame.getAnimation(wait: 0.4))
             self.bestScoreValue.run(MenuEndGame.getAnimation(wait: 0.4))
         }

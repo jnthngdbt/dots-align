@@ -82,8 +82,23 @@ class UserData {
         return GameCenter.getLeaderBoardIdForScore(mode: mode, type: type) + ".last"
     }
     
+    static func getIsNewBestScore(mode: GameMode, type: GameType) -> Bool {
+        return loadFromLocalLeaderboard(leaderboardId: getIsNewBestScoreKey(mode: mode, type: type)) == 1
+    }
+    
+    static func setIsNewBestScore(score: Int, mode: GameMode, type: GameType) {
+        let isNewBestScore = score > getBestScore(mode: mode, type: type)
+        saveToLocalLeaderboard(value: isNewBestScore ? 1 : 0, leaderboardId: getIsNewBestScoreKey(mode: mode, type: type))
+    }
+    
+    static private func getIsNewBestScoreKey(mode: GameMode, type: GameType) -> String {
+        return GameCenter.getLeaderBoardIdForScore(mode: mode, type: type) + ".isNewBest"
+    }
+    
     static func addGameResult(game: Game) {
+        // Call order is important.
         setLastScore(score: game.score, mode: game.mode, type: game.type) // not game center
+        setIsNewBestScore(score: game.score, mode: game.mode, type: game.type) // not game center
         
         if Const.Debug.skipSaveGameResult { return }
         
