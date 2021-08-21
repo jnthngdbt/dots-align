@@ -128,6 +128,7 @@ class MenuEndGame {
     
     private static func getAnimation(wait: TimeInterval) -> SKAction {
         return SKAction.sequence([
+            SKAction.scale(to: 0.0, duration: 0.0),
             SKAction.fadeAlpha(to: 1.0, duration: 0.0),
             SKAction.wait(forDuration: wait),
             SKAction.scale(to: 1, duration: Const.Animation.expandSec)
