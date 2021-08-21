@@ -82,7 +82,7 @@ class Const {
     static let accentColor = UIColor(red: 0.55, green: 0.45, blue: 1.0, alpha: 1)
     static let disabledButtonFontColor = UIColor(white: 0.3, alpha: 1)
     
-    static let buildMode = BuildMode.dev
+    static let buildMode = BuildMode.publish
     
     // Default: HelveticaNeue-UltraLight.
     // Some nice: HelveticaNeue, AvenirNextCondensed, AvenirNext
