@@ -43,7 +43,7 @@ class ProgressBar {
         self.fill.position.x = rect.origin.x - 0.5 * (1.0 - ratio) * rect.width
     }
     
-    func animate(action: SKAction) {
+    func animate(_ action: SKAction) {
         self.edge.run(action)
         self.fill.run(action)
     }

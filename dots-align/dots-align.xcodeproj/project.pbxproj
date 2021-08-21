@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AB0DFF0B26B89AB4000BDD8F /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB0DFF0A26B89AB4000BDD8F /* GameKit.framework */; };
+		AB0DFF0D26B89CC6000BDD8F /* GameCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0DFF0C26B89CC6000BDD8F /* GameCenter.swift */; };
+		AB16E08726B4A764004907DE /* MenuGameUnlocked.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB16E08626B4A764004907DE /* MenuGameUnlocked.swift */; };
 		AB7616FD2697DFBF00A97945 /* ScoreBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7616FC2697DFBF00A97945 /* ScoreBoard.swift */; };
 		AB86CD192687A89C00448D04 /* Music.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB86CD182687A89B00448D04 /* Music.swift */; };
 		AB86CD20268AC55B00448D04 /* Menu.m4a in Resources */ = {isa = PBXBuildFile; fileRef = AB86CD1E268AC55B00448D04 /* Menu.m4a */; };
@@ -15,6 +18,9 @@
 		AB86CD37268D210400448D04 /* CloudWithDerps.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB86CD36268D210400448D04 /* CloudWithDerps.swift */; };
 		AB86CD39268E045B00448D04 /* CloudTransit.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB86CD38268E045B00448D04 /* CloudTransit.swift */; };
 		AB86CD3B268E0BF500448D04 /* CloudShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB86CD3A268E0BF500448D04 /* CloudShadow.swift */; };
+		ABA976B826AB3F5900103032 /* CloudRewire.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA976B726AB3F5900103032 /* CloudRewire.swift */; };
+		ABA976BA26AF496B00103032 /* CloudMirage.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA976B926AF496B00103032 /* CloudMirage.swift */; };
+		ABDCF8AA26BB195D00243BF3 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDCF8A926BB195D00243BF3 /* UserData.swift */; };
 		ABFAE9C4269553CB00C200B2 /* Beep.C2.wav in Resources */ = {isa = PBXBuildFile; fileRef = ABFAE9BC269553CB00C200B2 /* Beep.C2.wav */; };
 		ABFAE9C5269553CB00C200B2 /* Beep.A2.wav in Resources */ = {isa = PBXBuildFile; fileRef = ABFAE9BD269553CB00C200B2 /* Beep.A2.wav */; };
 		ABFAE9C6269553CB00C200B2 /* Beep.E2.wav in Resources */ = {isa = PBXBuildFile; fileRef = ABFAE9BE269553CB00C200B2 /* Beep.E2.wav */; };
@@ -65,8 +71,6 @@
 		EC77FD35264C7FF600B901FD /* MenuMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC77FD32264C7FF600B901FD /* MenuMain.swift */; };
 		EC7E8C02267EDC77001A81F6 /* MenuChooseGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7E8C01267EDC77001A81F6 /* MenuChooseGame.swift */; };
 		EC812664265DDD1C00FAA61E /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC812663265DDD1C00FAA61E /* Button.swift */; };
-		ECEFA386266B08DA007F2C77 /* Database.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = ECEFA384266B08DA007F2C77 /* Database.xcdatamodeld */; };
-		ECEFA388266B14C6007F2C77 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECEFA387266B14C6007F2C77 /* DatabaseManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +94,9 @@
 		1087D8DDCCC8A02EECA9AE75 /* Pods-dots-align-pod-dots-align.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dots-align-pod-dots-align.debug.xcconfig"; path = "Target Support Files/Pods-dots-align-pod-dots-align/Pods-dots-align-pod-dots-align.debug.xcconfig"; sourceTree = "<group>"; };
 		317DC0512EA41069469A4487 /* libPods-dots-align-pod-dots-align.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-dots-align-pod-dots-align.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AF33B1CC4E0778AB225EF2D /* Pods-dots-align-pod-dots-align.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dots-align-pod-dots-align.release.xcconfig"; path = "Target Support Files/Pods-dots-align-pod-dots-align/Pods-dots-align-pod-dots-align.release.xcconfig"; sourceTree = "<group>"; };
+		AB0DFF0A26B89AB4000BDD8F /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		AB0DFF0C26B89CC6000BDD8F /* GameCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenter.swift; sourceTree = "<group>"; };
+		AB16E08626B4A764004907DE /* MenuGameUnlocked.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuGameUnlocked.swift; sourceTree = "<group>"; };
 		AB7616FC2697DFBF00A97945 /* ScoreBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreBoard.swift; sourceTree = "<group>"; };
 		AB86CD182687A89B00448D04 /* Music.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Music.swift; sourceTree = "<group>"; };
 		AB86CD1E268AC55B00448D04 /* Menu.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; name = Menu.m4a; path = ../../music/Menu.m4a; sourceTree = "<group>"; };
@@ -98,6 +105,9 @@
 		AB86CD36268D210400448D04 /* CloudWithDerps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudWithDerps.swift; sourceTree = "<group>"; };
 		AB86CD38268E045B00448D04 /* CloudTransit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudTransit.swift; sourceTree = "<group>"; };
 		AB86CD3A268E0BF500448D04 /* CloudShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudShadow.swift; sourceTree = "<group>"; };
+		ABA976B726AB3F5900103032 /* CloudRewire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudRewire.swift; sourceTree = "<group>"; };
+		ABA976B926AF496B00103032 /* CloudMirage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudMirage.swift; sourceTree = "<group>"; };
+		ABDCF8A926BB195D00243BF3 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		ABFAE9BC269553CB00C200B2 /* Beep.C2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.C2.wav; path = ../../music/Beep.C2.wav; sourceTree = "<group>"; };
 		ABFAE9BD269553CB00C200B2 /* Beep.A2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.A2.wav; path = ../../music/Beep.A2.wav; sourceTree = "<group>"; };
 		ABFAE9BE269553CB00C200B2 /* Beep.E2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Beep.E2.wav; path = ../../music/Beep.E2.wav; sourceTree = "<group>"; };
@@ -137,8 +147,6 @@
 		EC77FD32264C7FF600B901FD /* MenuMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuMain.swift; sourceTree = "<group>"; };
 		EC7E8C01267EDC77001A81F6 /* MenuChooseGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuChooseGame.swift; sourceTree = "<group>"; };
 		EC812663265DDD1C00FAA61E /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
-		ECEFA385266B08DA007F2C77 /* Database.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Database.xcdatamodel; sourceTree = "<group>"; };
-		ECEFA387266B14C6007F2C77 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +155,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E376E93786A91B98D5ECAB07 /* libPods-dots-align-pod-dots-align.a in Frameworks */,
+				AB0DFF0B26B89AB4000BDD8F /* GameKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,6 +188,7 @@
 		65FB5C4CD21A72B8557E9048 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AB0DFF0A26B89AB4000BDD8F /* GameKit.framework */,
 				317DC0512EA41069469A4487 /* libPods-dots-align-pod-dots-align.a */,
 			);
 			name = Frameworks;
@@ -224,16 +234,17 @@
 				E100A7D5263E44FC00F81153 /* Assets.xcassets */,
 				EC812663265DDD1C00FAA61E /* Button.swift */,
 				EC77FD1A264C7CD100B901FD /* Constants.swift */,
-				ECEFA384266B08DA007F2C77 /* Database.xcdatamodeld */,
-				ECEFA387266B14C6007F2C77 /* DatabaseManager.swift */,
 				EC77FD1E264C7D2200B901FD /* Dot.swift */,
 				EC77FD22264C7D7000B901FD /* Cloud.swift */,
 				AB86CD36268D210400448D04 /* CloudWithDerps.swift */,
 				AB86CD34268D199900448D04 /* CloudSatellite.swift */,
 				AB86CD3A268E0BF500448D04 /* CloudShadow.swift */,
 				AB86CD38268E045B00448D04 /* CloudTransit.swift */,
+				ABA976B926AF496B00103032 /* CloudMirage.swift */,
+				ABA976B726AB3F5900103032 /* CloudRewire.swift */,
 				EC77FD26264C7DE600B901FD /* Level.swift */,
 				EC77FD2A264C7E0F00B901FD /* Game.swift */,
+				AB0DFF0C26B89CC6000BDD8F /* GameCenter.swift */,
 				EC69761A2669713E00E34D6E /* GameIndicators.swift */,
 				E100A7CE263E44F900F81153 /* GameScene.swift */,
 				E100A7D0263E44F900F81153 /* GameViewController.swift */,
@@ -245,12 +256,14 @@
 				EC6976202669740800E34D6E /* Menu.swift */,
 				EC7E8C01267EDC77001A81F6 /* MenuChooseGame.swift */,
 				EC69761E266973E000E34D6E /* MenuEndGame.swift */,
+				AB16E08626B4A764004907DE /* MenuGameUnlocked.swift */,
 				EC77FD32264C7FF600B901FD /* MenuMain.swift */,
 				AB86CD182687A89B00448D04 /* Music.swift */,
 				EC69761C2669735900E34D6E /* ProgressBar.swift */,
 				EC0656E22666C69900F28CB1 /* Orb.swift */,
 				AB7616FC2697DFBF00A97945 /* ScoreBoard.swift */,
 				EC77FD16264C7C1B00B901FD /* Utils.swift */,
+				ABDCF8A926BB195D00243BF3 /* UserData.swift */,
 			);
 			path = "dots-align";
 			sourceTree = "<group>";
@@ -444,10 +457,13 @@
 				EC77FD1B264C7CD100B901FD /* Constants.swift in Sources */,
 				EC77FD2B264C7E0F00B901FD /* Game.swift in Sources */,
 				EC69761F266973E000E34D6E /* MenuEndGame.swift in Sources */,
+				ABDCF8AA26BB195D00243BF3 /* UserData.swift in Sources */,
 				E100A7CF263E44F900F81153 /* GameScene.swift in Sources */,
-				ECEFA386266B08DA007F2C77 /* Database.xcdatamodeld in Sources */,
+				ABA976BA26AF496B00103032 /* CloudMirage.swift in Sources */,
 				EC77FD2F264C7F3000B901FD /* Indicator.swift in Sources */,
 				AB86CD192687A89C00448D04 /* Music.swift in Sources */,
+				AB0DFF0D26B89CC6000BDD8F /* GameCenter.swift in Sources */,
+				AB16E08726B4A764004907DE /* MenuGameUnlocked.swift in Sources */,
 				AB86CD37268D210400448D04 /* CloudWithDerps.swift in Sources */,
 				EC6976212669740800E34D6E /* Menu.swift in Sources */,
 				EC69761B2669713E00E34D6E /* GameIndicators.swift in Sources */,
@@ -465,7 +481,7 @@
 				EC77FD17264C7C1B00B901FD /* Utils.swift in Sources */,
 				EC77FD27264C7DE600B901FD /* Level.swift in Sources */,
 				AB86CD35268D199900448D04 /* CloudSatellite.swift in Sources */,
-				ECEFA388266B14C6007F2C77 /* DatabaseManager.swift in Sources */,
+				ABA976B826AB3F5900103032 /* CloudRewire.swift in Sources */,
 				EC77FD1F264C7D2300B901FD /* Dot.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -655,7 +671,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = DFW923WTB8;
 				INFOPLIST_FILE = "dots-align/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -677,7 +693,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = DFW923WTB8;
 				INFOPLIST_FILE = "dots-align/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -813,19 +829,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		ECEFA384266B08DA007F2C77 /* Database.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				ECEFA385266B08DA007F2C77 /* Database.xcdatamodel */,
-			);
-			currentVersion = ECEFA385266B08DA007F2C77 /* Database.xcdatamodel */;
-			path = Database.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = E100A7BD263E44F900F81153 /* Project object */;
 }

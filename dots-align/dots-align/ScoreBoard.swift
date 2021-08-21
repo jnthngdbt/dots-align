@@ -7,12 +7,14 @@
 
 import Foundation
 import SpriteKit
+import GameKit
 
 class ScoreBoard {
-    enum StatType: Int, CaseIterable { case best, average, count }
+    enum StatType: Int, CaseIterable { case best, last }
     
     let title: SKLabelNode
     let homeButton: FooterHomeButton
+    let leaderboardsButton: FooterButton
     
     let hdrGame: SKLabelNode
     let hdrLevel: SKLabelNode
@@ -30,19 +32,20 @@ class ScoreBoard {
     let left: Button
     let right: Button
     
-    let totalLabel: SKLabelNode
+    let gameCountLabel: SKLabelNode
     
     var statType = StatType.allCases.first!
     
-    let titlePosY: CGFloat = 0.88
-    let hdrPosY: CGFloat = 0.72
+    let titlePosY: CGFloat = 0.84
+    let titleSpacing: CGFloat = 0.09
     let hdrSpacing: CGFloat = 0.075
-    let rowSpacing: CGFloat = 0.06
-    let statTypeSpacing: CGFloat = 0.09
-    let totalLabelSpacing: CGFloat = 0.12
+    let rowSpacing: CGFloat = 0.05
+    let statTypeSpacing: CGFloat = 0.08
+    let totalLabelSpacing: CGFloat = 0.09
     
     let colWidth: CGFloat = 0.3
     
+    let hdrPosY: CGFloat
     let sidePadding: CGFloat
     let colGamePosX: CGFloat
     let colLevelPosX: CGFloat
@@ -53,6 +56,7 @@ class ScoreBoard {
     init(scene: GameScene) {
         self.title = SKLabelNode(text: "SCORE BOARD")
         self.homeButton = FooterHomeButton(scene: scene)
+        self.leaderboardsButton = FooterButton(scene: scene, text: "LEADERBOARDS", id: .scoreBoardLeaderboards, widthScaleFactor: Const.ScoreBoard.leaderboardsButtonWidthScaleFactor)
         
         self.hdrGame = SKLabelNode(text: "GAME TYPE")
         self.hdrLevel = SKLabelNode(text: "LEVEL MODE")
@@ -63,13 +67,14 @@ class ScoreBoard {
         self.colLevelPosX = self.sidePadding + 1.5 * self.colWidth
         self.colTimePosX = self.sidePadding + 2.5 * self.colWidth
         
-        for type in GameType.allCases {
-            self.rowsGame.append(SKLabelNode(text: getGameTypeString(type: type)))
+        for g in Const.gameTypeDataArray {
+            self.rowsGame.append(SKLabelNode(text: g.string))
             self.rowsLevel.append(SKLabelNode(text: "--"))
             self.rowsTime.append(SKLabelNode(text: "--"))
         }
         
-        let rowsEndPosY = self.hdrPosY - (self.hdrSpacing + CGFloat(GameType.allCases.count - 1) * self.rowSpacing)
+        self.hdrPosY = self.titlePosY - self.titleSpacing
+        let rowsEndPosY = self.hdrPosY - (self.hdrSpacing + CGFloat(Const.gameTypeDataArray.count - 1) * self.rowSpacing)
         self.statTypePosY = rowsEndPosY - self.statTypeSpacing
         
         let navButtonSize = CGSize(width: 0.12 * scene.size.width, height: 0.12 * scene.size.width)
@@ -78,7 +83,7 @@ class ScoreBoard {
         self.right = Button(scene: scene, text: "▷", size: navButtonSize, id: .scoreBoardRight)
         
         self.totalPosY = self.statTypePosY - self.totalLabelSpacing
-        self.totalLabel = SKLabelNode(text: "TOTAL: 0")
+        self.gameCountLabel = SKLabelNode(text: "GAME COUNT: 0")
         
         self.setTitle(scene: scene)
         
@@ -98,15 +103,17 @@ class ScoreBoard {
         self.setDescription(scene: scene)
         self.setNavButtons(scene: scene)
         
-        self.setTotal(scene: scene)
+        self.setGameCount(scene: scene)
+        
+        self.setLeaderboardsButton(scene: scene)
         
         self.animateIn()
     }
     
     private func setTitle(scene: GameScene) {
-        self.title.fontColor = labelColor
+        self.title.fontColor = Const.labelColor
         self.title.fontName = Const.fontNameTitle
-        self.title.fontSize = 0.15 * scene.minSize()
+        self.title.fontSize = 0.10 * scene.minSize()
         self.title.position = CGPoint(x: scene.center().x, y: self.titlePosY * scene.size.height)
         self.title.verticalAlignmentMode = .center
         self.title.setScale(0) // will animate
@@ -114,7 +121,7 @@ class ScoreBoard {
     }
     
     private func setHeaderLabel(scene: GameScene, label: SKLabelNode, posX: CGFloat) {
-        label.fontColor = labelColor
+        label.fontColor = Const.labelColor
         label.fontName = Const.fontNameLabel
         label.fontSize = 0.05 * scene.minSize()
         label.position = CGPoint(x: posX * scene.size.width, y: self.hdrPosY * scene.size.height)
@@ -139,7 +146,7 @@ class ScoreBoard {
         var row: CGFloat = 1
         for label in labels {
             let spacing = row == 1 ? self.hdrSpacing : self.hdrSpacing + (row - 1) * self.rowSpacing
-            label.fontColor = accentColor
+            label.fontColor = Const.accentColor
             label.fontName = Const.fontNameLabel
             label.fontSize = 0.05 * scene.minSize()
             label.position = CGPoint(x: posX * scene.size.width, y: (self.hdrPosY - spacing) * scene.size.height)
@@ -151,32 +158,27 @@ class ScoreBoard {
     }
     
     private func updateRowsLabels() {
-        var total = 0
-        
-        for type in GameType.allCases {
-            let valueLevel = self.fetchValue(mode: .level, type: type, stat: self.statType)
-            let valueTime = self.fetchValue(mode: .time, type: type, stat: self.statType)
+        var rowIdx = 0
+        for g in Const.gameTypeDataArray {
+            let valueLevel = self.fetchValue(mode: .level, type: g.type, stat: self.statType)
+            let valueTime = self.fetchValue(mode: .time, type: g.type, stat: self.statType)
             
-            self.rowsLevel[type.rawValue].text = valueLevel != nil ? String(valueLevel!) : "--"
-            self.rowsTime[type.rawValue].text = valueTime != nil ? String(valueTime!) : "--"
+            self.rowsLevel[rowIdx].text = String(valueLevel)
+            self.rowsTime[rowIdx].text = String(valueTime)
             
-            total += valueLevel ?? 0
-            total += valueTime ?? 0
+            rowIdx += 1
         }
-        
-        self.updateTotal(total)
     }
     
-    private func fetchValue(mode: GameMode, type: GameType, stat: StatType) -> Int? {
+    private func fetchValue(mode: GameMode, type: GameType, stat: StatType) -> Int {
         switch stat {
-        case .best: return DatabaseManager.getBestScore(gameMode: mode, gameType: type)
-        case .average: return DatabaseManager.getAverageScore(gameMode: mode, gameType: type)
-        case .count: return DatabaseManager.getGameCount(gameMode: mode, gameType: type)
+        case .best: return UserData.getBestScore(mode: mode, type: type)
+        case .last: return UserData.getLastScore(mode: mode, type: type)
         }
     }
     
     private func setDescription(scene: GameScene) {
-        self.description.fontColor = labelColor
+        self.description.fontColor = Const.labelColor
         self.description.fontName = Const.fontNameLabel
         self.description.fontSize = 0.05 * scene.minSize()
         self.description.position = CGPoint(x: scene.center().x, y: self.statTypePosY * scene.size.height)
@@ -205,25 +207,38 @@ class ScoreBoard {
         self.updateNavButtons()
     }
     
-    private func setTotal(scene: GameScene) {
-        self.totalLabel.fontColor = labelColor
-        self.totalLabel.fontName = Const.fontNameTitle
-        self.totalLabel.fontSize = 0.08 * scene.minSize()
-        self.totalLabel.position = CGPoint(x: scene.center().x, y: self.totalPosY * scene.size.height)
-        self.totalLabel.verticalAlignmentMode = .center
-        self.totalLabel.setScale(0) // will animate
-        scene.addChild(self.totalLabel)
+    private func setGameCount(scene: GameScene) {
+        self.gameCountLabel.fontColor = Const.labelColor
+        self.gameCountLabel.fontName = Const.fontNameTitle
+        self.gameCountLabel.fontSize = 0.08 * scene.minSize()
+        self.gameCountLabel.position = CGPoint(x: scene.center().x, y: self.totalPosY * scene.size.height)
+        self.gameCountLabel.verticalAlignmentMode = .center
+        self.gameCountLabel.setScale(0) // will animate
+        
+        self.gameCountLabel.text = "GAME COUNT: " + String(UserData.getGameCountOverall())
+        
+        scene.addChild(self.gameCountLabel)
     }
     
-    private func updateTotal(_ total: Int) {
-        self.totalLabel.text = "TOTAL: " + String(total)
+    func setLeaderboardsButton(scene: GameScene) {
+        let leftFooterPaddingFactor = Const.Indicators.sidePaddingFactor - 0.5 * Const.Button.Footer.widthFactor
+        let buttonWidth = Const.Button.Footer.widthFactor * Const.ScoreBoard.leaderboardsButtonWidthScaleFactor
+        self.leaderboardsButton.shape.position.x = scene.size.width - (leftFooterPaddingFactor + 0.5 * buttonWidth) * scene.minSize()
+        self.leaderboardsButton.label.fontSize = 0.85 * self.leaderboardsButton.label.fontSize
+    }
+    
+    func updateLeaderboardsButton() {
+        if GameCenter.isAuthenticated() {
+            self.leaderboardsButton.label.fontColor = Const.accentColor
+        } else {
+            self.leaderboardsButton.label.fontColor = Const.disabledButtonFontColor
+        }
     }
     
     private func getStatTypeString(type: StatType) -> String {
         switch type {
         case .best: return "BEST SCORE"
-        case .average: return "AVERAGE SCORE"
-        case .count: return "GAME COUNT"
+        case .last: return "LAST SCORE"
         }
     }
     
@@ -285,15 +300,15 @@ class ScoreBoard {
         self.statLine.run(tableAnimation)
         
         self.description.run(tableAnimation)
-        if (self.mustShowLeftNavButton()) { self.left.animate(action: tableAnimation) }
-        if (self.mustShowRightNavButton()) { self.right.animate(action: tableAnimation) }
+        if (self.mustShowLeftNavButton()) { self.left.animate(tableAnimation) }
+        if (self.mustShowRightNavButton()) { self.right.animate(tableAnimation) }
         
         let totalAnimation = SKAction.sequence([
             SKAction.wait(forDuration: 3.0 * Const.Animation.titleAppearWait),
             SKAction.scale(to: 1, duration: Const.Animation.expandSec)
         ])
         
-        self.totalLabel.run(totalAnimation)
+        self.gameCountLabel.run(totalAnimation)
     }
     
     deinit {
@@ -311,6 +326,6 @@ class ScoreBoard {
         
         self.description.removeFromParent()
         self.statLine.removeFromParent()
-        self.totalLabel.removeFromParent()
+        self.gameCountLabel.removeFromParent()
     }
 }

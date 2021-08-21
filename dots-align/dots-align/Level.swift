@@ -25,8 +25,8 @@ class Level {
         
         self.nbPatternPoints = nbPatternPoints
         
-        let radius = 0.5 * Const.Level.sphereDiameterFactor * scene.minSize()
-        let dotRadius = Const.Level.dotRadiusFactor * scene.minSize()
+        let radius = 0.5 * Const.Cloud.sphereDiameterFactor * scene.minSize()
+        let dotRadius = Const.Cloud.dotRadiusFactor * scene.minSize()
         let color = mode == .tutorial ? Const.Tutorial.dotsColor : Const.Cloud.color
         
         self.cloud = Utils.makeCloud(
@@ -40,7 +40,7 @@ class Level {
         
         self.cloud.desalign()
         
-        self.maxBoost = getMaxBoost(type: type)
+        self.maxBoost = Const.getGameTypeData(type).maxBoost
         self.boost = CGFloat(self.maxBoost)
         
         self.indicators?.update(name: IndicatorNames.dots, value: self.getTotalNbDots())
@@ -53,7 +53,7 @@ class Level {
     
     func startBoostCountdown(scene: GameScene, maxBoost: Int) {
         // Adapt duration with max boost (difficulty).
-        let baseBoost = getMaxBoost(type: .normal)
+        let baseBoost = Const.gameTypeDataArray.first!.maxBoost
         let durationRamp = Const.Level.boostCountdownDurationRampFactorSecsPerBoost * CGFloat(maxBoost - baseBoost)
         let duration = Const.Level.boostCountdownBaseDuration + durationRamp
         
@@ -133,13 +133,7 @@ class Level {
     }
     
     func animateIn() {
-        let animation = SKAction.sequence([
-            SKAction.scale(to: 0, duration: 0.0),
-            SKAction.wait(forDuration: 0.2),
-            SKAction.scale(to: 1, duration: Const.Animation.expandSec)
-        ])
-        
-        self.cloud.animate(action: animation)
+        self.cloud.animateIn(wait: 0.2)
     }
     
     func animateOut() {
@@ -147,16 +141,9 @@ class Level {
     }
     
     private func animateOutCloud() {
-        let expand = SKAction.group([
-            SKAction.fadeAlpha(to: 0.9, duration: Const.Animation.blinkSec),
-            SKAction.scale(to: 1.5, duration: Const.Animation.blinkSec)
-        ])
-        
-        let back = SKAction.group([
-            SKAction.fadeAlpha(to: 1.0, duration: Const.Animation.blinkSec),
-            SKAction.scale(to: 1.0, duration: Const.Animation.blinkSec)
-        ])
-        
+        let expand = SKAction.scale(to: 1.5, duration: Const.Animation.blinkSec)
+        let back = SKAction.scale(to: 1.0, duration: Const.Animation.blinkSec)
+    
         let collapse = SKAction.group([
             SKAction.fadeAlpha(to: 0.0, duration: Const.Animation.collapseSec),
             SKAction.scale(to: 0, duration: Const.Animation.collapseSec)
@@ -169,6 +156,6 @@ class Level {
             collapse
         ])
 
-        self.cloud.animate(action: animation)
+        self.cloud.animate(animation)
     }
 }

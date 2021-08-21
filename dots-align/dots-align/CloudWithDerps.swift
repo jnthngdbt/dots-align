@@ -11,12 +11,10 @@ import SpriteKit
 class CloudWithDerps: Cloud {
     var derps = Array<Dot>()
     
-    init(nbPoints: Int, scene: GameScene, color: UIColor, radius: CGFloat, dotRadius: CGFloat, derpSizeRation: CGFloat, addGuides: Bool = false) {
-        let nbPointsNormal = nbPoints / 2
-        let nbPointsDerp = nbPoints - nbPointsNormal
+    init(nbPoints: Int, scene: GameScene, color: UIColor, radius: CGFloat, dotRadius: CGFloat, nbPointsDerp: Int, derpSizeRatio: CGFloat, addGuides: Bool = false) {
         
         super.init(
-            nbPoints: nbPointsNormal,
+            nbPoints: nbPoints - nbPointsDerp,
             scene: scene,
             color: color,
             radius: radius,
@@ -27,7 +25,7 @@ class CloudWithDerps: Cloud {
         let pointsDerps = Cloud.generateSymmetricRandomPoints(nbPoints: nbPointsDerp)
         
         for p in pointsDerps {
-            derps.append(Dot(scene: scene, color: color, point3d: p, radius: derpSizeRation * dotRadius, sphereRadius: radius))
+            derps.append(Dot(scene: scene, color: color, point3d: p, radius: derpSizeRatio * dotRadius, sphereRadius: radius))
         }
     }
     
@@ -40,11 +38,11 @@ class CloudWithDerps: Cloud {
         }
     }
     
-    override func animate(action: SKAction) {
-        super.animate(action: action)
+    override func animate(_ action: SKAction) {
+        super.animate(action)
         
         for derp in self.derps {
-            derp.animate(action: action)
+            derp.animate(action)
         }
     }
     

@@ -89,14 +89,15 @@ class Utils {
     class func quaternionFromDir(dir: Vector3d, speed: Scalar = 1) -> Quat {
         let norm = simd_length(dir)
         
-        if norm > 0 {
+        if norm > 0 && norm < 1 { // avoid divide by 0, avoid undetermined asin when > 1
             let angle = asin(norm)
             let unit = simd_normalize(dir)
             let axis = simd_normalize(simd_cross(unit, Vector3d(0, 0, -1)))
             return Quat(angle: speed * angle, axis: axis)
         }
         
-        return Quat(angle: 0, axis: Vector3d(0, 0, 1)) // no effect
+        // No rotation (0 angle). Using x vector, because cross product with z vector may be used elsewhere.
+        return Quat(angle: 0, axis: Vector3d(1, 0, 0))
     }
     
     class func makeCloud(type: GameType, nbPoints: Int, scene: GameScene, color: UIColor, radius: CGFloat, dotRadius: CGFloat, addGuides: Bool = false, mustShadow: Bool = false) -> Cloud {
@@ -109,6 +110,10 @@ class Utils {
             return CloudShadow(nbPoints: nbPoints, scene: scene, color: color, radius: radius, dotRadius: dotRadius, addGuides: addGuides)
         case .transit:
             return CloudTransit(nbPoints: nbPoints, scene: scene, color: color, radius: radius, dotRadius: dotRadius, addGuides: addGuides)
+        case .mirage:
+            return CloudMirage(nbPoints: nbPoints, scene: scene, color: color, radius: radius, dotRadius: dotRadius, addGuides: addGuides)
+        case .rewire:
+            return CloudRewire(nbPoints: nbPoints, scene: scene, color: color, radius: radius, dotRadius: dotRadius, addGuides: addGuides)
         }
     }
 }

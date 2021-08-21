@@ -85,10 +85,17 @@ class Cloud {
         return self.alignedDist < Const.Cloud.alignedDistThresh
     }
     
-    func animate(action: SKAction) {
+    func animate(_ action: SKAction) {
         for dot in self.dots {
-            dot.animate(action: action)
+            dot.animate(action)
         }
+    }
+    
+    func animateIn(wait: TimeInterval = 0.0) {
+        self.animate(SKAction.sequence([
+            SKAction.wait(forDuration: wait),
+            SKAction.scale(to: 1, duration: Const.Animation.expandSec)
+        ]))
     }
     
     func clear() {

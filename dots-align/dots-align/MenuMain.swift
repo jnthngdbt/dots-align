@@ -51,7 +51,7 @@ class MenuMain: Menu {
         let titlePosX = self.buttons.last!.shape.position.x
         let titlePosY = buttonTopPos.y + 0.5 * (scene.size.height - buttonTopPos.y)
         
-        self.title.fontColor = labelColor
+        self.title.fontColor = Const.labelColor
         self.title.fontName = Const.fontNameTitle
         self.title.fontSize = 0.16 * scene.minSize()
         self.title.position = CGPoint(x: titlePosX, y: titlePosY)
@@ -68,13 +68,13 @@ class MenuMain: Menu {
         self.soundButton.shape.strokeColor = Const.Button.fillColor
         self.soundButton.shape.lineWidth = 3
         self.soundButton.shape.position = CGPoint(x: x, y: y)
-        self.soundButton.label.fontColor = labelColor
+        self.soundButton.label.fontColor = Const.labelColor
         self.soundButton.label.fontSize = 0.03 * scene.minSize()
         self.updateSoundButton()
     }
     
     func updateSoundButton() {
-        self.soundButton.label.fontColor = Music.instance.isMuted() ? labelColor : accentColor
+        self.soundButton.label.fontColor = Music.instance.isMuted() ? Const.labelColor : Const.accentColor
     }
     
     func update() {
@@ -98,11 +98,12 @@ class MenuMain: Menu {
     private func animateInCloud() {
         let animation = SKAction.sequence([
             SKAction.fadeAlpha(to: 0, duration: 0.0),
+            SKAction.scale(to: 1, duration: 0.0),
             SKAction.wait(forDuration: 0.5),
             SKAction.fadeAlpha(to: 1, duration: 1.0)
         ])
         
-        self.cloud?.animate(action: animation)
+        self.cloud?.animate(animation)
     }
     
     private func animateInButtons() {
@@ -115,7 +116,7 @@ class MenuMain: Menu {
         
         self.animateButtons(action: animation)
         
-        self.soundButton.animate(action: animation)
+        self.soundButton.animate(animation)
     }
     
     deinit {

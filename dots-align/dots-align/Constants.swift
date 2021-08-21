@@ -12,7 +12,7 @@ import GoogleMobileAds
 enum BuildMode { case dev, demo, publish }
 enum IndicatorNames: Int, CaseIterable { case left, dots, boost, score  }
 enum GameMode: Int, CaseIterable { case tutorial, level, time  } // keep order, saved in core data
-enum GameType: Int, CaseIterable { case normal, satellite, shadow, transit } // keep order, saved in core data
+enum GameType: Int, CaseIterable { case normal, satellite, shadow, transit, rewire, mirage } // keep order, saved in core data
 
 enum ButtonId: String, CaseIterable { case
     none = "",
@@ -29,7 +29,45 @@ enum ButtonId: String, CaseIterable { case
     chooseGameNavLeft = "chooseGameNavLeft",
     chooseGameNavRight = "chooseGameNavRight",
     scoreBoardLeft = "scoreBoardLeft",
-    scoreBoardRight = "scoreBoardRight"
+    scoreBoardRight = "scoreBoardRight",
+    scoreBoardLeaderboards = "scoreBoardLeaderboards",
+    unlockedGameOk = "unlockedGameOk"
+}
+
+enum LeaderboardId: String, CaseIterable { case
+    boardClassicNormalTimed  = "classic.normal.timed",
+    boardClassicNormalLevels = "classic.normal.levels",
+    boardClassicSatelliteTimed  = "classic.satellite.timed",
+    boardClassicSatelliteLevels = "classic.satellite.levels",
+    boardClassicShadowTimed  = "classic.shadow.timed",
+    boardClassicShadowLevels = "classic.shadow.levels",
+    boardClassicMirageTimed  = "classic.mirage.timed",
+    boardClassicMirageLevels = "classic.mirage.levels",
+    boardClassicRewireTimed  = "classic.rewire.timed",
+    boardClassicRewireLevels = "classic.rewire.levels",
+    boardClassicTransitTimed  = "classic.transit.timed",
+    boardClassicTransitLevels = "classic.transit.levels",
+    boardClassicOverallBest = "classic.overall.best",
+    boardClassicOverallCount = "classic.overall.count"
+//        static let boardClassicOverallTotal = "classic.overall.total"
+}
+
+class GameTypeData {
+    let type: GameType
+    let maxBoost: Int
+    let nbGamesToUnlock: Int
+    let string: String
+    
+    init(type: GameType, maxBoost: Int, nbGamesToUnlock: Int, string: String) {
+        self.type = type
+        self.maxBoost = maxBoost
+        self.nbGamesToUnlock = nbGamesToUnlock
+        self.string = string
+    }
+    
+    func description() -> String {
+        return self.string + " // x" + String(self.maxBoost) + " BOOST"
+    }
 }
 
 func isButton(name: String?) -> Bool {
@@ -38,10 +76,30 @@ func isButton(name: String?) -> Bool {
     return (id != nil) && (id != ButtonId.none)
 }
 
-let labelColor = UIColor(white: 0.55, alpha: 1)
-let accentColor = UIColor(red: 0.55, green: 0.45, blue: 1.0, alpha: 1)
-
 class Const {
+    static let backgroundColor = UIColor(white: 0.0, alpha: 1)
+    static let labelColor = UIColor(white: 0.55, alpha: 1)
+    static let accentColor = UIColor(red: 0.55, green: 0.45, blue: 1.0, alpha: 1)
+    static let disabledButtonFontColor = UIColor(white: 0.3, alpha: 1)
+    
+    static let buildMode = BuildMode.dev
+    
+    // Default: HelveticaNeue-UltraLight.
+    // Some nice: HelveticaNeue, AvenirNextCondensed, AvenirNext
+    // Heavy, Bold, DemiBold, Medium, Regular, UltraLight.
+    static let fontNameText = "AvenirNextCondensed-DemiBold"
+    static let fontNameLabel = "AvenirNextCondensed-Bold"
+    static let fontNameTitle = "AvenirNextCondensed-Heavy"
+    
+    static let gameTypeDataArray = [
+        GameTypeData(type: .normal      , maxBoost: 4   , nbGamesToUnlock: 0   , string: "NORMAL"      ),
+        GameTypeData(type: .satellite   , maxBoost: 6   , nbGamesToUnlock: 10  , string: "SATELLITE"   ),
+        GameTypeData(type: .shadow      , maxBoost: 8   , nbGamesToUnlock: 20  , string: "SHADOW"      ),
+        GameTypeData(type: .mirage      , maxBoost: 10  , nbGamesToUnlock: 30  , string: "MIRAGE"      ),
+        GameTypeData(type: .rewire      , maxBoost: 12  , nbGamesToUnlock: 40  , string: "REWIRE"      ),
+        GameTypeData(type: .transit     , maxBoost: 14  , nbGamesToUnlock: 50  , string: "TRANSIT"     ),
+    ]
+    
     class Ads {
         static let bannerSize = kGADAdSizeBanner
         static let adUnitIdBannerTest = "ca-app-pub-3940256099942544/2934735716"
@@ -51,8 +109,11 @@ class Const {
         static let nbGamesForInterstitialAd = 3
     }
     
-    class DefaultsKeys {
-        static let muteSound = "muteSound"
+    class UserDataKeys {
+        static let isSoundMuted = "isSoundMuted"
+        static let lastGameTypeSelected = "lastGameTypeSelected"
+        static let isUserRegisteredToLeaderboards = "isUserRegisteredToLeaderboards"
+        // using GameCenter leaderboard IDs as keys for scores
     }
     
     class Dot {
@@ -62,9 +123,12 @@ class Const {
     }
     
     class Cloud {
+        static let sphereDiameterFactor: CGFloat = 0.6
+        static let dotRadiusFactor: CGFloat = 0.022
         static let alignedOrientation = Vector3d(0, 0, 1)
         static let alignedDistThresh = 0.05
         static let color = accentColor
+        static let lockedColor = UIColor(white: 0.3, alpha: 1)
         static let guideDotsColor = UIColor.red
     }
     
@@ -78,8 +142,6 @@ class Const {
     }
     
     class Level {
-        static let sphereDiameterFactor: CGFloat = 0.6
-        static let dotRadiusFactor: CGFloat = 0.022
         static let levelScoreFontSizeFactor: CGFloat = 0.1
         static let levelScoreEndPosOffsetFactor: CGFloat = 0.035
         static let boostCountdownKey = "boostCountdown"
@@ -123,9 +185,11 @@ class Const {
     
     class MenuChooseGame {
         static let nbDots = 20
-        static let sphereDiameterFactor: CGFloat = 0.6
-        static let dotRadiusFactor: CGFloat = 0.022
         static let startButtonWidthScaleFactor: CGFloat = 2.0
+    }
+    
+    class ScoreBoard {
+        static let leaderboardsButtonWidthScaleFactor: CGFloat = 3.2
     }
     
     class Button {
@@ -165,39 +229,44 @@ class Const {
     class Debug {
         static let showBtnEdges = false
         static let showGuideDots = false
+        static let showCloudDebug = false
         static let showStats = false
+        static let skipSaveGameResult = false
     }
-    
-    static let buildMode = BuildMode.publish
-    
-    static let backgroundColor = UIColor(white: 0.0, alpha: 1)
-    
-    // Default: HelveticaNeue-UltraLight.
-    // Some nice: HelveticaNeue, AvenirNextCondensed, AvenirNext
-    // Heavy, Bold, DemiBold, Medium, Regular, UltraLight.
-    static let fontNameText = "AvenirNextCondensed-DemiBold"
-    static let fontNameLabel = "AvenirNextCondensed-Bold"
-    static let fontNameTitle = "AvenirNextCondensed-Heavy"
 
     static func mustShowAds() -> Bool {
         return Const.buildMode != .demo
     }
-}
-
-func getMaxBoost(type: GameType) -> Int {
-    switch type {
-    case .normal: return 4
-    case .satellite: return 6
-    case .shadow: return 8
-    case .transit: return 10
+    
+    static func getBannerAdHeight() -> CGFloat {
+        return Const.mustShowAds() ? Const.Ads.bannerSize.size.height : 0
     }
-}
-
-func getGameTypeString(type: GameType) -> String {
-    switch type {
-    case .normal: return "NORMAL"
-    case .satellite: return "SATELLITE"
-    case .shadow: return "SHADOW"
-    case .transit: return "TRANSIT"
+    
+    static func getGameTypeData(_ type: GameType) -> GameTypeData {
+        for g in Const.gameTypeDataArray {
+            if g.type == type { return g }
+        }
+        return Const.gameTypeDataArray.first!
+    }
+    
+    static func getGameTypeDataIndex(_ type: GameType) -> Int {
+        for i in 0..<Const.gameTypeDataArray.count {
+            if Const.gameTypeDataArray[i].type == type { return i }
+        }
+        return 0
+    }
+    
+    static func getNextUnlockedGame(gameCount: Int) -> GameTypeData? {
+        var next: GameTypeData? = nil
+        
+        for g in Const.gameTypeDataArray {
+            if gameCount < g.nbGamesToUnlock {
+                if (next == nil) || (g.nbGamesToUnlock < next!.nbGamesToUnlock) {
+                    next = g
+                } 
+            }
+        }
+        
+        return next
     }
 }

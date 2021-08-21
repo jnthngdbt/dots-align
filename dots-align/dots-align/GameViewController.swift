@@ -7,11 +7,12 @@
 
 import UIKit
 import SpriteKit
+import GameKit
 import GameplayKit
 import GoogleMobileAds
 
-class GameViewController: UIViewController, GADFullScreenContentDelegate {
-
+class GameViewController: UIViewController, GADFullScreenContentDelegate, GKGameCenterControllerDelegate {
+    var scene: GameScene?
     var bannerView: GADBannerView?
     var interstitial: GADInterstitialAd?
     var interstitialAdCompletionHandler: (() -> Void)?
@@ -20,12 +21,12 @@ class GameViewController: UIViewController, GADFullScreenContentDelegate {
         super.viewDidLoad()
         
         if let view = self.view as! SKView? {
-            let scene = GameScene(size: CGSize(width: self.view.bounds.width, height: self.view.bounds.height))
-            scene.adsDelegate = self
+            self.scene = GameScene(size: CGSize(width: self.view.bounds.width, height: self.view.bounds.height))
+            self.scene!.viewController = self
             
-            scene.scaleMode = .aspectFit
+            self.scene!.scaleMode = .aspectFit
             
-            view.presentScene(scene)
+            view.presentScene(self.scene!)
             view.ignoresSiblingOrder = true
             
             if Const.Debug.showStats {
@@ -43,6 +44,8 @@ class GameViewController: UIViewController, GADFullScreenContentDelegate {
             
             self.loadInterstitialAd()
         }
+        
+        self.AuthenticateGameCenterLocalPlayer()
     }
     
     private func addBannerViewToView(_ bannerView: GADBannerView) {
@@ -126,5 +129,57 @@ class GameViewController: UIViewController, GADFullScreenContentDelegate {
 
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+    
+    func AuthenticateGameCenterLocalPlayer() {
+        GKLocalPlayer.local.authenticateHandler = { viewController, error in
+            // This handler may be called multiple times. E.g. first while not
+            // logged in, with a view controller to show. After, with a nil view
+            // controller meaning the user is logged in.
+            
+            if let viewController = viewController {
+                self.present(viewController, animated: true)
+            }
+            
+            self.scene?.updateGameCenterAccessPoint()
+            
+            if error != nil {
+                // Player could not be authenticated.
+                // Disable Game Center in the game.
+                return
+            }
+            
+            // Player was successfully authenticated (GKLocalPlayer.local.isAuthenticated).
+            // Check if there are any player restrictions before starting the game.
+                    
+            if GKLocalPlayer.local.isUnderage {
+                // Hide explicit game content.
+            }
+
+            if GKLocalPlayer.local.isMultiplayerGamingRestricted {
+                // Disable multiplayer game features.
+            }
+
+            if #available(iOS 14.0, *) {
+                if GKLocalPlayer.local.isPersonalizedCommunicationRestricted {
+                    // Disable in game communication UI.
+                }
+            }
+            
+            // Perform any other configurations as needed (for example, access point).
+            
+            GameCenter.registerUserToLeaderboardsIfNecessary()
+            GameCenter.syncWithLocalDataIfPossible()
+        }
+    }
+    
+    func showGameCenterLeaderboards() {
+        let viewController = GKGameCenterViewController(state: .leaderboards)
+        viewController.gameCenterDelegate = self
+        self.present(viewController, animated: true)
+    }
+    
+    func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
+        gameCenterViewController.dismiss(animated: true)
     }
 }

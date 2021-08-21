@@ -42,7 +42,7 @@ class Instructions {
         self.areInstructionsShown = true
         
         self.title = SKLabelNode(text: self.titleString)
-        self.title!.fontColor = labelColor
+        self.title!.fontColor = Const.labelColor
         self.title!.fontName = Const.fontNameTitle
         self.title!.fontSize = 0.11 * scene.minSize()
         self.title!.position = CGPoint(x: scene.center().x, y: 0.9 * scene.size.height)
@@ -60,7 +60,7 @@ class Instructions {
         self.text!.label.fontName = Const.fontNameText
         self.text!.shape.fillColor = UIColor(white: 0.0, alpha: self.alpha)
         self.text!.label.fontSize = textFontSize
-        self.text!.label.fontColor = labelColor
+        self.text!.label.fontColor = Const.labelColor
         self.text!.shape.position = CGPoint(x: scene.center().x, y: 0.85 * scene.size.height)
         self.text!.shape.zPosition = Const.Button.zPosition - 1.0
         self.text!.label.horizontalAlignmentMode = .center
@@ -93,8 +93,8 @@ class Instructions {
         }
     }
     
-    func animate(action: SKAction) {
-        self.text?.animate(action: action)
+    func animate(_ action: SKAction) {
+        self.text?.animate(action)
         self.title?.run(action)
     }
     
