@@ -45,7 +45,7 @@ class MenuChooseGame {
         let navButtonSize = CGSize(width: 0.8 * navButtonWidthSpace, height: 0.98 * self.cloudDiameter)
         
         self.orb = Orb(scene: scene)
-        self.title = SKLabelNode(text: "SELECT GAME")
+        self.title = SKLabelNode(text: "SELECT TYPE")
         self.description = SKLabelNode(text: "SATELLITE // x6 BOOST")
         self.lockedText = SKLabelNode(text: "PLAY 10 MORE GAMES TO UNLOCK")
         self.homeButton = FooterHomeButton(scene: scene)
