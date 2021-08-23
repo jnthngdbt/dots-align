@@ -16,7 +16,8 @@ class Game {
     var indicators: GameIndicators?
     var instructions: Instructions?
     var homeButton: FooterHomeButton!
-    var left = Const.Game.maxLevel
+    var counterMax = Const.Game.maxLevel
+    var counter = 1
     var ended = false
     var levelScoreLabel: SKLabelNode!
     var levelScoreLabelStartPos: CGPoint!
@@ -37,16 +38,18 @@ class Game {
         self.orb = Orb(scene: scene)
         
         switch self.mode {
-        case GameMode.level: self.left = Const.Game.maxLevel
-        case GameMode.time: self.left = Const.Game.maxSeconds
-        default: self.left = 1
+        case GameMode.level: self.counterMax = Const.Game.maxLevel
+        case GameMode.time: self.counterMax = Const.Game.maxSeconds
+        default: self.counterMax = 1
         }
+        
+        self.counter = (mode == .level) ? 1 : self.counterMax
         
         if mode == GameMode.tutorial {
             self.indicators = nil
             self.instructions = InstructionsGetStarted(scene: scene)
         } else {
-            self.indicators = GameIndicators(scene: scene, mode: mode, type: type, left: self.left)
+            self.indicators = GameIndicators(scene: scene, mode: mode, type: type, counterMax: self.counterMax)
             self.instructions = InstructionsHowItWorks(scene: scene)
         }
         
@@ -123,11 +126,11 @@ class Game {
     func newLevelIfNecessary(scene: GameScene) {
         if self.level.ended {
             if self.mode == GameMode.level {
-                self.left -= 1
+                self.counter += 1 // levels increment
                 
-                self.indicators?.update(name: IndicatorNames.left, value: self.left)
+                self.indicators?.update(name: IndicatorNames.left, value: self.counter)
                 
-                if self.left <= 0 {
+                if self.counter > self.counterMax {
                     self.ended = true
                     return
                 }
@@ -169,8 +172,8 @@ class Game {
     }
     
     func timeCountdown() {
-        self.left -= 1
-        self.indicators?.update(name: IndicatorNames.left, value: self.left)
+        self.counter -= 1 // time counter decreases
+        self.indicators?.update(name: IndicatorNames.left, value: self.counter)
     }
     
     func end() {
