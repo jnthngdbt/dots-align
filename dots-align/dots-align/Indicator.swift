@@ -12,6 +12,9 @@ class Indicator {
     var label = SKLabelNode(text: "LABEL")
     var data = SKLabelNode(text: "DATA")
     var gauge: ProgressBar?
+    
+    var showFraction = false
+    var isInverse = false
 
     init(scene: GameScene, idx: Int, addGauge: Bool = false) {
         let padding = Const.Indicators.sidePaddingFactor * scene.minSize() // left and right padding, indicators are centered and distributed on remaining
@@ -50,10 +53,10 @@ class Indicator {
     }
 
     func updateData(value: Int, gaugeValue: CGFloat? = nil, prefix: String = "", highlight: Bool = false) {
-        
-        let gauge = gaugeValue == nil ? CGFloat(value) : gaugeValue
-        
-        let text = prefix + String(value)
+        let hasGauge = self.gauge != nil
+        let hideFraction = !showFraction || !hasGauge
+        let fractionText = hideFraction ? "" : "/" + prefix + String(Int(self.gauge!.maximum))
+        let text = prefix + String(value) + fractionText
         let isNewText = self.data.text != text
         self.data.text = text
         
@@ -67,6 +70,7 @@ class Indicator {
             self.animateBounce()
         }
         
+        let gauge = gaugeValue == nil ? CGFloat(value) : gaugeValue
         self.gauge?.setValue(value: gauge!)
     }
     

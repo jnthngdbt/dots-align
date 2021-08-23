@@ -17,16 +17,13 @@ class GameIndicators {
         }
         
         self.indicators[IndicatorNames.left.rawValue].label.text = self.getRemainingTitle(mode: mode)
-        self.indicators[IndicatorNames.left.rawValue].data.text = "20"
+        self.indicators[IndicatorNames.left.rawValue].showFraction = (mode == .level)
         
         self.indicators[IndicatorNames.dots.rawValue].label.text = "DOTS"
-        self.indicators[IndicatorNames.dots.rawValue].data.text = "0"
         
         self.indicators[IndicatorNames.boost.rawValue].label.text = "BOOST"
-        self.indicators[IndicatorNames.boost.rawValue].data.text = "x0"
         
         self.indicators[IndicatorNames.score.rawValue].label.text = "SCORE"
-        self.indicators[IndicatorNames.score.rawValue].data.text = "0"
         
         let bestScore = UserData.getBestScore(mode: mode, type: type)
         let scoreMax = (bestScore == 0) ? 1 : bestScore
