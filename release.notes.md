@@ -11,5 +11,8 @@
 1.0.3 - 2021-08-23
 - applied minor UI review suggestions
 
-1.1.1 - 2021-08-24
+1.1.1 - 2021-08-26
+- update app store screenshots
+
+1.2.1 - 2021-08-27
 - update app store screenshots
