@@ -16,3 +16,6 @@
 
 1.2.1 - 2021-08-27
 - update app store screenshots
+
+1.3.1 - 2021-08-27
+- update app store screenshots
