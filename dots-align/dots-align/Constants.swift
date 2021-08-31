@@ -109,6 +109,10 @@ class Const {
         static let nbGamesForInterstitialAd = 3
     }
     
+    class AppStore {
+        static let nbGamesMultipleForAskReview = 11
+    }
+    
     class UserDataKeys {
         static let isSoundMuted = "isSoundMuted"
         static let lastGameTypeSelected = "lastGameTypeSelected"
