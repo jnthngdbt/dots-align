@@ -8,6 +8,7 @@
 import SpriteKit
 import GameKit
 import GameplayKit
+import StoreKit
 
 class GameScene: SKScene {
     var viewController: GameViewController?
@@ -275,6 +276,18 @@ class GameScene: SKScene {
         return nil
     }
     
+    func requestAppReviewIfNecessary() {
+        let nbGamesPlayed = UserData.getGameCountOverall()
+        
+        // StoreKit has its policies on if the prompt should be shown or not.
+        // e.g. should not prompt multiple times for the same version.
+        if nbGamesPlayed.isMultiple(of: Const.AppStore.nbGamesMultipleForAskReview) {
+            if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+                SKStoreReviewController.requestReview(in: scene)
+            }
+        }
+    }
+    
     func showMainMenu() {
         self.clearScene()
         self.menuMain = MenuMain(scene: self)
@@ -293,6 +306,8 @@ class GameScene: SKScene {
     }
     
     func showEndGameLandingPage() {
+        self.requestAppReviewIfNecessary()
+        
         let newGameUnlocked = self.getNewGameUnlocked()
         
         if newGameUnlocked != nil {
